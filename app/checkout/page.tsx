@@ -2,19 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
 
 type AuthChoice = "apple" | "google" | "email" | "create" | null;
 
 export default function CheckoutPage() {
-  const router = useRouter();
-  const { lines, total } = useCart();
+  const { lines, total, openCart } = useCart();
   const [authChoice, setAuthChoice] = useState<AuthChoice>(null);
 
   const showAuthPreview = (choice: Exclude<AuthChoice, null>) => {
     setAuthChoice(choice);
+    window.setTimeout(() => setAuthChoice(null), 2600);
   };
 
   return (
@@ -23,11 +22,10 @@ export default function CheckoutPage() {
 
       <section className="checkout-page">
         <div className="shell checkout-back-row">
-          <button className="checkout-back-button" onClick={() => router.back()}>
+          <button className="checkout-back-button" onClick={openCart}>
             <span aria-hidden="true">←</span>
-            Back
+            Back to basket
           </button>
-          <Link href="/menu">Back to menu</Link>
         </div>
 
         <div className="shell checkout-grid">
@@ -83,24 +81,6 @@ export default function CheckoutPage() {
                 <button onClick={() => showAuthPreview("create")}>Create an account</button>
               </div>
 
-              {authChoice && (
-                <div className="auth-demo-notice" role="status">
-                  <div>
-                    <strong>
-                      {authChoice === "create"
-                        ? "Account creation"
-                        : authChoice === "email"
-                          ? "Email sign in"
-                          : `${authChoice === "apple" ? "Apple" : "Google"} sign in`}
-                    </strong>
-                    <span>
-                      This demo screen is ready; secure account authentication will be connected in the next build stage.
-                    </span>
-                  </div>
-                  <button onClick={() => setAuthChoice(null)} aria-label="Dismiss">×</button>
-                </div>
-              )}
-
               <div className="checkout-guest-divider">
                 <span>or</span>
               </div>
@@ -114,21 +94,21 @@ export default function CheckoutPage() {
               </div>
             </section>
 
-            <div className="checkout-section">
+            <div className="checkout-section checkout-section--closer">
               <h2>Contact details</h2>
               <div className="field-grid">
                 <label>
                   Name
-                  <input placeholder="Your name" />
+                  <input name="name" autoComplete="name" placeholder="Your name" />
                 </label>
                 <label>
                   Mobile
-                  <input placeholder="07..." />
+                  <input name="tel" autoComplete="tel" placeholder="07..." />
                 </label>
               </div>
               <label>
                 Email
-                <input placeholder="you@example.com" type="email" />
+                <input name="email" autoComplete="email" placeholder="you@example.com" type="email" />
               </label>
             </div>
 
@@ -137,11 +117,11 @@ export default function CheckoutPage() {
               <div className="field-grid">
                 <label>
                   Postcode
-                  <input placeholder="WF17 9EW" />
+                  <input name="postal-code" autoComplete="postal-code" placeholder="WF17 9EW" />
                 </label>
                 <label>
                   House number
-                  <input placeholder="11" />
+                  <input name="address-line1" autoComplete="address-line1" placeholder="11" />
                 </label>
               </div>
               <label>
@@ -154,13 +134,20 @@ export default function CheckoutPage() {
               Continue to secure payment
             </button>
             <small className="checkout-payment-note">
-              Payment will be connected securely through Stripe in the production build.
+              Secure online payment will be connected before launch.
             </small>
           </div>
 
           <aside className="checkout-summary">
-            <span className="kicker">YOUR ORDER</span>
-            <h2>Order summary</h2>
+            <div className="checkout-summary-heading">
+              <div>
+                <span className="kicker">YOUR ORDER</span>
+                <h2>Order summary</h2>
+              </div>
+              {lines.length > 0 && (
+                <button onClick={openCart}>Edit order</button>
+              )}
+            </div>
 
             {lines.length === 0 ? (
               <div className="checkout-empty">
@@ -182,8 +169,27 @@ export default function CheckoutPage() {
                     </div>
                   ))}
                 </div>
-                <div className="checkout-total">
-                  <span>Subtotal</span>
+
+                <div className="checkout-breakdown">
+                  <div>
+                    <span>Subtotal</span>
+                    <strong>£{total.toFixed(2)}</strong>
+                  </div>
+                  <div>
+                    <span>Delivery</span>
+                    <small>Calculated after address</small>
+                  </div>
+                  <div>
+                    <span>Discount</span>
+                    <small>—</small>
+                  </div>
+                </div>
+
+                <div className="checkout-total checkout-total--final">
+                  <div>
+                    <span>Total</span>
+                    <small>Before delivery</small>
+                  </div>
                   <strong>£{total.toFixed(2)}</strong>
                 </div>
               </>
@@ -191,6 +197,18 @@ export default function CheckoutPage() {
           </aside>
         </div>
       </section>
+
+      {authChoice && (
+        <div className="auth-toast" role="status">
+          <span>
+            {authChoice === "create"
+              ? "Account creation will be connected before launch."
+              : authChoice === "email"
+                ? "Email sign-in will be connected before launch."
+                : `${authChoice === "apple" ? "Apple" : "Google"} sign-in will be connected before launch.`}
+          </span>
+        </div>
+      )}
     </main>
   );
 }
