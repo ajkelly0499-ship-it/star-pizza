@@ -16,6 +16,7 @@ export default function MenuPage() {
 
   const {
     addConfiguredItem,
+    removeLine,
     openCart,
     itemCount,
     total,
@@ -223,9 +224,22 @@ export default function MenuPage() {
               <>
                 <div className="menu-basket-lines">
                   {lines.slice(0, 4).map((line) => (
-                    <div key={line.key}>
-                      <span>{line.quantity} × {line.item.name}</span>
-                      <strong>£{(line.unitPrice * line.quantity).toFixed(2)}</strong>
+                    <div className="menu-basket-preview-line" key={line.key}>
+                      <div>
+                        <span>{line.quantity} × {line.item.name}</span>
+                        {line.options.length > 0 && <small>{line.options[0]}</small>}
+                      </div>
+                      <div>
+                        <strong>£{(line.unitPrice * line.quantity).toFixed(2)}</strong>
+                        <button
+                          onClick={() => removeLine(line.key)}
+                          aria-label={`Remove ${line.item.name} from basket`}
+                        >
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5m4-5v5" />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                   ))}
                   {lines.length > 4 && (
@@ -245,8 +259,14 @@ export default function MenuPage() {
               onClick={openCart}
               disabled={itemCount === 0}
             >
-              {itemCount === 0 ? "Basket is empty" : "View basket"}
+              {itemCount === 0 ? "Basket is empty" : `Checkout · £${total.toFixed(2)}`}
             </button>
+
+            {itemCount > 0 && (
+              <button className="menu-basket-edit" onClick={openCart}>
+                View / edit basket
+              </button>
+            )}
           </aside>
         </div>
       </section>
