@@ -2,6 +2,8 @@ import Link from "next/link";
 import SiteHeader from "../components/SiteHeader";
 import { menuItems } from "../lib/menu";
 
+const popularItems = menuItems.slice(0, 3);
+
 export default function Home() {
   return (
     <main>
@@ -111,7 +113,7 @@ export default function Home() {
           </div>
 
           <div className="food-grid">
-            {menuItems.map((item) => (
+            {popularItems.map((item) => (
               <article className="food-card" key={item.id}>
                 <div className="food-image-wrap">
                   <img src={item.image} alt={item.name} className="food-image" />
