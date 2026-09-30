@@ -1,3 +1,8 @@
+export type MenuVariant = {
+  label: string;
+  price: number;
+};
+
 export type MenuItem = {
   id: number;
   name: string;
@@ -6,38 +11,101 @@ export type MenuItem = {
   category: string;
   image?: string;
   badge?: string;
+  variants?: MenuVariant[];
 };
+
+const pizzaImage1 =
+  "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1200&q=85";
+const pizzaImage2 =
+  "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=1200&q=85";
+const pizzaImage3 =
+  "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1200&q=85";
+const pizzaImage4 =
+  "https://images.unsplash.com/photo-1594007654729-407eedc4be65?auto=format&fit=crop&w=1200&q=85";
 
 export const menuItems: MenuItem[] = [
   {
     id: 1,
     name: "Margherita",
-    description: "Pizza sauce, 100% mozzarella and Italian herbs.",
+    description: "Pizza sauce & Italian herbs.",
     price: 9.8,
     category: "Pizzas",
     badge: "Classic",
-    image:
-      "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1200&q=85"
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 9.8 },
+      { label: '11" Deep', price: 10.8 },
+      { label: '16" Family', price: 16.25 }
+    ]
   },
   {
     id: 2,
     name: "Pepperoni",
-    description: "Pepperoni, green peppers and Italian herbs.",
+    description: "Pepperoni, peppers & Italian herbs.",
     price: 10.9,
     category: "Pizzas",
     badge: "Popular",
-    image:
-      "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=1200&q=85"
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 10.9 },
+      { label: '11" Deep', price: 11.9 },
+      { label: '16" Family', price: 16.9 }
+    ]
   },
   {
     id: 3,
     name: "Hot Shot",
-    description: "Pepperoni, fresh chilli, green peppers and red onions.",
+    description: "Pepperoni, fresh chilli, peppers, onions & Italian herbs.",
     price: 11.35,
     category: "Pizzas",
     badge: "Spicy",
-    image:
-      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1200&q=85"
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 11.35 },
+      { label: '11" Deep', price: 12.35 },
+      { label: '16" Family', price: 17.35 }
+    ]
+  },
+  {
+    id: 4,
+    name: "Quattro Formaggi",
+    description: "Combination of four different cheeses & Italian herbs.",
+    price: 11.15,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 11.15 },
+      { label: '11" Deep', price: 12.15 },
+      { label: '16" Family', price: 17.15 }
+    ]
+  },
+  {
+    id: 5,
+    name: "Smokey Joe's BBQ",
+    description: "BBQ base, onions, spicy beef, chicken, peppers & Italian herbs.",
+    price: 11.9,
+    category: "Pizzas",
+    badge: "BBQ",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 11.9 },
+      { label: '11" Deep', price: 12.9 },
+      { label: '16" Family', price: 17.9 }
+    ]
+  },
+  {
+    id: 6,
+    name: "The Inferno",
+    description: "Hot chilli tomato base, fresh chilli, pepperoni, onions, spicy beef & mushrooms.",
+    price: 12.9,
+    category: "Pizzas",
+    badge: "Hot",
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 12.9 },
+      { label: '11" Deep', price: 13.9 },
+      { label: '16" Family', price: 19.35 }
+    ]
   }
 ];
 
