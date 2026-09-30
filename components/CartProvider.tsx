@@ -19,11 +19,15 @@ export type CartLine = {
   options: string[];
 };
 
+export type OrderType = "delivery" | "collection";
+
 type CartContextValue = {
   lines: CartLine[];
   itemCount: number;
   total: number;
   isOpen: boolean;
+  orderType: OrderType;
+  setOrderType: (type: OrderType) => void;
   addItem: (id: number) => void;
   addConfiguredItem: (id: number, unitPrice: number, options: string[], quantity?: number) => void;
   increaseLine: (key: string) => void;
@@ -42,10 +46,16 @@ function makeLineKey(itemId: number, unitPrice: number, options: string[]) {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<StoredCartLine[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [orderType, setOrderTypeState] = useState<OrderType>("delivery");
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     try {
+      const savedOrderType = window.localStorage.getItem("star-pizza-order-type");
+      if (savedOrderType === "delivery" || savedOrderType === "collection") {
+        setOrderTypeState(savedOrderType);
+      }
+
       const saved = window.localStorage.getItem("star-pizza-cart");
       if (!saved) return;
 
@@ -85,6 +95,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (!hydrated) return;
     window.localStorage.setItem("star-pizza-cart", JSON.stringify(cart));
   }, [cart, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    window.localStorage.setItem("star-pizza-order-type", orderType);
+  }, [orderType, hydrated]);
+
+  const setOrderType = (type: OrderType) => {
+    setOrderTypeState(type);
+  };
 
   const lines = useMemo(
     () =>
@@ -162,6 +181,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         itemCount,
         total,
         isOpen,
+        orderType,
+        setOrderType,
         addItem,
         addConfiguredItem,
         increaseLine,
