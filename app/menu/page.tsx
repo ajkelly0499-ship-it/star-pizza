@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
-import { menuCategories, menuItems, type MenuItem } from "../../lib/menu";
+import { menuCategories, menuItems, pizzaExtraToppings, type MenuItem } from "../../lib/menu";
 
 export default function MenuPage() {
   const [category, setCategory] = useState("Popular");
@@ -12,6 +12,7 @@ export default function MenuPage() {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [notes, setNotes] = useState("");
+  const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(1);
 
   const {
@@ -43,24 +44,46 @@ export default function MenuPage() {
     setSelectedItem(item);
     setSelectedVariant(0);
     setNotes("");
+    setSelectedToppings([]);
     setQuantity(1);
   };
 
   const closeProduct = () => {
     setSelectedItem(null);
     setNotes("");
+    setSelectedToppings([]);
     setQuantity(1);
   };
 
   const chosenVariant = selectedItem?.variants?.[selectedVariant];
-  const unitPrice = chosenVariant?.price ?? selectedItem?.price ?? 0;
+  const baseUnitPrice = chosenVariant?.price ?? selectedItem?.price ?? 0;
+  const toppingTotal = pizzaExtraToppings
+    .filter((topping) => selectedToppings.includes(topping.id))
+    .reduce((sum, topping) => sum + topping.price, 0);
+  const unitPrice = baseUnitPrice + toppingTotal;
   const modalTotal = unitPrice * quantity;
+
+  const toggleTopping = (id: string) => {
+    setSelectedToppings((current) => {
+      if (current.includes(id)) {
+        return current.filter((toppingId) => toppingId !== id);
+      }
+
+      if (current.length >= 6) return current;
+      return [...current, id];
+    });
+  };
 
   const addConfiguredProduct = () => {
     if (!selectedItem) return;
 
+    const toppingOptions = pizzaExtraToppings
+      .filter((topping) => selectedToppings.includes(topping.id))
+      .map((topping) => `Extra: ${topping.label} (+£${topping.price.toFixed(2)})`);
+
     const options = [
       ...(chosenVariant ? [chosenVariant.label] : []),
+      ...toppingOptions,
       ...(notes.trim() ? [`Note: ${notes.trim()}`] : [])
     ];
 
@@ -321,6 +344,45 @@ export default function MenuPage() {
                         <span>£{variant.price.toFixed(2)}</span>
                       </label>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {selectedItem.category === "Pizzas" && (
+                <div className="product-option-group">
+                  <div className="product-option-heading">
+                    <div>
+                      <strong>Add extra toppings</strong>
+                      <span>Optional</span>
+                    </div>
+                    <small>{selectedToppings.length}/6 selected</small>
+                  </div>
+
+                  <p className="product-option-helper">
+                    Add any extras you fancy. Prices below are demo prices for the prototype.
+                  </p>
+
+                  <div className="pizza-topping-grid">
+                    {pizzaExtraToppings.map((topping) => {
+                      const selected = selectedToppings.includes(topping.id);
+                      const disabled = !selected && selectedToppings.length >= 6;
+
+                      return (
+                        <button
+                          type="button"
+                          key={topping.id}
+                          className={selected ? "selected" : ""}
+                          disabled={disabled}
+                          onClick={() => toggleTopping(topping.id)}
+                        >
+                          <span>
+                            <span className="topping-check">{selected ? "✓" : "+"}</span>
+                            <strong>{topping.label}</strong>
+                          </span>
+                          <span>+£{topping.price.toFixed(2)}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
