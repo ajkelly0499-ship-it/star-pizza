@@ -270,7 +270,7 @@ export default function Home() {
               <span className="kicker">ONLINE FAVOURITES</span>
               <h2>Feast deals</h2>
             </div>
-            <p>Big orders made simple. Pick a feast, then customise your pizzas as we build out checkout.</p>
+            <p>Big orders made simple. Pick a feast and get everyone sorted.</p>
           </div>
 
           <div className="offers-layout">
