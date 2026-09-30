@@ -1239,6 +1239,10 @@ img {
   align-items: start;
 }
 
+.checkout-form-panel {
+  margin-top: -24px;
+}
+
 .checkout-form-panel h1 {
   margin: 8px 0 10px;
   font-family: "Oswald", Impact, sans-serif;
@@ -3701,6 +3705,10 @@ footer {
 }
 
 @media (max-width: 640px) {
+  .checkout-form-panel {
+    margin-top: 0;
+  }
+
   .checkout-back-row {
     margin-bottom: 14px;
   }
