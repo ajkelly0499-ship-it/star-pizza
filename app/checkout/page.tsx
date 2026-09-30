@@ -74,10 +74,15 @@ export default function CheckoutPage() {
             ) : (
               <>
                 <div className="checkout-lines">
-                  {lines.map(({ item, quantity }) => (
-                    <div key={item.id}>
-                      <span>{quantity} × {item.name}</span>
-                      <strong>£{(item.price * quantity).toFixed(2)}</strong>
+                  {lines.map(({ key, item, quantity, unitPrice, options }) => (
+                    <div key={key} className="checkout-line-detailed">
+                      <div>
+                        <span>{quantity} × {item.name}</span>
+                        {options.map((option) => (
+                          <small key={option}>{option}</small>
+                        ))}
+                      </div>
+                      <strong>£{(unitPrice * quantity).toFixed(2)}</strong>
                     </div>
                   ))}
                 </div>
