@@ -23,10 +23,7 @@ export default function BasketDrawer() {
   const [upsellOpen, setUpsellOpen] = useState(false);
   const [lastRemoved, setLastRemoved] = useState<CartLine | null>(null);
 
-  const suggestions = useMemo(() => {
-    const idsInBasket = new Set(lines.map((line) => line.item.id));
-    return upsellItems.filter((item) => !idsInBasket.has(item.id)).slice(0, 3);
-  }, [lines]);
+  const suggestions = useMemo(() => upsellItems.slice(0, 6), []);
 
   const deleteLine = (line: CartLine) => {
     setLastRemoved(line);
@@ -161,22 +158,52 @@ export default function BasketDrawer() {
             </div>
 
             <div className="upsell-grid">
-              {suggestions.map((item) => (
-                <article className="upsell-card" key={item.id}>
-                  <div>
-                    <span className="upsell-category">{item.category}</span>
-                    <h3>{item.name}</h3>
-                    <p>{item.description}</p>
-                  </div>
+              {suggestions.map((item) => {
+                const line = lines.find(
+                  (candidate) => candidate.item.id === item.id && candidate.options.length === 0
+                );
+                const quantity = line?.quantity ?? 0;
 
-                  <div className="upsell-card-bottom">
-                    <strong>£{item.price.toFixed(2)}</strong>
-                    <button onClick={() => addItem(item.id)}>
-                      Add <span>+</span>
-                    </button>
-                  </div>
-                </article>
-              ))}
+                return (
+                  <article className="upsell-card" key={item.id}>
+                    <div className="upsell-card-image">
+                      <img src={item.image} alt={item.name} />
+                      <span>{item.category}</span>
+                    </div>
+
+                    <div className="upsell-card-copy">
+                      <h3>{item.name}</h3>
+                      <p>{item.description}</p>
+
+                      <div className="upsell-card-bottom">
+                        <strong>£{item.price.toFixed(2)}</strong>
+
+                        {line ? (
+                          <div className="upsell-quantity" aria-label={`Quantity of ${item.name}`}>
+                            <button
+                              onClick={() => decreaseLine(line.key)}
+                              aria-label={`Remove one ${item.name}`}
+                            >
+                              −
+                            </button>
+                            <span>{quantity}</span>
+                            <button
+                              onClick={() => increaseLine(line.key)}
+                              aria-label={`Add another ${item.name}`}
+                            >
+                              +
+                            </button>
+                          </div>
+                        ) : (
+                          <button className="upsell-add" onClick={() => addItem(item.id)}>
+                            Add <span>+</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
 
             <div className="upsell-actions">
