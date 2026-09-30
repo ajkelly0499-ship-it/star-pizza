@@ -139,7 +139,8 @@ export const upsellItems: MenuItem[] = [
     description: '11" thin garlic bread.',
     price: 6.9,
     category: "Sides",
-    badge: "Side"
+    badge: "Side",
+    image: "https://images.unsplash.com/photo-1556008531-57e6eefc7be4?auto=format&fit=crop&w=900&q=82"
   },
   {
     id: 202,
@@ -147,7 +148,8 @@ export const upsellItems: MenuItem[] = [
     description: "Regular portion of French fries.",
     price: 3.5,
     category: "Sides",
-    badge: "Side"
+    badge: "Side",
+    image: "https://images.unsplash.com/photo-1529259266118-cf22737f713f?auto=format&fit=crop&w=900&q=82"
   },
   {
     id: 203,
@@ -155,7 +157,8 @@ export const upsellItems: MenuItem[] = [
     description: "Coca-Cola Original Taste 330ml.",
     price: 2.5,
     category: "Drinks",
-    badge: "Drink"
+    badge: "Drink",
+    image: "https://images.unsplash.com/photo-1773188243488-702914547143?auto=format&fit=crop&w=900&q=82"
   },
   {
     id: 204,
@@ -163,7 +166,26 @@ export const upsellItems: MenuItem[] = [
     description: "Italian chocolate fudge cake.",
     price: 4.5,
     category: "Desserts",
-    badge: "Dessert"
+    badge: "Dessert",
+    image: "https://images.unsplash.com/photo-1540337706094-da10342c93d8?auto=format&fit=crop&w=900&q=82"
+  },
+  {
+    id: 205,
+    name: "Mozzarella Sticks",
+    description: "6 pieces of crispy mozzarella sticks.",
+    price: 5.45,
+    category: "Sides",
+    badge: "Side",
+    image: "https://images.unsplash.com/photo-1778449665117-2c607bbc7415?auto=format&fit=crop&w=900&q=82"
+  },
+  {
+    id: 206,
+    name: "Chicken Strip Dippers",
+    description: "5 chicken strips served with 1 dip of your choice.",
+    price: 5.7,
+    category: "Sides",
+    badge: "Side",
+    image: "https://images.unsplash.com/photo-1605291581926-df4bf7ee3e89?auto=format&fit=crop&w=900&q=82"
   }
 ];
 
