@@ -109,6 +109,42 @@ export const menuItems: MenuItem[] = [
   }
 ];
 
+
+export const upsellItems: MenuItem[] = [
+  {
+    id: 201,
+    name: "Garlic Bread",
+    description: '11" thin garlic bread.',
+    price: 6.9,
+    category: "Sides",
+    badge: "Side"
+  },
+  {
+    id: 202,
+    name: "French Fries",
+    description: "Regular portion of French fries.",
+    price: 3.5,
+    category: "Sides",
+    badge: "Side"
+  },
+  {
+    id: 203,
+    name: "Coca-Cola",
+    description: "Coca-Cola Original Taste 330ml.",
+    price: 2.5,
+    category: "Drinks",
+    badge: "Drink"
+  },
+  {
+    id: 204,
+    name: "Chocolate Fudge Cake",
+    description: "Italian chocolate fudge cake.",
+    price: 4.5,
+    category: "Desserts",
+    badge: "Dessert"
+  }
+];
+
 export const offerItems: MenuItem[] = [
   {
     id: 101,
@@ -140,7 +176,7 @@ export const offerItems: MenuItem[] = [
   }
 ];
 
-export const allItems = [...menuItems, ...offerItems];
+export const allItems = [...menuItems, ...upsellItems, ...offerItems];
 
 export const menuCategories = [
   "Popular",
