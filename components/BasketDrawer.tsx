@@ -10,9 +10,9 @@ export default function BasketDrawer() {
     total,
     isOpen,
     closeCart,
-    addItem,
-    decreaseItem,
-    removeItem,
+    increaseLine,
+    decreaseLine,
+    removeLine,
     openCart
   } = useCart();
 
@@ -48,20 +48,24 @@ export default function BasketDrawer() {
             ) : (
               <>
                 <div className="drawer-items">
-                  {lines.map(({ item, quantity }) => (
-                    <div className="drawer-item" key={item.id}>
+                  {lines.map(({ key, item, quantity, unitPrice, options }) => (
+                    <div className="drawer-item" key={key}>
                       <div className="drawer-item-copy">
                         <strong>{item.name}</strong>
-                        <span>{item.category === "Deals" ? "Feast deal" : item.category}</span>
-                        <button onClick={() => removeItem(item.id)}>Remove</button>
+                        {options.length > 0 ? (
+                          options.map((option) => <span key={option}>{option}</span>)
+                        ) : (
+                          <span>{item.category === "Deals" ? "Feast deal" : item.category}</span>
+                        )}
+                        <button onClick={() => removeLine(key)}>Remove</button>
                       </div>
 
                       <div className="drawer-item-end">
-                        <strong>£{(item.price * quantity).toFixed(2)}</strong>
+                        <strong>£{(unitPrice * quantity).toFixed(2)}</strong>
                         <div className="quantity-control">
-                          <button onClick={() => decreaseItem(item.id)} aria-label="Decrease quantity">−</button>
+                          <button onClick={() => decreaseLine(key)} aria-label="Decrease quantity">−</button>
                           <span>{quantity}</span>
-                          <button onClick={() => addItem(item.id)} aria-label="Increase quantity">+</button>
+                          <button onClick={() => increaseLine(key)} aria-label="Increase quantity">+</button>
                         </div>
                       </div>
                     </div>
