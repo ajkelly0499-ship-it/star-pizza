@@ -8,11 +8,11 @@ type MenuItem = {
   description: string;
   price: number;
   category: string;
-  image: string;
+  image?: string;
   badge?: string;
 };
 
-const menuItems: MenuItem[] = [
+const popularItems: MenuItem[] = [
   {
     id: 1,
     name: "Margherita",
@@ -44,6 +44,39 @@ const menuItems: MenuItem[] = [
       "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1200&q=85"
   }
 ];
+
+const offerItems: MenuItem[] = [
+  {
+    id: 101,
+    name: "The Family Feast",
+    description: '16" family pizza, garlic bread with tomato, 2 fries and a bottle.',
+    price: 30,
+    category: "Deals"
+  },
+  {
+    id: 102,
+    name: "The Duo Feast",
+    description: 'Two 11" thin pizzas, 2 fries and a bottle.',
+    price: 30,
+    category: "Deals"
+  },
+  {
+    id: 103,
+    name: "The Mega Feast",
+    description: 'Three 11" thin pizzas, 3 fries and a bottle.',
+    price: 40,
+    category: "Deals"
+  },
+  {
+    id: 104,
+    name: "The BALR$ Feast",
+    description: 'Three 16" family pizzas, 3 sides and a bottle.',
+    price: 65,
+    category: "Deals"
+  }
+];
+
+const allItems = [...popularItems, ...offerItems];
 
 const categories = [
   "Popular",
@@ -78,7 +111,7 @@ export default function Home() {
   const [basketOpen, setBasketOpen] = useState(false);
 
   const cartItems = useMemo(
-    () => cart.map((id) => menuItems.find((item) => item.id === id)).filter(Boolean) as MenuItem[],
+    () => cart.map((id) => allItems.find((item) => item.id === id)).filter(Boolean) as MenuItem[],
     [cart]
   );
 
@@ -111,8 +144,8 @@ export default function Home() {
 
           <nav className="desktop-nav" aria-label="Primary navigation">
             <a href="#menu">Menu</a>
-            <a href="#popular">Popular</a>
-            <a href="#story">Our story</a>
+            <a href="#offers">Offers</a>
+            <a href="#order">Delivery</a>
           </nav>
 
           <button className="basket-button" onClick={() => setBasketOpen(true)}>
@@ -137,9 +170,8 @@ export default function Home() {
               Birstall · Made fresh to order
             </div>
             <h1>
-              Your night in
-              <br />
-              just got <em>better.</em>
+              <span>Your night in</span>
+              <span>just got <em>better.</em></span>
             </h1>
             <p>
               Fresh dough, proper toppings and all the favourites — ready for
@@ -150,14 +182,14 @@ export default function Home() {
               <button
                 className="primary-cta"
                 onClick={() =>
-                  document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" })
+                  document.getElementById("order")?.scrollIntoView({ behavior: "smooth", block: "center" })
                 }
               >
                 Order now
                 <span aria-hidden="true">→</span>
               </button>
-              <a className="secondary-cta" href="#popular">
-                See what&apos;s popular
+              <a className="secondary-cta" href="#offers">
+                See the offers
               </a>
             </div>
 
@@ -171,16 +203,16 @@ export default function Home() {
                 <span>stone fired</span>
               </div>
               <div>
-                <strong>Birstall</strong>
-                <span>local favourite</span>
+                <strong>Delivery</strong>
+                <span>or collection</span>
               </div>
             </div>
           </div>
 
-          <div className="order-card" id="menu">
+          <div className="order-card" id="order">
             <span className="order-card-label">START YOUR ORDER</span>
             <h2>How do you want it?</h2>
-            <p>Choose an option to see the menu and availability.</p>
+            <p>Choose delivery or collection to get started.</p>
 
             <div className="order-toggle" role="tablist" aria-label="Order type">
               <button
@@ -220,7 +252,7 @@ export default function Home() {
                 <span>11 Low Lane, Birstall, WF17 9EW</span>
                 <button
                   onClick={() =>
-                    document.getElementById("popular")?.scrollIntoView({ behavior: "smooth" })
+                    document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" })
                   }
                 >
                   Browse collection menu
@@ -231,7 +263,60 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="category-wrap" aria-label="Menu categories">
+      <section className="offers-section" id="offers">
+        <div className="shell">
+          <div className="section-heading offers-heading">
+            <div>
+              <span className="kicker">ONLINE FAVOURITES</span>
+              <h2>Feast deals</h2>
+            </div>
+            <p>Big orders made simple. Pick a feast, then customise your pizzas as we build out checkout.</p>
+          </div>
+
+          <div className="offers-layout">
+            <article className="featured-offer">
+              <div className="featured-offer-image">
+                <span className="featured-pill">Featured</span>
+              </div>
+              <div className="featured-offer-copy">
+                <span className="offer-overline">THE FAMILY FEAST</span>
+                <h3>Feed the table for <em>£30</em></h3>
+                <p>16&quot; family pizza, garlic bread with tomato, two fries and a bottle.</p>
+                <div className="offer-price-row">
+                  <div>
+                    <small>FEAST PRICE</small>
+                    <strong>£30</strong>
+                  </div>
+                  <button onClick={() => addToCart(101)}>
+                    Add feast
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <div className="offer-list">
+              {offerItems.slice(1).map((offer) => (
+                <article className="offer-card" key={offer.id}>
+                  <div className="offer-card-copy">
+                    <span className="offer-overline">{offer.category}</span>
+                    <h3>{offer.name}</h3>
+                    <p>{offer.description}</p>
+                  </div>
+                  <div className="offer-card-action">
+                    <strong>£{offer.price.toFixed(0)}</strong>
+                    <button onClick={() => addToCart(offer.id)} aria-label={`Add ${offer.name} to basket`}>
+                      +
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="category-wrap" id="menu" aria-label="Menu categories">
         <div className="shell categories">
           {categories.map((category) => (
             <button
@@ -256,7 +341,7 @@ export default function Home() {
           </div>
 
           <div className="food-grid">
-            {menuItems.map((item) => (
+            {popularItems.map((item) => (
               <article className="food-card" key={item.id}>
                 <div className="food-image-wrap">
                   <img src={item.image} alt={item.name} className="food-image" />
@@ -285,12 +370,12 @@ export default function Home() {
       <section className="story-strip" id="story">
         <div className="shell story-layout">
           <div>
-            <span className="kicker light">SINCE THE FAMILY TRADITION BEGAN</span>
+            <span className="kicker light">MADE IN BIRSTALL</span>
             <h2>Fresh dough. Proper pizza. No shortcuts.</h2>
           </div>
           <p>
-            Star Pizza is built around simple things done well: fresh dough,
-            generous toppings and food prepared to order for Birstall.
+            The menu comes first here: fresh dough, generous toppings and food
+            prepared to order for delivery or collection.
           </p>
         </div>
       </section>
@@ -342,7 +427,7 @@ export default function Home() {
                     <div className="drawer-item" key={`${item.id}-${index}`}>
                       <div>
                         <strong>{item.name}</strong>
-                        <span>Regular</span>
+                        <span>{item.category === "Deals" ? "Feast deal" : "Regular"}</span>
                       </div>
                       <span>£{item.price.toFixed(2)}</span>
                     </div>
