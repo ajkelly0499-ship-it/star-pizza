@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { CartProvider } from "../components/CartProvider";
+import BasketDrawer from "../components/BasketDrawer";
+import SiteFooter from "../components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Star Pizza Birstall | Delivery & Collection",
@@ -13,7 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <CartProvider>
+          {children}
+          <SiteFooter />
+          <BasketDrawer />
+        </CartProvider>
+      </body>
     </html>
   );
 }
