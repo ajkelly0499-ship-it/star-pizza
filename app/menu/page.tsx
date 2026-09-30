@@ -7,7 +7,6 @@ import { menuCategories, menuItems, pizzaExtraToppings, type MenuItem } from "..
 
 export default function MenuPage() {
   const [category, setCategory] = useState("Popular");
-  const [orderType, setOrderType] = useState<"delivery" | "collection">("delivery");
   const [search, setSearch] = useState("");
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [selectedVariant, setSelectedVariant] = useState(0);
@@ -21,7 +20,9 @@ export default function MenuPage() {
     openCart,
     itemCount,
     total,
-    lines
+    lines,
+    orderType,
+    setOrderType
   } = useCart();
 
   const visibleItems = useMemo(() => {
