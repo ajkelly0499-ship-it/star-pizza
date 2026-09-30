@@ -3,6 +3,28 @@ export type MenuVariant = {
   price: number;
 };
 
+
+export type PizzaExtraTopping = {
+  id: string;
+  label: string;
+  price: number;
+};
+
+export const pizzaExtraToppings: PizzaExtraTopping[] = [
+  { id: "extra-cheese", label: "Extra cheese", price: 1.5 },
+  { id: "pepperoni", label: "Pepperoni", price: 1.5 },
+  { id: "chicken", label: "Chicken", price: 1.75 },
+  { id: "donner", label: "Donner meat", price: 1.75 },
+  { id: "spicy-beef", label: "Spicy beef", price: 1.75 },
+  { id: "mushrooms", label: "Mushrooms", price: 1.2 },
+  { id: "red-onion", label: "Red onion", price: 1.2 },
+  { id: "mixed-peppers", label: "Mixed peppers", price: 1.2 },
+  { id: "jalapenos", label: "Jalapeños", price: 1.2 },
+  { id: "sweetcorn", label: "Sweetcorn", price: 1.2 },
+  { id: "pineapple", label: "Pineapple", price: 1.2 },
+  { id: "olives", label: "Olives", price: 1.2 }
+];
+
 export type MenuItem = {
   id: number;
   name: string;
