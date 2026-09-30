@@ -250,7 +250,18 @@ export default function MenuPage() {
                     <div className="menu-basket-preview-line" key={line.key}>
                       <div>
                         <span>{line.quantity} × {line.item.name}</span>
-                        {line.options.length > 0 && <small>{line.options[0]}</small>}
+                        {line.options.length > 0 && (
+                          <div className="menu-basket-option-list">
+                            {line.options.map((option) => (
+                              <small
+                                key={option}
+                                className={option.startsWith("Note:") ? "menu-basket-note" : ""}
+                              >
+                                {option.replace(/^Extra:\s*/, "")}
+                              </small>
+                            ))}
+                          </div>
+                        )}
                       </div>
                       <div>
                         <strong>£{(line.unitPrice * line.quantity).toFixed(2)}</strong>
