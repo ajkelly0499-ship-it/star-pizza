@@ -1,20 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
 
 type AuthChoice = "apple" | "google" | "email" | "create" | null;
+type PaymentChoice = "online" | "collection";
+type CollectionTime = "asap" | "later";
 
 export default function CheckoutPage() {
-  const { lines, total, openCart } = useCart();
+  const { lines, total, openCart, orderType, setOrderType } = useCart();
   const [authChoice, setAuthChoice] = useState<AuthChoice>(null);
+  const [paymentChoice, setPaymentChoice] = useState<PaymentChoice>("online");
+  const [collectionTime, setCollectionTime] = useState<CollectionTime>("asap");
+
+  useEffect(() => {
+    if (orderType === "delivery") {
+      setPaymentChoice("online");
+    }
+  }, [orderType]);
 
   const showAuthPreview = (choice: Exclude<AuthChoice, null>) => {
     setAuthChoice(choice);
     window.setTimeout(() => setAuthChoice(null), 2600);
   };
+
+  const isCollection = orderType === "collection";
+  const payOnCollection = isCollection && paymentChoice === "collection";
 
   return (
     <main className="inner-page">
@@ -34,8 +47,45 @@ export default function CheckoutPage() {
             <h1>Finish your order.</h1>
             <p className="checkout-intro">
               Sign in for a faster checkout, or continue as a guest. You can review
-              everything before payment.
+              everything before placing your order.
             </p>
+
+            <section className="checkout-fulfilment-card">
+              <div className="checkout-fulfilment-heading">
+                <div>
+                  <span className="kicker">ORDER TYPE</span>
+                  <h2>How would you like your order?</h2>
+                </div>
+                <span className="checkout-choice-status">
+                  {isCollection ? "Collection" : "Delivery"}
+                </span>
+              </div>
+
+              <div className="checkout-order-type-toggle" role="group" aria-label="Order type">
+                <button
+                  type="button"
+                  className={orderType === "delivery" ? "active" : ""}
+                  onClick={() => setOrderType("delivery")}
+                >
+                  <span>Delivery</span>
+                  <small>Delivered to your address</small>
+                </button>
+                <button
+                  type="button"
+                  className={orderType === "collection" ? "active" : ""}
+                  onClick={() => setOrderType("collection")}
+                >
+                  <span>Collection</span>
+                  <small>Pick up from Star Pizza</small>
+                </button>
+              </div>
+
+              <p className="checkout-choice-helper">
+                {isCollection
+                  ? "You selected collection on the menu. You can change it here before ordering."
+                  : "You selected delivery on the menu. You can change it here before ordering."}
+              </p>
+            </section>
 
             <section className="checkout-account-card">
               <div className="checkout-account-heading">
@@ -112,29 +162,133 @@ export default function CheckoutPage() {
               </label>
             </div>
 
-            <div className="checkout-section">
-              <h2>Delivery details</h2>
-              <div className="field-grid">
+            {isCollection ? (
+              <div className="checkout-section">
+                <h2>Collection details</h2>
+
+                <div className="collection-location-card">
+                  <div className="collection-location-icon" aria-hidden="true">★</div>
+                  <div>
+                    <span>Collect from</span>
+                    <strong>Star Pizza Birstall</strong>
+                    <p>11 Low Lane, Birstall, WF17 9EW</p>
+                  </div>
+                </div>
+
+                <div className="checkout-subchoice">
+                  <div className="checkout-subchoice-heading">
+                    <strong>When would you like to collect?</strong>
+                    <span>Choose one</span>
+                  </div>
+                  <div className="checkout-time-options">
+                    <button
+                      type="button"
+                      className={collectionTime === "asap" ? "active" : ""}
+                      onClick={() => setCollectionTime("asap")}
+                    >
+                      <span>ASAP</span>
+                      <small>Next available collection</small>
+                    </button>
+                    <button
+                      type="button"
+                      className={collectionTime === "later" ? "active" : ""}
+                      onClick={() => setCollectionTime("later")}
+                    >
+                      <span>Choose a time</span>
+                      <small>Schedule collection</small>
+                    </button>
+                  </div>
+                  {collectionTime === "later" && (
+                    <label className="checkout-time-select">
+                      Preferred collection time
+                      <select defaultValue="">
+                        <option value="" disabled>Select a time</option>
+                        <option>18:00</option>
+                        <option>18:15</option>
+                        <option>18:30</option>
+                        <option>18:45</option>
+                        <option>19:00</option>
+                        <option>19:15</option>
+                        <option>19:30</option>
+                      </select>
+                    </label>
+                  )}
+                </div>
+
                 <label>
-                  Postcode
-                  <input name="postal-code" autoComplete="postal-code" placeholder="WF17 9EW" />
-                </label>
-                <label>
-                  House number
-                  <input name="address-line1" autoComplete="address-line1" placeholder="11" />
+                  Collection notes
+                  <textarea placeholder="Anything the team should know?" />
                 </label>
               </div>
-              <label>
-                Delivery instructions
-                <textarea placeholder="Gate code, flat number, leave at door..." />
-              </label>
-            </div>
+            ) : (
+              <div className="checkout-section">
+                <h2>Delivery details</h2>
+                <div className="field-grid">
+                  <label>
+                    Postcode
+                    <input name="postal-code" autoComplete="postal-code" placeholder="WF17 9EW" />
+                  </label>
+                  <label>
+                    House number
+                    <input name="address-line1" autoComplete="address-line1" placeholder="11" />
+                  </label>
+                </div>
+                <label>
+                  Delivery instructions
+                  <textarea placeholder="Gate code, flat number, leave at door..." />
+                </label>
+              </div>
+            )}
+
+            {isCollection && (
+              <div className="checkout-section checkout-payment-choice">
+                <div className="checkout-payment-choice-heading">
+                  <div>
+                    <h2>How would you like to pay?</h2>
+                    <p>Pre-pay for a quicker pickup, or pay when you collect.</p>
+                  </div>
+                </div>
+
+                <div className="payment-choice-grid">
+                  <button
+                    type="button"
+                    className={paymentChoice === "online" ? "active" : ""}
+                    onClick={() => setPaymentChoice("online")}
+                  >
+                    <span className="payment-choice-radio">
+                      {paymentChoice === "online" ? "✓" : ""}
+                    </span>
+                    <span>
+                      <strong>Pay online now</strong>
+                      <small>Fastest pickup — nothing to pay when you arrive.</small>
+                    </span>
+                    <em>Recommended</em>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={paymentChoice === "collection" ? "active" : ""}
+                    onClick={() => setPaymentChoice("collection")}
+                  >
+                    <span className="payment-choice-radio">
+                      {paymentChoice === "collection" ? "✓" : ""}
+                    </span>
+                    <span>
+                      <strong>Pay on collection</strong>
+                      <small>Pay at the takeaway when you collect your order.</small>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            )}
 
             <button className="payment-placeholder" disabled>
-              Continue to secure payment
+              {payOnCollection ? "Place collection order" : "Continue to secure payment"}
             </button>
             <small className="checkout-payment-note">
-              Secure online payment will be connected before launch.
+              {payOnCollection
+                ? "Pay when you collect. Order processing will be connected before launch."
+                : "Secure online payment will be connected before launch."}
             </small>
           </div>
 
@@ -147,6 +301,16 @@ export default function CheckoutPage() {
               {lines.length > 0 && (
                 <button onClick={openCart}>Edit order</button>
               )}
+            </div>
+
+            <div className="checkout-summary-order-type">
+              <span>{isCollection ? "Collection" : "Delivery"}</span>
+              <button
+                type="button"
+                onClick={() => setOrderType(isCollection ? "delivery" : "collection")}
+              >
+                Change
+              </button>
             </div>
 
             {lines.length === 0 ? (
@@ -176,8 +340,12 @@ export default function CheckoutPage() {
                     <strong>£{total.toFixed(2)}</strong>
                   </div>
                   <div>
-                    <span>Delivery</span>
-                    <small>Calculated after address</small>
+                    <span>{isCollection ? "Collection" : "Delivery"}</span>
+                    {isCollection ? (
+                      <strong>£0.00</strong>
+                    ) : (
+                      <small>Calculated after address</small>
+                    )}
                   </div>
                   <div>
                     <span>Discount</span>
@@ -188,10 +356,21 @@ export default function CheckoutPage() {
                 <div className="checkout-total checkout-total--final">
                   <div>
                     <span>Total</span>
-                    <small>Before delivery</small>
+                    <small>
+                      {isCollection ? "No delivery fee" : "Before delivery"}
+                    </small>
                   </div>
                   <strong>£{total.toFixed(2)}</strong>
                 </div>
+
+                {isCollection && (
+                  <div className="checkout-summary-payment">
+                    <span>Payment</span>
+                    <strong>
+                      {paymentChoice === "online" ? "Pay online" : "Pay on collection"}
+                    </strong>
+                  </div>
+                )}
               </>
             )}
           </aside>
