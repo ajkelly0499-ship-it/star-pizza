@@ -84,11 +84,9 @@ export default function MenuPage() {
   const isHalfAndHalf = selectedItem?.name === "Half and Half";
   const isSpecialPizza = isDiyPizza || isHalfAndHalf;
 
-  const toppingTotal = isBuildYourOwn
-    ? 0
-    : pizzaExtraToppings
-        .filter((topping) => selectedToppings.includes(topping.id))
-        .reduce((sum, topping) => sum + topping.price, 0);
+  const toppingTotal = pizzaExtraToppings
+    .filter((topping) => selectedToppings.includes(topping.id))
+    .reduce((sum, topping) => sum + topping.price, 0);
 
   const unitPrice = baseUnitPrice + toppingTotal;
   const modalTotal = unitPrice * quantity;
@@ -141,11 +139,13 @@ export default function MenuPage() {
       selectedToppings.includes(topping.id)
     );
 
-    const toppingOptions = isBuildYourOwn
+    const includedBuildOptions = isBuildYourOwn
       ? [`Chosen toppings: ${selectedBuildToppings.join(", ")}`]
-      : selectedToppingObjects.map(
-          (topping) => `Extra: ${topping.label} (+£${topping.price.toFixed(2)})`
-        );
+      : [];
+
+    const extraToppingOptions = selectedToppingObjects.map(
+      (topping) => `Extra: ${topping.label} (+£${topping.price.toFixed(2)})`
+    );
 
     const halfOptions = isHalfAndHalf
       ? [
@@ -157,7 +157,8 @@ export default function MenuPage() {
     const options = [
       ...(chosenVariant ? [chosenVariant.label] : []),
       ...halfOptions,
-      ...toppingOptions,
+      ...includedBuildOptions,
+      ...extraToppingOptions,
       ...(notes.trim() ? [`Note: ${notes.trim()}`] : [])
     ];
 
@@ -275,7 +276,13 @@ export default function MenuPage() {
                       <p>{item.description}</p>
 
                       <button className="choose-options-button" onClick={() => openProduct(item)}>
-                        <span>{item.variants ? "Choose size" : "Add to order"}</span>
+                        <span>
+                          {item.variants
+                            ? "Choose size"
+                            : item.category === "Calzones"
+                              ? "Customise"
+                              : "Add to order"}
+                        </span>
                         <span className="choose-options-plus">+</span>
                       </button>
                     </div>
@@ -533,18 +540,25 @@ export default function MenuPage() {
                 </div>
               )}
 
-              {selectedItem.category === "Pizzas" && !isSpecialPizza && (
+              {((selectedItem.category === "Pizzas" && !isHalfAndHalf) ||
+                selectedItem.category === "Calzones") && (
                 <div className="product-option-group">
                   <div className="product-option-heading">
                     <div>
-                      <strong>Add extra toppings</strong>
+                      <strong>
+                        {selectedItem.category === "Calzones"
+                          ? "Add extra fillings"
+                          : "Add extra toppings"}
+                      </strong>
                       <span>Optional</span>
                     </div>
                     <small>{selectedToppings.length}/6 selected</small>
                   </div>
 
                   <p className="product-option-helper">
-                    Add any extras you fancy. Prices below are demo prices for the prototype.
+                    {selectedItem.category === "Calzones"
+                      ? "Add extra fillings inside your calzone. Prices below are demo prices for the prototype."
+                      : "Add any extras you fancy. Prices below are demo prices for the prototype."}
                   </p>
 
                   <div className="pizza-topping-grid">
