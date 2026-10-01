@@ -10,6 +10,27 @@ export type PizzaExtraTopping = {
   price: number;
 };
 
+export const buildYourOwnToppings = [
+  "Extra cheese",
+  "Pepperoni",
+  "Chicken",
+  "Chicken tikka",
+  "Doner meat",
+  "Spicy beef",
+  "Turkey ham",
+  "Salami",
+  "Garlic sausage",
+  "Bacon",
+  "Mushrooms",
+  "Red onion",
+  "Mixed peppers",
+  "Jalapeños",
+  "Sweetcorn",
+  "Pineapple",
+  "Olives",
+  "Tuna"
+];
+
 export const pizzaExtraToppings: PizzaExtraTopping[] = [
   { id: "extra-cheese", label: "Extra cheese", price: 1.5 },
   { id: "pepperoni", label: "Pepperoni", price: 1.5 },
@@ -662,6 +683,69 @@ export const menuItems: MenuItem[] = [
 ];
 
 
+export const calzoneItems: MenuItem[] = [
+  {
+    id: 47,
+    name: "Doner Calzone",
+    description: "Mozzarella cheese, tomato, doner meat, onions, peppers & garlic butter.",
+    price: 11.35,
+    category: "Calzones",
+    image: pizzaImage4
+  },
+  {
+    id: 48,
+    name: "Calzone Kiev Special",
+    description: "Mozzarella cheese, tomato, turkey ham, chicken, pepperoni, cheddar cheese, parmesan cheese & garlic mushrooms.",
+    price: 12.2,
+    category: "Calzones",
+    badge: "Special",
+    image: pizzaImage1
+  },
+  {
+    id: 49,
+    name: "5 Star Calzone",
+    description: "Mozzarella cheese, tomato, turkey ham, pepperoni, bacon, sweet chilli chicken, onions, garlic butter, cheddar cheese, parmesan cheese, cherry tomatoes & mushrooms.",
+    price: 13.3,
+    category: "Calzones",
+    badge: "Loaded",
+    image: pizzaImage2
+  },
+  {
+    id: 50,
+    name: "Fully Loaded Calzone",
+    description: "Mozzarella cheese, tomato, pepperoni, turkey ham, onions, mixed peppers, mushrooms, sweetcorn, garlic butter, cheddar cheese, parmesan cheese, pineapple & spicy beef.",
+    price: 13.3,
+    category: "Calzones",
+    badge: "Loaded",
+    image: pizzaImage3
+  },
+  {
+    id: 51,
+    name: "Classic Calzone",
+    description: "Mozzarella cheese, tomato, turkey ham, salami, garlic sausage, pepperoni & garlic mushrooms.",
+    price: 11.35,
+    category: "Calzones",
+    image: pizzaImage4
+  },
+  {
+    id: 52,
+    name: "DIY Calzone",
+    description: "Make your own calzone with any 3 toppings.",
+    price: 12.8,
+    category: "Calzones",
+    badge: "Build your own",
+    image: pizzaImage1
+  },
+  {
+    id: 53,
+    name: "Vegetarian Calzone",
+    description: "Mozzarella cheese, tomato, mushrooms, onions, peppers, sweetcorn, pineapple, garlic butter, cheddar cheese & parmesan cheese.",
+    price: 11.6,
+    category: "Calzones",
+    image: pizzaImage2
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -750,7 +834,7 @@ export const offerItems: MenuItem[] = [
   }
 ];
 
-export const allItems = [...menuItems, ...upsellItems, ...offerItems];
+export const allItems = [...menuItems, ...calzoneItems, ...upsellItems, ...offerItems];
 
 export const menuCategories = [
   "Popular",
