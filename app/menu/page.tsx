@@ -12,7 +12,8 @@ export default function MenuPage() {
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [notes, setNotes] = useState("");
   const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
-  const [halfSelections, setHalfSelections] = useState<string[]>([]);
+  const [halfOne, setHalfOne] = useState("");
+  const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
 
   const {
@@ -48,7 +49,8 @@ export default function MenuPage() {
     setSelectedVariant(0);
     setNotes("");
     setSelectedToppings([]);
-    setHalfSelections([]);
+    setHalfOne("");
+    setHalfTwo("");
     setQuantity(1);
   };
 
@@ -56,7 +58,8 @@ export default function MenuPage() {
     setSelectedItem(null);
     setNotes("");
     setSelectedToppings([]);
-    setHalfSelections([]);
+    setHalfOne("");
+    setHalfTwo("");
     setQuantity(1);
   };
 
@@ -82,12 +85,14 @@ export default function MenuPage() {
       item.name !== "DIY Pizza"
   );
 
+  const halfSelectionCount = [halfOne, halfTwo].filter(Boolean).length;
+
   const configurationComplete =
     !selectedItem ||
     (isDiyPizza
       ? selectedToppings.length === 4
       : isHalfAndHalf
-        ? halfSelections.length === 2
+        ? Boolean(halfOne && halfTwo && halfOne !== halfTwo)
         : true);
 
   const toggleTopping = (id: string) => {
@@ -99,17 +104,6 @@ export default function MenuPage() {
       const limit = isDiyPizza ? 4 : 6;
       if (current.length >= limit) return current;
       return [...current, id];
-    });
-  };
-
-  const toggleHalfSelection = (name: string) => {
-    setHalfSelections((current) => {
-      if (current.includes(name)) {
-        return current.filter((pizzaName) => pizzaName !== name);
-      }
-
-      if (current.length >= 2) return current;
-      return [...current, name];
     });
   };
 
@@ -134,8 +128,8 @@ export default function MenuPage() {
 
     const halfOptions = isHalfAndHalf
       ? [
-          `Half 1: ${halfSelections[0]}`,
-          `Half 2: ${halfSelections[1]}`
+          `Half 1: ${halfOne}`,
+          `Half 2: ${halfTwo}`
         ]
       : [];
 
@@ -464,35 +458,56 @@ export default function MenuPage() {
                       <strong>Choose your two halves</strong>
                       <span>Required</span>
                     </div>
-                    <small>{halfSelections.length}/2 selected</small>
+                    <small>{halfSelectionCount}/2 selected</small>
                   </div>
 
                   <p className="product-option-helper">
                     Pick two different pizza flavours. Both halves use the size selected above.
                   </p>
 
-                  <div className="half-pizza-grid">
-                    {halfPizzaChoices.map((pizza) => {
-                      const selected = halfSelections.includes(pizza.name);
-                      const disabled = !selected && halfSelections.length >= 2;
+                  <div className="half-pizza-selectors">
+                    <label>
+                      First half
+                      <select
+                        value={halfOne}
+                        onChange={(event) => setHalfOne(event.target.value)}
+                      >
+                        <option value="">Choose first pizza</option>
+                        {halfPizzaChoices
+                          .filter((pizza) => pizza.name !== halfTwo)
+                          .map((pizza) => (
+                            <option key={pizza.id} value={pizza.name}>
+                              {pizza.name}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
 
-                      return (
-                        <button
-                          type="button"
-                          key={pizza.id}
-                          className={selected ? "selected" : ""}
-                          disabled={disabled}
-                          onClick={() => toggleHalfSelection(pizza.name)}
-                        >
-                          <span className="topping-check">{selected ? "✓" : "+"}</span>
-                          <span>
-                            <strong>{pizza.name}</strong>
-                            <small>{pizza.description}</small>
-                          </span>
-                        </button>
-                      );
-                    })}
+                    <label>
+                      Second half
+                      <select
+                        value={halfTwo}
+                        onChange={(event) => setHalfTwo(event.target.value)}
+                      >
+                        <option value="">Choose second pizza</option>
+                        {halfPizzaChoices
+                          .filter((pizza) => pizza.name !== halfOne)
+                          .map((pizza) => (
+                            <option key={pizza.id} value={pizza.name}>
+                              {pizza.name}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
                   </div>
+
+                  {halfOne && halfTwo && (
+                    <div className="half-pizza-summary">
+                      <span>{halfOne}</span>
+                      <strong>½ + ½</strong>
+                      <span>{halfTwo}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -577,7 +592,7 @@ export default function MenuPage() {
                     {!configurationComplete
                       ? isDiyPizza
                         ? `Choose ${4 - selectedToppings.length} more topping${4 - selectedToppings.length === 1 ? "" : "s"}`
-                        : `Choose ${2 - halfSelections.length} more half${2 - halfSelections.length === 1 ? "" : "s"}`
+                        : `Choose ${2 - halfSelectionCount} more half${2 - halfSelectionCount === 1 ? "" : "s"}`
                       : "Add to basket"}
                   </span>
                   <strong>£{modalTotal.toFixed(2)}</strong>
