@@ -3,7 +3,14 @@
 import { useMemo, useState } from "react";
 import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
-import { menuCategories, menuItems, pizzaExtraToppings, type MenuItem } from "../../lib/menu";
+import {
+  buildYourOwnToppings,
+  calzoneItems,
+  menuCategories,
+  menuItems,
+  pizzaExtraToppings,
+  type MenuItem
+} from "../../lib/menu";
 
 export default function MenuPage() {
   const [category, setCategory] = useState("Popular");
@@ -12,6 +19,7 @@ export default function MenuPage() {
   const [selectedVariant, setSelectedVariant] = useState(0);
   const [notes, setNotes] = useState("");
   const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
+  const [selectedBuildToppings, setSelectedBuildToppings] = useState<string[]>([]);
   const [halfOne, setHalfOne] = useState("");
   const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -29,9 +37,10 @@ export default function MenuPage() {
 
   const visibleItems = useMemo(() => {
     const query = search.trim().toLowerCase();
+    const catalogue = [...menuItems, ...calzoneItems];
 
     if (query) {
-      return menuItems.filter((item) =>
+      return catalogue.filter((item) =>
         [item.name, item.description, item.category]
           .join(" ")
           .toLowerCase()
@@ -41,6 +50,7 @@ export default function MenuPage() {
 
     if (category === "Popular") return menuItems.filter((item) => item.featured);
     if (category === "Pizzas") return menuItems;
+    if (category === "Calzones") return calzoneItems;
     return [];
   }, [category, search]);
 
@@ -49,6 +59,7 @@ export default function MenuPage() {
     setSelectedVariant(0);
     setNotes("");
     setSelectedToppings([]);
+    setSelectedBuildToppings([]);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -58,6 +69,7 @@ export default function MenuPage() {
     setSelectedItem(null);
     setNotes("");
     setSelectedToppings([]);
+    setSelectedBuildToppings([]);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -66,10 +78,13 @@ export default function MenuPage() {
   const chosenVariant = selectedItem?.variants?.[selectedVariant];
   const baseUnitPrice = chosenVariant?.price ?? selectedItem?.price ?? 0;
   const isDiyPizza = selectedItem?.name === "DIY Pizza";
+  const isDiyCalzone = selectedItem?.name === "DIY Calzone";
+  const isBuildYourOwn = isDiyPizza || isDiyCalzone;
+  const buildToppingLimit = isDiyPizza ? 4 : isDiyCalzone ? 3 : 0;
   const isHalfAndHalf = selectedItem?.name === "Half and Half";
   const isSpecialPizza = isDiyPizza || isHalfAndHalf;
 
-  const toppingTotal = isDiyPizza
+  const toppingTotal = isBuildYourOwn
     ? 0
     : pizzaExtraToppings
         .filter((topping) => selectedToppings.includes(topping.id))
@@ -89,8 +104,8 @@ export default function MenuPage() {
 
   const configurationComplete =
     !selectedItem ||
-    (isDiyPizza
-      ? selectedToppings.length === 4
+    (isBuildYourOwn
+      ? selectedBuildToppings.length === buildToppingLimit
       : isHalfAndHalf
         ? Boolean(halfOne && halfTwo && halfOne !== halfTwo)
         : true);
@@ -101,9 +116,19 @@ export default function MenuPage() {
         return current.filter((toppingId) => toppingId !== id);
       }
 
-      const limit = isDiyPizza ? 4 : 6;
-      if (current.length >= limit) return current;
+      if (current.length >= 6) return current;
       return [...current, id];
+    });
+  };
+
+  const toggleBuildTopping = (label: string) => {
+    setSelectedBuildToppings((current) => {
+      if (current.includes(label)) {
+        return current.filter((item) => item !== label);
+      }
+
+      if (current.length >= buildToppingLimit) return current;
+      return [...current, label];
     });
   };
 
@@ -116,12 +141,8 @@ export default function MenuPage() {
       selectedToppings.includes(topping.id)
     );
 
-    const toppingOptions = isDiyPizza
-      ? [
-          `Chosen toppings: ${selectedToppingObjects
-            .map((topping) => topping.label)
-            .join(", ")}`
-        ]
+    const toppingOptions = isBuildYourOwn
+      ? [`Chosen toppings: ${selectedBuildToppings.join(", ")}`]
       : selectedToppingObjects.map(
           (topping) => `Extra: ${topping.label} (+£${topping.price.toFixed(2)})`
         );
@@ -248,7 +269,7 @@ export default function MenuPage() {
                     <div className="compact-menu-copy">
                       <div className="compact-menu-title-row">
                         <h3>{item.name}</h3>
-                        <strong>from £{item.price.toFixed(2)}</strong>
+                        <strong>{item.variants ? "from " : ""}£{item.price.toFixed(2)}</strong>
                       </div>
 
                       <p>{item.description}</p>
@@ -412,36 +433,37 @@ export default function MenuPage() {
                 </div>
               )}
 
-              {isDiyPizza && (
+              {isBuildYourOwn && (
                 <div className="product-option-group product-option-group--required">
                   <div className="product-option-heading">
                     <div>
-                      <strong>Choose your 4 toppings</strong>
-                      <span>Required · included in the pizza price</span>
+                      <strong>Choose your {buildToppingLimit} toppings</strong>
+                      <span>Required · included in the price</span>
                     </div>
-                    <small>{selectedToppings.length}/4 selected</small>
+                    <small>{selectedBuildToppings.length}/{buildToppingLimit} selected</small>
                   </div>
 
                   <p className="product-option-helper">
-                    Pick exactly four toppings to build your DIY Pizza.
+                    Pick exactly {buildToppingLimit} toppings to build your {selectedItem.name}.
                   </p>
 
                   <div className="pizza-topping-grid">
-                    {pizzaExtraToppings.map((topping) => {
-                      const selected = selectedToppings.includes(topping.id);
-                      const disabled = !selected && selectedToppings.length >= 4;
+                    {buildYourOwnToppings.map((topping) => {
+                      const selected = selectedBuildToppings.includes(topping);
+                      const disabled =
+                        !selected && selectedBuildToppings.length >= buildToppingLimit;
 
                       return (
                         <button
                           type="button"
-                          key={topping.id}
+                          key={topping}
                           className={selected ? "selected" : ""}
                           disabled={disabled}
-                          onClick={() => toggleTopping(topping.id)}
+                          onClick={() => toggleBuildTopping(topping)}
                         >
                           <span>
                             <span className="topping-check">{selected ? "✓" : "+"}</span>
-                            <strong>{topping.label}</strong>
+                            <strong>{topping}</strong>
                           </span>
                           <span>Included</span>
                         </button>
@@ -590,8 +612,8 @@ export default function MenuPage() {
                 >
                   <span>
                     {!configurationComplete
-                      ? isDiyPizza
-                        ? `Choose ${4 - selectedToppings.length} more topping${4 - selectedToppings.length === 1 ? "" : "s"}`
+                      ? isBuildYourOwn
+                        ? `Choose ${buildToppingLimit - selectedBuildToppings.length} more topping${buildToppingLimit - selectedBuildToppings.length === 1 ? "" : "s"}`
                         : `Choose ${2 - halfSelectionCount} more half${2 - halfSelectionCount === 1 ? "" : "s"}`
                       : "Add to basket"}
                   </span>
