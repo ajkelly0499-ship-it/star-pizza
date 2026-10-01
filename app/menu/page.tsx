@@ -37,7 +37,8 @@ export default function MenuPage() {
       );
     }
 
-    if (category === "Popular" || category === "Pizzas") return menuItems;
+    if (category === "Popular") return menuItems.filter((item) => item.featured);
+    if (category === "Pizzas") return menuItems;
     return [];
   }, [category, search]);
 
