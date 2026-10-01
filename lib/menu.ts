@@ -33,6 +33,7 @@ export type MenuItem = {
   category: string;
   image?: string;
   badge?: string;
+  featured?: boolean;
   variants?: MenuVariant[];
 };
 
@@ -48,26 +49,11 @@ const pizzaImage4 =
 export const menuItems: MenuItem[] = [
   {
     id: 1,
-    name: "Margherita",
-    description: "Pizza sauce & Italian herbs.",
-    price: 9.8,
-    category: "Pizzas",
-    badge: "Classic",
-    image: pizzaImage1,
-    variants: [
-      { label: '11" Thin', price: 9.8 },
-      { label: '11" Deep', price: 10.8 },
-      { label: '16" Family', price: 16.25 }
-    ]
-  },
-  {
-    id: 2,
-    name: "Pepperoni",
-    description: "Pepperoni, peppers & Italian herbs.",
+    name: "Tropicana",
+    description: "Turkey ham, pineapple & Italian herbs.",
     price: 10.9,
     category: "Pizzas",
-    badge: "Popular",
-    image: pizzaImage2,
+    image: pizzaImage1,
     variants: [
       { label: '11" Thin', price: 10.9 },
       { label: '11" Deep', price: 11.9 },
@@ -75,39 +61,12 @@ export const menuItems: MenuItem[] = [
     ]
   },
   {
-    id: 3,
-    name: "Hot Shot",
-    description: "Pepperoni, fresh chilli, peppers, onions & Italian herbs.",
-    price: 11.35,
-    category: "Pizzas",
-    badge: "Spicy",
-    image: pizzaImage3,
-    variants: [
-      { label: '11" Thin', price: 11.35 },
-      { label: '11" Deep', price: 12.35 },
-      { label: '16" Family', price: 17.35 }
-    ]
-  },
-  {
-    id: 4,
-    name: "Quattro Formaggi",
-    description: "Combination of four different cheeses & Italian herbs.",
-    price: 11.15,
-    category: "Pizzas",
-    image: pizzaImage4,
-    variants: [
-      { label: '11" Thin', price: 11.15 },
-      { label: '11" Deep', price: 12.15 },
-      { label: '16" Family', price: 17.15 }
-    ]
-  },
-  {
-    id: 5,
-    name: "Smokey Joe's BBQ",
-    description: "BBQ base, onions, spicy beef, chicken, peppers & Italian herbs.",
+    id: 2,
+    name: "DIY Pizza",
+    description: "Any 4 toppings of your choice.",
     price: 11.9,
     category: "Pizzas",
-    badge: "BBQ",
+    badge: "Build your own",
     image: pizzaImage2,
     variants: [
       { label: '11" Thin', price: 11.9 },
@@ -116,17 +75,588 @@ export const menuItems: MenuItem[] = [
     ]
   },
   {
+    id: 3,
+    name: "Tuna & Sweetcorn",
+    description: "Tuna, sweetcorn & Italian herbs.",
+    price: 10.9,
+    category: "Pizzas",
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 10.9 },
+      { label: '11" Deep', price: 11.9 },
+      { label: '16" Family', price: 16.9 }
+    ]
+  },
+  {
+    id: 4,
+    name: "Salami",
+    description: "Salami & Italian herbs.",
+    price: 10.35,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 10.35 },
+      { label: '11" Deep', price: 11.35 },
+      { label: '16" Family', price: 16.35 }
+    ]
+  },
+  {
+    id: 5,
+    name: "Chicken Tikka",
+    description: "Chicken tikka, onion, green peppers & Italian herbs.",
+    price: 11.35,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 11.35 },
+      { label: '11" Deep', price: 12.35 },
+      { label: '16" Family', price: 17.35 }
+    ]
+  },
+  {
     id: 6,
+    name: "Quattro Formaggi",
+    description: "Combination of four different cheeses & Italian herbs.",
+    price: 11.15,
+    category: "Pizzas",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 11.15 },
+      { label: '11" Deep', price: 12.15 },
+      { label: '16" Family', price: 17.15 }
+    ]
+  },
+  {
+    id: 7,
+    name: "Spicy Beef",
+    description: "Spicy beef & Italian herbs.",
+    price: 10.35,
+    category: "Pizzas",
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 10.35 },
+      { label: '11" Deep', price: 11.35 },
+      { label: '16" Family', price: 16.35 }
+    ]
+  },
+  {
+    id: 8,
     name: "The Inferno",
-    description: "Hot chilli tomato base, fresh chilli, pepperoni, onions, spicy beef & mushrooms.",
+    description: "Hot chilli tomato sauce base, fresh chilli, pepperoni, onions, spicy beef, mushrooms & Italian herbs.",
     price: 12.9,
     category: "Pizzas",
     badge: "Hot",
-    image: pizzaImage3,
+    image: pizzaImage4,
     variants: [
       { label: '11" Thin', price: 12.9 },
       { label: '11" Deep', price: 13.9 },
       { label: '16" Family', price: 19.35 }
+    ]
+  },
+  {
+    id: 9,
+    name: "Chilli",
+    description: "Chilli con carne & Italian herbs.",
+    price: 10.9,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 10.9 },
+      { label: '11" Deep', price: 11.9 },
+      { label: '16" Family', price: 16.9 }
+    ]
+  },
+  {
+    id: 10,
+    name: "Vegetarian",
+    description: "Peppers, onions, mushrooms, sweetcorn, olives & Italian herbs.",
+    price: 11.15,
+    category: "Pizzas",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 11.15 },
+      { label: '11" Deep', price: 12.15 },
+      { label: '16" Family', price: 17.15 }
+    ]
+  },
+  {
+    id: 11,
+    name: "Garlic Margherita",
+    description: "Garlic margherita.",
+    price: 9.9,
+    category: "Pizzas",
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 9.9 },
+      { label: '11" Deep', price: 10.9 },
+      { label: '16" Family', price: 16.35 }
+    ]
+  },
+  {
+    id: 12,
+    name: "Toscana",
+    description: "Turkey ham, mushrooms, peppers, onions & Italian herbs.",
+    price: 11.35,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 11.35 },
+      { label: '11" Deep', price: 12.35 },
+      { label: '16" Family', price: 17.35 }
+    ]
+  },
+  {
+    id: 13,
+    name: "Meteorite",
+    description: "BBQ base, pepperoni, spicy beef, plain chicken & Italian herbs.",
+    price: 12.65,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 14,
+    name: "Seafood",
+    description: "Tuna, prawn & Italian herbs.",
+    price: 11.35,
+    category: "Pizzas",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 11.35 },
+      { label: '11" Deep', price: 12.35 },
+      { label: '16" Family', price: 17.35 }
+    ]
+  },
+  {
+    id: 15,
+    name: "Hawaiian",
+    description: "Chicken, pineapple & Italian herbs.",
+    price: 11.15,
+    category: "Pizzas",
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 11.15 },
+      { label: '11" Deep', price: 12.15 },
+      { label: '16" Family', price: 17.15 }
+    ]
+  },
+  {
+    id: 16,
+    name: "Smokey & the Bandit",
+    description: "Pepperoni, garlic sausage, salami, bacon, spicy beef & Italian herbs.",
+    price: 12.65,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 17,
+    name: "Lucky Luciano",
+    description: "Mushrooms, pepperoni, salami, spicy beef, garlic butter, mixed peppers, onions & Italian herbs.",
+    price: 11.9,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 11.9 },
+      { label: '11" Deep', price: 12.9 },
+      { label: '16" Family', price: 17.9 }
+    ]
+  },
+  {
+    id: 18,
+    name: "Bolognese",
+    description: "Bolognese sauce, minced beef, onions & Italian herbs.",
+    price: 10.9,
+    category: "Pizzas",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 10.9 },
+      { label: '11" Deep', price: 11.9 },
+      { label: '16" Family', price: 16.9 }
+    ]
+  },
+  {
+    id: 19,
+    name: "Margherita",
+    description: "Pizza sauce & Italian herbs.",
+    price: 9.8,
+    category: "Pizzas",
+    badge: "Classic",
+    featured: true,
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 9.8 },
+      { label: '11" Deep', price: 10.8 },
+      { label: '16" Family', price: 16.25 }
+    ]
+  },
+  {
+    id: 20,
+    name: "Caprese",
+    description: "Chilli tomato base, chicken tikka, bacon, onions, jalapeños, cherry tomatoes & Italian herbs.",
+    price: 10.45,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 10.45 },
+      { label: '11" Deep', price: 11.45 }
+    ]
+  },
+  {
+    id: 21,
+    name: "Prosciutto Funghi",
+    description: "Turkey ham, mushrooms & Italian herbs.",
+    price: 11.15,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 11.15 },
+      { label: '11" Deep', price: 12.15 },
+      { label: '16" Family', price: 17.15 }
+    ]
+  },
+  {
+    id: 22,
+    name: "Meat Feast",
+    description: "Minced beef, garlic sausage, pepperoni, salami, turkey ham, chicken & Italian herbs.",
+    price: 12.35,
+    category: "Pizzas",
+    badge: "Popular",
+    featured: true,
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 12.35 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 23,
+    name: "Star Special",
+    description: "Chef’s own preparation.",
+    price: 12.65,
+    category: "Pizzas",
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 24,
+    name: "Valtellina",
+    description: "Chicken, mushrooms, pineapple, turkey ham, pepperoni & Italian herbs.",
+    price: 12.65,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 25,
+    name: "Prosciutto",
+    description: "Turkey ham & Italian herbs.",
+    price: 10.35,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 10.35 },
+      { label: '11" Deep', price: 11.35 },
+      { label: '16" Family', price: 16.35 }
+    ]
+  },
+  {
+    id: 26,
+    name: "Mixed Grill",
+    description: "Chicken tikka, doner meat, seekh, onions, green peppers & Italian herbs.",
+    price: 12.9,
+    category: "Pizzas",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 12.9 },
+      { label: '11" Deep', price: 13.9 },
+      { label: '16" Family', price: 19.35 }
+    ]
+  },
+  {
+    id: 27,
+    name: "Pepperoni",
+    description: "Pepperoni, peppers & Italian herbs.",
+    price: 10.9,
+    category: "Pizzas",
+    badge: "Popular",
+    featured: true,
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 10.9 },
+      { label: '11" Deep', price: 11.9 },
+      { label: '16" Family', price: 16.9 }
+    ]
+  },
+  {
+    id: 28,
+    name: "Paulii",
+    description: "Fresh chicken & Italian herbs.",
+    price: 10.35,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 10.35 },
+      { label: '11" Deep', price: 11.35 },
+      { label: '16" Family', price: 16.35 }
+    ]
+  },
+  {
+    id: 29,
+    name: "Triple Threat Pep",
+    description: "A selection of three different cheeses, triple pepperoni & Italian herbs.",
+    price: 12.6,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 12.6 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 30,
+    name: "Galaxy",
+    description: "Pepperoni, onions, chicken tikka, jalapeño & Italian herbs.",
+    price: 12.65,
+    category: "Pizzas",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 31,
+    name: "Doner",
+    description: "Doner meat, peppers, onions & Italian herbs.",
+    price: 11.35,
+    category: "Pizzas",
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 11.35 },
+      { label: '11" Deep', price: 12.35 },
+      { label: '16" Family', price: 17.35 }
+    ]
+  },
+  {
+    id: 32,
+    name: "Vegetariana",
+    description: "Mushrooms, onions, peppers, cherry tomatoes, sweetcorn, pineapple & Italian herbs.",
+    price: 12.65,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 33,
+    name: "Pollo Funghi",
+    description: "Fresh chicken, mushrooms & Italian herbs.",
+    price: 11.35,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 11.35 },
+      { label: '11" Deep', price: 12.35 },
+      { label: '16" Family', price: 17.35 }
+    ]
+  },
+  {
+    id: 34,
+    name: "American Hot",
+    description: "Pepperoni, onions, jalapeños & Italian herbs.",
+    price: 12.65,
+    category: "Pizzas",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 35,
+    name: "Magic Combination",
+    description: "Turkey ham, salami, garlic sausage, pepperoni & Italian herbs.",
+    price: 11.35,
+    category: "Pizzas",
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 11.35 },
+      { label: '11" Deep', price: 12.35 },
+      { label: '16" Family', price: 17.35 }
+    ]
+  },
+  {
+    id: 36,
+    name: "Starburst",
+    description: "Spicy beef, garlic sausage, pepperoni, onions, mushrooms, green peppers & Italian herbs.",
+    price: 12.9,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 12.9 },
+      { label: '11" Deep', price: 13.9 },
+      { label: '16" Family', price: 19.35 }
+    ]
+  },
+  {
+    id: 37,
+    name: "Half and Half",
+    description: "Stuck between two pizzas? Why not have both!",
+    price: 12.65,
+    category: "Pizzas",
+    badge: "Two favourites",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 14.35 },
+      { label: '16" Family', price: 20.35 }
+    ]
+  },
+  {
+    id: 38,
+    name: "Oceano",
+    description: "Tuna, onions & pineapple.",
+    price: 11.9,
+    category: "Pizzas",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 11.9 },
+      { label: '11" Deep', price: 12.9 },
+      { label: '16" Family', price: 17.9 }
+    ]
+  },
+  {
+    id: 39,
+    name: "BBQ Chicken",
+    description: "BBQ chicken, peppers & Italian herbs.",
+    price: 11.35,
+    category: "Pizzas",
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 11.35 },
+      { label: '11" Deep', price: 12.35 },
+      { label: '16" Family', price: 17.35 }
+    ]
+  },
+  {
+    id: 40,
+    name: "Bronx Buster",
+    description: "Tender beef doner strips, fries, hot chilli sauce, garlic mayo & Italian herbs.",
+    price: 11.9,
+    category: "Pizzas",
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 11.9 },
+      { label: '11" Deep', price: 12.9 },
+      { label: '16" Family', price: 17.9 }
+    ]
+  },
+  {
+    id: 41,
+    name: "Farmer",
+    description: "Plain chicken, mushroom, sweetcorn & Italian herbs.",
+    price: 12.65,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 42,
+    name: "5 Star",
+    description: "Turkey ham, pepperoni, bacon, sweet chilli chicken, onions, cherry tomatoes, mushrooms & Italian herbs.",
+    price: 12.65,
+    category: "Pizzas",
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 43,
+    name: "Fully Loaded",
+    description: "Pepperoni, turkey ham, onions, mixed peppers, mushrooms, sweetcorn, pineapple, spicy beef & Italian herbs.",
+    price: 12.65,
+    category: "Pizzas",
+    badge: "Loaded",
+    featured: true,
+    image: pizzaImage3,
+    variants: [
+      { label: '11" Thin', price: 12.65 },
+      { label: '11" Deep', price: 13.65 },
+      { label: '16" Family', price: 18.35 }
+    ]
+  },
+  {
+    id: 44,
+    name: "Smokey Joe's BBQ",
+    description: "BBQ base, onions, spicy beef, chicken, peppers & Italian herbs.",
+    price: 11.9,
+    category: "Pizzas",
+    badge: "BBQ",
+    featured: true,
+    image: pizzaImage4,
+    variants: [
+      { label: '11" Thin', price: 11.9 },
+      { label: '11" Deep', price: 12.9 },
+      { label: '16" Family', price: 17.9 }
+    ]
+  },
+  {
+    id: 45,
+    name: "The Shadrack Special - By Gavinio",
+    description: "Pepperoni, donner meat, red onions, jalapeño & Italian herbs.",
+    price: 12.45,
+    category: "Pizzas",
+    image: pizzaImage1,
+    variants: [
+      { label: '11" Thin', price: 12.45 },
+      { label: '11" Deep', price: 13.45 },
+      { label: '16" Family', price: 18.95 }
+    ]
+  },
+  {
+    id: 46,
+    name: "Hot Shot",
+    description: "Pepperoni, fresh chilli, peppers, onions & Italian herbs.",
+    price: 11.35,
+    category: "Pizzas",
+    badge: "Spicy",
+    featured: true,
+    image: pizzaImage2,
+    variants: [
+      { label: '11" Thin', price: 11.35 },
+      { label: '11" Deep', price: 12.35 },
+      { label: '16" Family', price: 17.35 }
     ]
   }
 ];
