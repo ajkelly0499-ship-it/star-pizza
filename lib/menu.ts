@@ -68,6 +68,17 @@ export type MenuItem = {
   variants?: MenuVariant[];
 };
 
+export const dessertExtraOptions = [
+  { id: "extra-gelato", label: "Extra vanilla gelato", price: 1.5 },
+  { id: "whipped-cream", label: "Whipped cream", price: 1.0 },
+  { id: "strawberries", label: "Fresh strawberries", price: 1.25 },
+  { id: "banana", label: "Fresh banana", price: 1.0 },
+  { id: "nutella", label: "Nutella drizzle", price: 1.0 },
+  { id: "milk-chocolate", label: "Milk chocolate sauce", price: 1.0 },
+  { id: "marshmallows", label: "Extra marshmallows", price: 0.75 }
+];
+
+
 export type BurgerToppingOption = {
   id: string;
   label: string;
@@ -1979,6 +1990,80 @@ export const drinkItems: MenuItem[] = [
   }
 ];
 
+const cookieDoughImage1 =
+  "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1200&q=85";
+const cookieDoughImage2 =
+  "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1200&q=85";
+const brownieImage1 =
+  "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=85";
+const brownieImage2 =
+  "https://images.unsplash.com/photo-1515037893149-de7f840978e2?auto=format&fit=crop&w=1200&q=85";
+const fondueImage =
+  "https://images.unsplash.com/photo-1575377427642-087cf684f29d?auto=format&fit=crop&w=1200&q=85";
+
+export const cookieDoughItems: MenuItem[] = [
+  { id: 640, name: "Brownie Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage1 },
+  { id: 641, name: "Bischoff Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage2 },
+  { id: 642, name: "Terry’s Orange Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage1 },
+  { id: 643, name: "Banana Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage2 },
+  { id: 644, name: "Love Me S’mores Cookie Dough", description: "Lindor, marshmallows & Nutella. Served with Italian vanilla gelato.", price: 9.5, category: "Cookie Dough", badge: "Loaded", image: cookieDoughImage1 },
+  { id: 645, name: "Cookie Monster Cookie Dough", description: "Crushed cookies & Nutella. Served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage2 },
+  { id: 646, name: "Flake Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage1 },
+  { id: 647, name: "Strawnana Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 9.95, category: "Cookie Dough", image: cookieDoughImage2 },
+  { id: 648, name: "Cloud Nine Cookie Dough", description: "Kinder Bueno, Oreos & strawberries. Served with Italian vanilla gelato.", price: 10.95, category: "Cookie Dough", badge: "Loaded", image: cookieDoughImage1 },
+  { id: 649, name: "Nutella Addiction Cookie Dough", description: "Fresh strawberries & Nutella. Served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage2 },
+  { id: 650, name: "Kinder Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage1 },
+  { id: 651, name: "The Ballers Cookie Dough", description: "Ferrero Rocher, strawberries, Cadbury’s Flake & milk chocolate sauce. Served with Italian vanilla gelato.", price: 11.45, category: "Cookie Dough", badge: "Loaded", image: cookieDoughImage2 },
+  { id: 652, name: "Taste the Rainbow Cookie Dough", description: "Smarties & Nutella. Served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage1 },
+  { id: 653, name: "Milkybar Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage2 },
+  { id: 654, name: "Classic Choc Chip", description: "Chocolate chip cookie dough drizzled with Nutella and served with Italian vanilla gelato.", price: 7.5, category: "Cookie Dough", image: cookieDoughImage1 },
+  { id: 655, name: "Star’s Favourite Cookie Dough", description: "Jammie Dodgers, Milkybar & strawberries. Served with Italian vanilla gelato.", price: 10.95, category: "Cookie Dough", badge: "Star favourite", image: cookieDoughImage2 },
+  { id: 656, name: "Snickers Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage1 },
+  { id: 657, name: "Ferrero Rocher Cookie Dough", description: "Freshly baked cookie dough served with Italian vanilla gelato.", price: 9.95, category: "Cookie Dough", image: cookieDoughImage2 },
+  { id: 658, name: "Nutty Professor Cookie Dough", description: "Snickers & banana. Served with Italian vanilla gelato.", price: 9.95, category: "Cookie Dough", image: cookieDoughImage1 },
+  { id: 659, name: "Oreolicious Cookie Dough", description: "Crushed Oreos & Nutella. Served with Italian vanilla gelato.", price: 8.95, category: "Cookie Dough", image: cookieDoughImage2 }
+];
+
+export const brownieItems: MenuItem[] = [
+  { id: 660, name: "Jammie Dodger Brownie", description: "Jammie Dodger brownie.", price: 6.45, category: "Brownies", image: brownieImage1 },
+  { id: 661, name: "Nutty Professor Brownie", description: "Snickers & banana.", price: 7.45, category: "Brownies", image: brownieImage2 },
+  { id: 662, name: "Lindor Brownie", description: "Lindor brownie.", price: 7.45, category: "Brownies", image: brownieImage1 },
+  { id: 663, name: "Bischoff Brownie", description: "Melted Belgian chocolate and biscoff crumble. Served with Italian vanilla gelato.", price: 6.45, category: "Brownies", image: brownieImage2 },
+  { id: 664, name: "Flake Brownie", description: "Melted milk chocolate & crushed Flake. Served with Italian vanilla gelato.", price: 6.45, category: "Brownies", image: brownieImage1 },
+  { id: 665, name: "Kinder Brownie", description: "Kinder brownie.", price: 6.45, category: "Brownies", image: brownieImage2 },
+  { id: 666, name: "Terry’s Orange Brownie", description: "Terry’s Orange brownie.", price: 6.99, category: "Brownies", image: brownieImage1 },
+  { id: 667, name: "Banana Brownie", description: "Banana brownie.", price: 6.45, category: "Brownies", image: brownieImage2 },
+  { id: 668, name: "The Ora-Liscious Brownie", description: "Double Oreos, milk chocolate sauce, Cadbury’s Flake, whipped cream and a scoop of Italian vanilla gelato.", price: 6.99, category: "Brownies", badge: "Loaded", image: brownieImage1 },
+  { id: 669, name: "Snickers Brownie", description: "Snickers brownie.", price: 6.45, category: "Brownies", image: brownieImage2 },
+  { id: 670, name: "Milkybar Brownie", description: "Milkybar brownie.", price: 6.45, category: "Brownies", image: brownieImage1 },
+  { id: 671, name: "Oreo Brownie", description: "Melted Belgian chocolate & Oreo crumble. Served with Italian vanilla gelato.", price: 6.45, category: "Brownies", image: brownieImage2 },
+  { id: 672, name: "Ballers Babyy Brownie", description: "Ferrero Rocher, strawberries, Cadbury’s Flake, milk chocolate sauce, whipped cream and a scoop of Italian vanilla gelato.", price: 6.99, category: "Brownies", badge: "Loaded", image: brownieImage1 },
+  { id: 673, name: "Twilight Brownie", description: "Kinder Bueno, Oreos & strawberries, served with whipped cream and a scoop of Italian vanilla gelato.", price: 6.99, category: "Brownies", badge: "Loaded", image: brownieImage2 },
+  { id: 674, name: "Ferrero Rocher Brownie", description: "Ferrero Rocher brownie.", price: 7.45, category: "Brownies", image: brownieImage1 },
+  { id: 675, name: "Strawnana Brownie", description: "Belgian milk chocolate, fresh strawberries & bananas. Served with Italian vanilla gelato.", price: 6.75, category: "Brownies", image: brownieImage2 },
+  { id: 676, name: "Marshmallow Brownie", description: "Marshmallow brownie.", price: 6.45, category: "Brownies", image: brownieImage1 },
+  { id: 677, name: "Strawberry Brownie", description: "Belgian milk chocolate & fresh strawberries. Served with Italian vanilla gelato.", price: 6.45, category: "Brownies", image: brownieImage2 }
+];
+
+export const fondueItems: MenuItem[] = [
+  {
+    id: 680,
+    name: "Strawberry Fondue",
+    description: "Marshmallows, fresh strawberries, melted Belgian chocolate & whipped cream.",
+    price: 6.45,
+    category: "Fondue",
+    image: fondueImage
+  },
+  {
+    id: 681,
+    name: "Strawnana Fondue",
+    description: "Marshmallows, fresh strawberries, bananas, melted Belgian chocolate & whipped cream.",
+    price: 7.45,
+    category: "Fondue",
+    image: fondueImage
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -2082,6 +2167,9 @@ export const allItems = [
   ...milkshakeItems,
   ...dessertItems,
   ...drinkItems,
+  ...cookieDoughItems,
+  ...brownieItems,
+  ...fondueItems,
   ...upsellItems,
   ...offerItems
 ];
@@ -2101,5 +2189,8 @@ export const menuCategories = [
   "Milkshakes",
   "Sides",
   "Desserts",
+  "Cookie Dough",
+  "Brownies",
+  "Fondue",
   "Drinks"
 ];
