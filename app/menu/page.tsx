@@ -11,6 +11,8 @@ import {
   calzoneItems,
   garlicBreadItems,
   chickenItems,
+  dessertItems,
+  drinkItems,
   kebabDips,
   kebabItems,
   loadedFriesItems,
@@ -71,6 +73,8 @@ export default function MenuPage() {
       ...naanBreadItems,
       ...starterItems,
       ...milkshakeItems,
+      ...dessertItems,
+      ...drinkItems,
       ...sideItems
     ];
 
@@ -95,6 +99,8 @@ export default function MenuPage() {
     if (category === "Naan Breads") return naanBreadItems;
     if (category === "Starters") return starterItems;
     if (category === "Milkshakes") return milkshakeItems;
+    if (category === "Desserts") return dessertItems;
+    if (category === "Drinks") return drinkItems;
     if (category === "Sides") return sideItems;
     return [];
   }, [category, search]);
