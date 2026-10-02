@@ -1336,6 +1336,217 @@ export const chickenItems: MenuItem[] = [
   }
 ];
 
+const sideImage1 =
+  "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=1200&q=85";
+const sideImage2 =
+  "https://images.unsplash.com/photo-1639024471283-03518883512d?auto=format&fit=crop&w=1200&q=85";
+const sideImage3 =
+  "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=1200&q=85";
+
+export const sideItems: MenuItem[] = [
+  {
+    id: 400,
+    name: "Popcorn Chicken",
+    description: "Popcorn chicken.",
+    price: 5.7,
+    category: "Sides",
+    image: sideImage1
+  },
+  {
+    id: 401,
+    name: "Star Special Salad",
+    description: "Lettuce, red onions, green peppers, sweetcorn, pineapple, mozzarella cheese & star special sauce.",
+    price: 3.45,
+    category: "Sides",
+    image: sideImage2
+  },
+  {
+    id: 402,
+    name: "Cheesy Curly Fries",
+    description: "Cheesy curly fries.",
+    price: 6.45,
+    category: "Sides",
+    image: sideImage3
+  },
+  {
+    id: 403,
+    name: "Prawn Cocktail Salad",
+    description: "Lettuce, king prawns, red onions, green peppers, sweetcorn, pineapple, mozzarella cheese & prawn cocktail sauce.",
+    price: 4,
+    category: "Sides",
+    image: sideImage2
+  },
+  {
+    id: 404,
+    name: "Chilli Cheese Nuggets",
+    description: "Chilli cheese nuggets.",
+    price: 5.7,
+    category: "Sides",
+    image: sideImage1
+  },
+  {
+    id: 405,
+    name: "4 Cheese Fries",
+    description: "Four-cheese fries.",
+    price: 7.45,
+    category: "Sides",
+    badge: "Loaded",
+    image: sideImage3
+  },
+  {
+    id: 406,
+    name: "Chicken Strip Dippers (5 Pcs)",
+    description: "Served with 1 dip of your choice.",
+    price: 5.7,
+    category: "Sides",
+    image: sideImage1
+  },
+  {
+    id: 407,
+    name: "Mozzarella Sticks (6 Pcs)",
+    description: "Six mozzarella sticks.",
+    price: 5.45,
+    category: "Sides",
+    image: sideImage2
+  },
+  {
+    id: 408,
+    name: "French Fries",
+    description: "Choose regular or large.",
+    price: 3.5,
+    category: "Sides",
+    image: sideImage3,
+    variants: [
+      { label: "Regular", price: 3.5 },
+      { label: "Large", price: 4.9 }
+    ]
+  },
+  {
+    id: 409,
+    name: "Cheesy Nachos",
+    description: "Salsa sauce, jalapeños, coated with melted cheese.",
+    price: 5.25,
+    category: "Sides",
+    image: sideImage2
+  },
+  {
+    id: 410,
+    name: "Curly Fries",
+    description: "Curly fries.",
+    price: 4.45,
+    category: "Sides",
+    image: sideImage3
+  },
+  {
+    id: 411,
+    name: "Cream Cheese Jalapeños (6 Pcs)",
+    description: "Six cream cheese jalapeños.",
+    price: 5.7,
+    category: "Sides",
+    image: sideImage1
+  },
+  {
+    id: 412,
+    name: "Onion Rings",
+    description: "Choose regular or large.",
+    price: 3.4,
+    category: "Sides",
+    image: sideImage2,
+    variants: [
+      { label: "Regular", price: 3.4 },
+      { label: "Large", price: 5.1 }
+    ]
+  },
+  {
+    id: 413,
+    name: "Cheesy Chips - Lrg",
+    description: "Large cheesy chips.",
+    price: 5.75,
+    category: "Sides",
+    image: sideImage3
+  },
+  {
+    id: 414,
+    name: "Coleslaw",
+    description: "Coleslaw.",
+    price: 3,
+    category: "Sides",
+    image: sideImage2
+  },
+  {
+    id: 415,
+    name: "Hash Browns (4 Pcs)",
+    description: "Four hash browns.",
+    price: 4,
+    category: "Sides",
+    image: sideImage1
+  },
+  {
+    id: 416,
+    name: "Side Salad",
+    description: "Lettuce, red onions & cherry tomatoes.",
+    price: 2.5,
+    category: "Sides",
+    image: sideImage2
+  },
+  {
+    id: 417,
+    name: "BBQ Dip",
+    description: "BBQ dip.",
+    price: 1.2,
+    category: "Sides",
+    image: sideImage3
+  },
+  {
+    id: 418,
+    name: "Chilli Dip",
+    description: "Chilli dip.",
+    price: 1.2,
+    category: "Sides",
+    image: sideImage3
+  },
+  {
+    id: 419,
+    name: "Garlic Mayo Dip",
+    description: "Garlic mayo dip.",
+    price: 1.2,
+    category: "Sides",
+    image: sideImage3
+  },
+  {
+    id: 420,
+    name: "Ketchup Dip",
+    description: "Ketchup dip.",
+    price: 1.2,
+    category: "Sides",
+    image: sideImage3
+  },
+  {
+    id: 421,
+    name: "Mayo Dip",
+    description: "Mayo dip.",
+    price: 1.2,
+    category: "Sides",
+    image: sideImage3
+  },
+  {
+    id: 422,
+    name: "Mint Sauce Dip",
+    description: "Mint sauce dip.",
+    price: 1.2,
+    category: "Sides",
+    image: sideImage3
+  },
+  {
+    id: 423,
+    name: "Sweet Chilli Dip",
+    description: "Sweet chilli dip.",
+    price: 1.2,
+    category: "Sides",
+    image: sideImage3
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -1430,6 +1641,7 @@ export const allItems = [
   ...kebabItems,
   ...burgerItems,
   ...chickenItems,
+  ...sideItems,
   ...upsellItems,
   ...offerItems
 ];
