@@ -61,6 +61,10 @@ export default function BasketDrawer() {
   const showUpsell = () => {
     closeCart();
 
+    if (pathname === "/checkout") {
+      return;
+    }
+
     try {
       const alreadySeen = window.sessionStorage.getItem("star-pizza-upsell-seen") === "1";
 
