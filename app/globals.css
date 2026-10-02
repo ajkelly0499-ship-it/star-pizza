@@ -4876,3 +4876,81 @@ footer {
     font-size: 9.5px;
   }
 }
+
+
+/* BURGER CUSTOMISER */
+.burger-topping-list {
+  display: grid;
+  gap: 8px;
+}
+
+.burger-topping-row {
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 11px;
+  border: 1px solid #d8d2c8;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.burger-topping-row > div:first-child {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.burger-topping-row strong {
+  font-size: 10px;
+}
+
+.burger-topping-row small {
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.burger-topping-actions {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 5px;
+}
+
+.burger-topping-actions button {
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid #d8d2c8;
+  border-radius: 5px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.burger-topping-actions button.active {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fff;
+}
+
+@media (max-width: 520px) {
+  .burger-topping-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 11px;
+  }
+
+  .burger-topping-actions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .burger-topping-actions button {
+    min-height: 36px;
+    padding: 0 6px;
+  }
+
+  .burger-extra-grid {
+    grid-template-columns: 1fr;
+  }
+}
