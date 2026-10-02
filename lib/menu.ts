@@ -1669,6 +1669,78 @@ export const wrapItems: MenuItem[] = [
   }
 ];
 
+const naanImage1 =
+  "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=85";
+const naanImage2 =
+  "https://images.unsplash.com/photo-1610057099431-d73a1c9d2f2f?auto=format&fit=crop&w=1200&q=85";
+const starterImage1 =
+  "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=1200&q=85";
+const starterImage2 =
+  "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=1200&q=85";
+
+export const naanBreadItems: MenuItem[] = [
+  {
+    id: 560,
+    name: "Garlic Naan",
+    description: "Garlic naan bread.",
+    price: 4.3,
+    category: "Naan Breads",
+    image: naanImage1
+  },
+  {
+    id: 561,
+    name: "Cheesy Naan",
+    description: "Naan bread with cheese.",
+    price: 5,
+    category: "Naan Breads",
+    image: naanImage2
+  },
+  {
+    id: 562,
+    name: "Plain Naan",
+    description: "Plain naan bread.",
+    price: 3.6,
+    category: "Naan Breads",
+    image: naanImage1
+  },
+  {
+    id: 563,
+    name: "Cheesy Garlic Naan",
+    description: "Naan bread with cheese and garlic.",
+    price: 5.8,
+    category: "Naan Breads",
+    badge: "Popular combo",
+    image: naanImage2
+  }
+];
+
+export const starterItems: MenuItem[] = [
+  {
+    id: 570,
+    name: "Chicken Seekh Kebab (2 Pieces)",
+    description: "Two chicken seekh kebabs. Served with a mint sauce dip.",
+    price: 4.95,
+    category: "Starters",
+    image: starterImage1
+  },
+  {
+    id: 571,
+    name: "Chicken Tikka Starter",
+    description: "Chicken tikka starter. Served with a mint sauce dip.",
+    price: 5.95,
+    category: "Starters",
+    image: starterImage2
+  },
+  {
+    id: 572,
+    name: "Shami Kebab (2 Pieces)",
+    description: "Two shami kebabs. Served with a mint sauce dip.",
+    price: 4.95,
+    category: "Starters",
+    image: starterImage1
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -1767,6 +1839,8 @@ export const allItems = [
   ...garlicBreadItems,
   ...loadedFriesItems,
   ...wrapItems,
+  ...naanBreadItems,
+  ...starterItems,
   ...upsellItems,
   ...offerItems
 ];
@@ -1781,6 +1855,8 @@ export const menuCategories = [
   "Garlic Bread",
   "Loaded Fries",
   "Wraps",
+  "Naan Breads",
+  "Starters",
   "Sides",
   "Desserts",
   "Drinks"
