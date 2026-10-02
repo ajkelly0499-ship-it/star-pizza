@@ -2064,6 +2064,46 @@ export const fondueItems: MenuItem[] = [
   }
 ];
 
+const kidsImage1 =
+  "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=1200&q=85";
+const kidsImage2 =
+  "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=85";
+
+export const kidsItems: MenuItem[] = [
+  {
+    id: 700,
+    name: "Kids 4 Chicken Strips",
+    description: "4 chicken strips served with fries and a sugar-free soft drink can 330ml.",
+    price: 6.5,
+    category: "Kids Menu",
+    image: kidsImage1
+  },
+  {
+    id: 701,
+    name: "Kids 4 Nuggets",
+    description: "4 chicken nuggets served with fries and a sugar-free soft drink can 330ml.",
+    price: 5.95,
+    category: "Kids Menu",
+    image: kidsImage1
+  },
+  {
+    id: 702,
+    name: "Kids 4 Fish Fingers",
+    description: "4 fish fingers served with fries and a sugar-free soft drink can 330ml.",
+    price: 5.95,
+    category: "Kids Menu",
+    image: kidsImage1
+  },
+  {
+    id: 703,
+    name: "Kids Cheese Burger",
+    description: "Cheese burger served with fries and a sugar-free soft drink can 330ml.",
+    price: 6.5,
+    category: "Kids Menu",
+    image: kidsImage2
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -2170,6 +2210,7 @@ export const allItems = [
   ...cookieDoughItems,
   ...brownieItems,
   ...fondueItems,
+  ...kidsItems,
   ...upsellItems,
   ...offerItems
 ];
@@ -2192,5 +2233,6 @@ export const menuCategories = [
   "Cookie Dough",
   "Brownies",
   "Fondue",
+  "Kids Menu",
   "Drinks"
 ];
