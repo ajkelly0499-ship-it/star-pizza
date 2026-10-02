@@ -1612,6 +1612,63 @@ export const loadedFriesItems: MenuItem[] = [
   }
 ];
 
+const wrapImage1 =
+  "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=1200&q=85";
+const wrapImage2 =
+  "https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=1200&q=85";
+
+export const wrapItems: MenuItem[] = [
+  {
+    id: 540,
+    name: "Veggie Wrap",
+    description: "Filled with crispy lettuce, red onions & mayonnaise. Includes a sugar-free soft drink can.",
+    price: 5.5,
+    category: "Wraps",
+    image: wrapImage1
+  },
+  {
+    id: 541,
+    name: "Doner Wrap",
+    description: "Filled with crispy lettuce, red onions & mayonnaise. Includes a sugar-free soft drink can.",
+    price: 5.75,
+    category: "Wraps",
+    image: wrapImage2
+  },
+  {
+    id: 542,
+    name: "Seesh Wrap",
+    description: "Filled with crispy lettuce, red onions & mayonnaise. Includes a sugar-free soft drink can.",
+    price: 6,
+    category: "Wraps",
+    image: wrapImage1
+  },
+  {
+    id: 543,
+    name: "Chicken Wrap",
+    description: "Filled with crispy lettuce, red onions & mayonnaise. Includes a sugar-free soft drink can.",
+    price: 6,
+    category: "Wraps",
+    image: wrapImage2
+  },
+  {
+    id: 544,
+    name: "Twister Wrap",
+    description: "Chicken tikka & doner meat with crispy lettuce, red onions & mayonnaise. Includes a sugar-free soft drink can.",
+    price: 7,
+    category: "Wraps",
+    badge: "Mixed",
+    image: wrapImage1
+  },
+  {
+    id: 545,
+    name: "Chicken Tikka Wrap",
+    description: "Filled with crispy lettuce, red onions & mayonnaise. Includes a sugar-free soft drink can.",
+    price: 6.25,
+    category: "Wraps",
+    image: wrapImage2
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -1709,6 +1766,7 @@ export const allItems = [
   ...sideItems,
   ...garlicBreadItems,
   ...loadedFriesItems,
+  ...wrapItems,
   ...upsellItems,
   ...offerItems
 ];
@@ -1722,6 +1780,7 @@ export const menuCategories = [
   "Chicken",
   "Garlic Bread",
   "Loaded Fries",
+  "Wraps",
   "Sides",
   "Desserts",
   "Drinks"
