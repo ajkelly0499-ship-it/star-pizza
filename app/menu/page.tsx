@@ -5,7 +5,9 @@ import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
 import {
   buildYourOwnToppings,
+  burgerIncludedToppings,
   burgerItems,
+  burgerToppingOptions,
   calzoneItems,
   kebabDips,
   kebabItems,
@@ -25,6 +27,9 @@ export default function MenuPage() {
   const [selectedBuildToppings, setSelectedBuildToppings] = useState<string[]>([]);
   const [selectedKebabDips, setSelectedKebabDips] = useState<string[]>([]);
   const [kebabSalad, setKebabSalad] = useState<"standard" | "none">("standard");
+  const [removedBurgerToppings, setRemovedBurgerToppings] = useState<string[]>([]);
+  const [doubledBurgerToppings, setDoubledBurgerToppings] = useState<string[]>([]);
+  const [addedBurgerToppings, setAddedBurgerToppings] = useState<string[]>([]);
   const [halfOne, setHalfOne] = useState("");
   const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -74,6 +79,9 @@ export default function MenuPage() {
     setSelectedBuildToppings([]);
     setSelectedKebabDips([]);
     setKebabSalad("standard");
+    setRemovedBurgerToppings([]);
+    setDoubledBurgerToppings([]);
+    setAddedBurgerToppings([]);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -86,6 +94,9 @@ export default function MenuPage() {
     setSelectedBuildToppings([]);
     setSelectedKebabDips([]);
     setKebabSalad("standard");
+    setRemovedBurgerToppings([]);
+    setDoubledBurgerToppings([]);
+    setAddedBurgerToppings([]);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -100,6 +111,12 @@ export default function MenuPage() {
   const isHalfAndHalf = selectedItem?.name === "Half and Half";
   const isSpecialPizza = isDiyPizza || isHalfAndHalf;
   const isKebab = selectedItem?.category === "Kebabs";
+  const isBurger = selectedItem?.category === "Burgers";
+  const includedBurgerToppings =
+    isBurger && selectedItem ? burgerIncludedToppings[selectedItem.id] ?? [] : [];
+  const burgerAvailableExtras = burgerToppingOptions.filter(
+    (topping) => topping.standard !== false && !includedBurgerToppings.includes(topping.label)
+  );
   const hasKebabSalad =
     isKebab &&
     Boolean(
@@ -115,7 +132,17 @@ export default function MenuPage() {
     .filter((dip) => selectedKebabDips.includes(dip.id))
     .reduce((sum, dip) => sum + dip.price, 0);
 
-  const unitPrice = baseUnitPrice + toppingTotal + kebabDipTotal;
+  const burgerDoubleTotal = doubledBurgerToppings.reduce((sum, label) => {
+    const topping = burgerToppingOptions.find((option) => option.label === label);
+    return sum + (topping?.price ?? 0);
+  }, 0);
+
+  const burgerExtraTotal = burgerToppingOptions
+    .filter((topping) => addedBurgerToppings.includes(topping.id))
+    .reduce((sum, topping) => sum + topping.price, 0);
+
+  const unitPrice =
+    baseUnitPrice + toppingTotal + kebabDipTotal + burgerDoubleTotal + burgerExtraTotal;
   const modalTotal = unitPrice * quantity;
 
   const halfPizzaChoices = menuItems.filter(
@@ -165,6 +192,38 @@ export default function MenuPage() {
     );
   };
 
+  const setBurgerToppingChoice = (
+    label: string,
+    choice: "keep" | "remove" | "double"
+  ) => {
+    if (choice === "keep") {
+      setRemovedBurgerToppings((current) => current.filter((item) => item !== label));
+      setDoubledBurgerToppings((current) => current.filter((item) => item !== label));
+      return;
+    }
+
+    if (choice === "remove") {
+      setRemovedBurgerToppings((current) =>
+        current.includes(label) ? current : [...current, label]
+      );
+      setDoubledBurgerToppings((current) => current.filter((item) => item !== label));
+      return;
+    }
+
+    setDoubledBurgerToppings((current) =>
+      current.includes(label) ? current : [...current, label]
+    );
+    setRemovedBurgerToppings((current) => current.filter((item) => item !== label));
+  };
+
+  const toggleBurgerExtra = (id: string) => {
+    setAddedBurgerToppings((current) =>
+      current.includes(id)
+        ? current.filter((toppingId) => toppingId !== id)
+        : [...current, id]
+    );
+  };
+
   const addConfiguredProduct = () => {
     if (!selectedItem) return;
 
@@ -198,12 +257,32 @@ export default function MenuPage() {
         ]
       : [];
 
+    const burgerOptions = isBurger
+      ? [
+          ...removedBurgerToppings.map((label) => `No ${label}`),
+          ...doubledBurgerToppings.map((label) => {
+            const topping = burgerToppingOptions.find((option) => option.label === label);
+            return topping && topping.price > 0
+              ? `Double ${label} (+£${topping.price.toFixed(2)})`
+              : `Double ${label}`;
+          }),
+          ...burgerToppingOptions
+            .filter((topping) => addedBurgerToppings.includes(topping.id))
+            .map((topping) =>
+              topping.price > 0
+                ? `Add ${topping.label} (+£${topping.price.toFixed(2)})`
+                : `Add ${topping.label}`
+            )
+        ]
+      : [];
+
     const options = [
       ...(chosenVariant ? [chosenVariant.label] : []),
       ...halfOptions,
       ...includedBuildOptions,
       ...extraToppingOptions,
       ...kebabOptions,
+      ...burgerOptions,
       ...(notes.trim() ? [`Note: ${notes.trim()}`] : [])
     ];
 
@@ -709,6 +788,104 @@ export default function MenuPage() {
                               <strong>{dip.label}</strong>
                             </span>
                             <span>+£{dip.price.toFixed(2)}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {isBurger && (
+                <>
+                  <div className="product-option-group">
+                    <div className="product-option-heading">
+                      <div>
+                        <strong>Make it yours</strong>
+                        <span>Included toppings</span>
+                      </div>
+                      <small>Keep, remove or double</small>
+                    </div>
+
+                    <p className="product-option-helper">
+                      Every burger comes with crispy lettuce and red onions, plus the toppings listed for this burger.
+                    </p>
+
+                    <div className="burger-topping-list">
+                      {includedBurgerToppings.map((label) => {
+                        const isRemoved = removedBurgerToppings.includes(label);
+                        const isDoubled = doubledBurgerToppings.includes(label);
+                        const topping = burgerToppingOptions.find((option) => option.label === label);
+
+                        return (
+                          <div className="burger-topping-row" key={label}>
+                            <div>
+                              <strong>{label}</strong>
+                              {topping && topping.price > 0 && (
+                                <small>Double +£{topping.price.toFixed(2)}</small>
+                              )}
+                            </div>
+
+                            <div className="burger-topping-actions">
+                              <button
+                                type="button"
+                                className={!isRemoved && !isDoubled ? "active" : ""}
+                                onClick={() => setBurgerToppingChoice(label, "keep")}
+                              >
+                                Keep
+                              </button>
+                              <button
+                                type="button"
+                                className={isRemoved ? "active" : ""}
+                                onClick={() => setBurgerToppingChoice(label, "remove")}
+                              >
+                                Remove
+                              </button>
+                              <button
+                                type="button"
+                                className={isDoubled ? "active" : ""}
+                                onClick={() => setBurgerToppingChoice(label, "double")}
+                              >
+                                Double
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="product-option-group">
+                    <div className="product-option-heading">
+                      <div>
+                        <strong>Add extra toppings</strong>
+                        <span>Optional</span>
+                      </div>
+                      <small>{addedBurgerToppings.length} selected</small>
+                    </div>
+
+                    <p className="product-option-helper">
+                      Add classic burger extras. Extra topping prices are placeholder demo prices for this prototype.
+                    </p>
+
+                    <div className="pizza-topping-grid burger-extra-grid">
+                      {burgerAvailableExtras.map((topping) => {
+                        const selected = addedBurgerToppings.includes(topping.id);
+
+                        return (
+                          <button
+                            type="button"
+                            key={topping.id}
+                            className={selected ? "selected" : ""}
+                            onClick={() => toggleBurgerExtra(topping.id)}
+                          >
+                            <span>
+                              <span className="topping-check">{selected ? "✓" : "+"}</span>
+                              <strong>{topping.label}</strong>
+                            </span>
+                            <span>
+                              {topping.price > 0 ? `+£${topping.price.toFixed(2)}` : "Free"}
+                            </span>
                           </button>
                         );
                       })}
