@@ -15,6 +15,7 @@ import {
   kebabItems,
   loadedFriesItems,
   menuCategories,
+  milkshakeItems,
   naanBreadItems,
   menuItems,
   pizzaExtraToppings,
@@ -69,6 +70,7 @@ export default function MenuPage() {
       ...wrapItems,
       ...naanBreadItems,
       ...starterItems,
+      ...milkshakeItems,
       ...sideItems
     ];
 
@@ -92,6 +94,7 @@ export default function MenuPage() {
     if (category === "Wraps") return wrapItems;
     if (category === "Naan Breads") return naanBreadItems;
     if (category === "Starters") return starterItems;
+    if (category === "Milkshakes") return milkshakeItems;
     if (category === "Sides") return sideItems;
     return [];
   }, [category, search]);
