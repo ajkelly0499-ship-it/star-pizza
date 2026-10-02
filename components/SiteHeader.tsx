@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import BrandMark from "./BrandMark";
@@ -8,6 +9,7 @@ import { useCart } from "./CartProvider";
 export default function SiteHeader({ overlay = false }: { overlay?: boolean }) {
   const pathname = usePathname();
   const { itemCount, openCart } = useCart();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const nav = [
     { href: "/menu", label: "Menu" },
@@ -48,6 +50,18 @@ export default function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             ))}
           </nav>
 
+          <button
+            className="mobile-menu-toggle"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((current) => !current)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
           <button className="basket-button" onClick={openCart}>
             <span className="basket-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -58,6 +72,25 @@ export default function SiteHeader({ overlay = false }: { overlay?: boolean }) {
             <span className="basket-count">{itemCount}</span>
           </button>
         </div>
+
+        <nav
+          className={`mobile-nav ${mobileMenuOpen ? "mobile-nav--open" : ""}`}
+          aria-label="Mobile navigation"
+        >
+          <div className="shell mobile-nav-inner">
+            {nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={pathname === item.href ? "active" : ""}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span>{item.label}</span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            ))}
+          </div>
+        </nav>
       </header>
     </>
   );
