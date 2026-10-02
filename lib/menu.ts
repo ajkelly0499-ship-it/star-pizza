@@ -2158,6 +2158,15 @@ export const upsellItems: MenuItem[] = [
     category: "Sides",
     badge: "Side",
     image: "https://images.unsplash.com/photo-1605291581926-df4bf7ee3e89?auto=format&fit=crop&w=900&q=82"
+  },
+  {
+    id: 207,
+    name: "Popcorn Chicken",
+    description: "Popcorn chicken.",
+    price: 5.7,
+    category: "Sides",
+    badge: "Side",
+    image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=900&q=82"
   }
 ];
 
