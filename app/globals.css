@@ -5373,3 +5373,36 @@ footer {
     bottom: calc(18px + env(safe-area-inset-bottom));
   }
 }
+
+
+/* DESKTOP CATEGORY RAIL — VISIBLE DRAG BAR */
+@media (min-width: 761px) {
+  .menu-category-nav-wrap {
+    padding-bottom: 5px;
+  }
+
+  .menu-category-nav-wrap .menu-category-scroll {
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #9d958b #ece7de;
+  }
+
+  .menu-category-nav-wrap .menu-category-scroll::-webkit-scrollbar {
+    display: block;
+    height: 7px;
+  }
+
+  .menu-category-nav-wrap .menu-category-scroll::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: #ece7de;
+  }
+
+  .menu-category-nav-wrap .menu-category-scroll::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #9d958b;
+  }
+
+  .menu-category-nav-wrap .menu-category-scroll::-webkit-scrollbar-thumb:hover {
+    background: #6f685f;
+  }
+}
