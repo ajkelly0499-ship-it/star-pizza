@@ -1,13 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCart, type CartLine } from "./CartProvider";
 import { upsellItems } from "../lib/menu";
 
 export default function BasketDrawer() {
   const pathname = usePathname();
+  const router = useRouter();
   const {
     lines,
     itemCount,
@@ -24,6 +25,17 @@ export default function BasketDrawer() {
 
   const [upsellOpen, setUpsellOpen] = useState(false);
   const [lastRemoved, setLastRemoved] = useState<CartLine | null>(null);
+
+  useEffect(() => {
+    if (!isOpen && !upsellOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen, upsellOpen]);
 
   const suggestions = useMemo(
     () => upsellItems.filter((item) => item.id !== 206).slice(0, 6),
@@ -48,7 +60,31 @@ export default function BasketDrawer() {
 
   const showUpsell = () => {
     closeCart();
+
+    try {
+      const alreadySeen = window.sessionStorage.getItem("star-pizza-upsell-seen") === "1";
+
+      if (alreadySeen) {
+        router.push("/checkout");
+        return;
+      }
+
+      window.sessionStorage.setItem("star-pizza-upsell-seen", "1");
+    } catch {
+      // If session storage is unavailable, still show the upsell safely.
+    }
+
     setUpsellOpen(true);
+  };
+
+  const continueToCheckout = () => {
+    setUpsellOpen(false);
+
+    try {
+      window.sessionStorage.setItem("star-pizza-upsell-seen", "1");
+    } catch {
+      // Checkout should never be blocked by storage availability.
+    }
   };
 
   return (
@@ -215,7 +251,7 @@ export default function BasketDrawer() {
               <button className="upsell-skip" onClick={() => setUpsellOpen(false)}>
                 Keep browsing
               </button>
-              <Link href="/checkout" onClick={() => setUpsellOpen(false)}>
+              <Link href="/checkout" onClick={continueToCheckout}>
                 Continue to checkout
                 <span>£{total.toFixed(2)}</span>
               </Link>
