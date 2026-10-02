@@ -8,11 +8,15 @@ import {
   burgerIncludedToppings,
   burgerItems,
   burgerToppingOptions,
+  brownieItems,
   calzoneItems,
+  cookieDoughItems,
   garlicBreadItems,
   chickenItems,
+  dessertExtraOptions,
   dessertItems,
   drinkItems,
+  fondueItems,
   kebabDips,
   kebabItems,
   loadedFriesItems,
@@ -43,6 +47,7 @@ export default function MenuPage() {
   const [selectedLoadedFriesToppings, setSelectedLoadedFriesToppings] = useState<string[]>([]);
   const [removedWrapToppings, setRemovedWrapToppings] = useState<string[]>([]);
   const [wrapFries, setWrapFries] = useState(false);
+  const [selectedDessertExtras, setSelectedDessertExtras] = useState<string[]>([]);
   const [halfOne, setHalfOne] = useState("");
   const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -74,6 +79,9 @@ export default function MenuPage() {
       ...starterItems,
       ...milkshakeItems,
       ...dessertItems,
+      ...cookieDoughItems,
+      ...brownieItems,
+      ...fondueItems,
       ...drinkItems,
       ...sideItems
     ];
@@ -100,6 +108,9 @@ export default function MenuPage() {
     if (category === "Starters") return starterItems;
     if (category === "Milkshakes") return milkshakeItems;
     if (category === "Desserts") return dessertItems;
+    if (category === "Cookie Dough") return cookieDoughItems;
+    if (category === "Brownies") return brownieItems;
+    if (category === "Fondue") return fondueItems;
     if (category === "Drinks") return drinkItems;
     if (category === "Sides") return sideItems;
     return [];
@@ -123,6 +134,7 @@ export default function MenuPage() {
     setSelectedLoadedFriesToppings([]);
     setRemovedWrapToppings([]);
     setWrapFries(false);
+    setSelectedDessertExtras([]);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -141,6 +153,7 @@ export default function MenuPage() {
     setSelectedLoadedFriesToppings([]);
     setRemovedWrapToppings([]);
     setWrapFries(false);
+    setSelectedDessertExtras([]);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -158,6 +171,9 @@ export default function MenuPage() {
   const isBurger = selectedItem?.category === "Burgers";
   const isLoadedFries = selectedItem?.category === "Loaded Fries";
   const isWrap = selectedItem?.category === "Wraps";
+  const isSweetDessert = Boolean(
+    selectedItem && ["Cookie Dough", "Brownies", "Fondue"].includes(selectedItem.category)
+  );
   const wrapIncludedToppings = ["Crispy lettuce", "Red onions", "Mayonnaise"];
   const includedBurgerToppings =
     isBurger && selectedItem ? burgerIncludedToppings[selectedItem.id] ?? [] : [];
@@ -191,6 +207,10 @@ export default function MenuPage() {
   const loadedFriesExtraTotal =
     Math.max(0, selectedLoadedFriesToppings.length - 1) * 2.85;
 
+  const dessertExtraTotal = dessertExtraOptions
+    .filter((extra) => selectedDessertExtras.includes(extra.id))
+    .reduce((sum, extra) => sum + extra.price, 0);
+
   const unitPrice =
     baseUnitPrice +
     toppingTotal +
@@ -198,7 +218,8 @@ export default function MenuPage() {
     burgerDoubleTotal +
     burgerExtraTotal +
     loadedFriesExtraTotal +
-    (isWrap && wrapFries ? 1.5 : 0);
+    (isWrap && wrapFries ? 1.5 : 0) +
+    dessertExtraTotal;
   const modalTotal = unitPrice * quantity;
 
   const halfPizzaChoices = menuItems.filter(
@@ -298,6 +319,14 @@ export default function MenuPage() {
     );
   };
 
+  const toggleDessertExtra = (id: string) => {
+    setSelectedDessertExtras((current) =>
+      current.includes(id)
+        ? current.filter((extraId) => extraId !== id)
+        : [...current, id]
+    );
+  };
+
   const addConfiguredProduct = () => {
     if (!selectedItem) return;
 
@@ -365,6 +394,12 @@ export default function MenuPage() {
         ]
       : [];
 
+    const dessertExtraSelections = isSweetDessert
+      ? dessertExtraOptions
+          .filter((extra) => selectedDessertExtras.includes(extra.id))
+          .map((extra) => `Extra: ${extra.label} (+£${extra.price.toFixed(2)})`)
+      : [];
+
     const options = [
       ...(chosenVariant ? [chosenVariant.label] : []),
       ...halfOptions,
@@ -374,6 +409,7 @@ export default function MenuPage() {
       ...burgerOptions,
       ...loadedFriesOptions,
       ...wrapOptions,
+      ...dessertExtraSelections,
       ...(notes.trim() ? [`Note: ${notes.trim()}`] : [])
     ];
 
@@ -486,6 +522,11 @@ export default function MenuPage() {
                     All starters are served with a mint sauce dip.
                   </p>
                 )}
+                {!search && category === "Cookie Dough" && (
+                  <p className="menu-category-note">
+                    All cookie doughs are freshly baked and served with Italian vanilla gelato.
+                  </p>
+                )}
               </div>
               <span className="menu-result-count">
                 {visibleItems.length} {visibleItems.length === 1 ? "item" : "items"}
@@ -517,7 +558,7 @@ export default function MenuPage() {
                         <span>
                           {item.variants
                             ? "Choose size"
-                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers" || item.category === "Loaded Fries" || item.category === "Wraps"
+                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers" || item.category === "Loaded Fries" || item.category === "Wraps" || item.category === "Cookie Dough" || item.category === "Brownies" || item.category === "Fondue"
                               ? "Customise"
                               : "Add to order"}
                         </span>
@@ -1124,6 +1165,43 @@ export default function MenuPage() {
                     </p>
                   </div>
                 </>
+              )}
+
+              {isSweetDessert && (
+                <div className="product-option-group">
+                  <div className="product-option-heading">
+                    <div>
+                      <strong>Make it extra</strong>
+                      <span>Optional dessert upgrades</span>
+                    </div>
+                    <small>{selectedDessertExtras.length} selected</small>
+                  </div>
+
+                  <p className="product-option-helper">
+                    Add an extra scoop or finish it with something indulgent. Prices below are prototype upsell prices to confirm with Star Pizza.
+                  </p>
+
+                  <div className="pizza-topping-grid">
+                    {dessertExtraOptions.map((extra) => {
+                      const selected = selectedDessertExtras.includes(extra.id);
+
+                      return (
+                        <button
+                          type="button"
+                          key={extra.id}
+                          className={selected ? "selected" : ""}
+                          onClick={() => toggleDessertExtra(extra.id)}
+                        >
+                          <span>
+                            <span className="topping-check">{selected ? "✓" : "+"}</span>
+                            <strong>{extra.label}</strong>
+                          </span>
+                          <span>+£{extra.price.toFixed(2)}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               )}
 
               <div className="product-option-group">
