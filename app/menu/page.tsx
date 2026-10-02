@@ -6,6 +6,8 @@ import { useCart } from "../../components/CartProvider";
 import {
   buildYourOwnToppings,
   calzoneItems,
+  kebabDips,
+  kebabItems,
   menuCategories,
   menuItems,
   pizzaExtraToppings,
@@ -20,6 +22,8 @@ export default function MenuPage() {
   const [notes, setNotes] = useState("");
   const [selectedToppings, setSelectedToppings] = useState<string[]>([]);
   const [selectedBuildToppings, setSelectedBuildToppings] = useState<string[]>([]);
+  const [selectedKebabDips, setSelectedKebabDips] = useState<string[]>([]);
+  const [kebabSalad, setKebabSalad] = useState<"standard" | "none">("standard");
   const [halfOne, setHalfOne] = useState("");
   const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -37,7 +41,7 @@ export default function MenuPage() {
 
   const visibleItems = useMemo(() => {
     const query = search.trim().toLowerCase();
-    const catalogue = [...menuItems, ...calzoneItems];
+    const catalogue = [...menuItems, ...calzoneItems, ...kebabItems];
 
     if (query) {
       return catalogue.filter((item) =>
@@ -51,6 +55,7 @@ export default function MenuPage() {
     if (category === "Popular") return menuItems.filter((item) => item.featured);
     if (category === "Pizzas") return menuItems;
     if (category === "Calzones") return calzoneItems;
+    if (category === "Kebabs") return kebabItems;
     return [];
   }, [category, search]);
 
@@ -60,6 +65,8 @@ export default function MenuPage() {
     setNotes("");
     setSelectedToppings([]);
     setSelectedBuildToppings([]);
+    setSelectedKebabDips([]);
+    setKebabSalad("standard");
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -70,6 +77,8 @@ export default function MenuPage() {
     setNotes("");
     setSelectedToppings([]);
     setSelectedBuildToppings([]);
+    setSelectedKebabDips([]);
+    setKebabSalad("standard");
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -83,12 +92,23 @@ export default function MenuPage() {
   const buildToppingLimit = isDiyPizza ? 4 : isDiyCalzone ? 3 : 0;
   const isHalfAndHalf = selectedItem?.name === "Half and Half";
   const isSpecialPizza = isDiyPizza || isHalfAndHalf;
+  const isKebab = selectedItem?.category === "Kebabs";
+  const hasKebabSalad =
+    isKebab &&
+    Boolean(
+      selectedItem?.description.toLowerCase().includes("salad") ||
+      selectedItem?.description.toLowerCase().includes("lettuce")
+    );
 
   const toppingTotal = pizzaExtraToppings
     .filter((topping) => selectedToppings.includes(topping.id))
     .reduce((sum, topping) => sum + topping.price, 0);
 
-  const unitPrice = baseUnitPrice + toppingTotal;
+  const kebabDipTotal = kebabDips
+    .filter((dip) => selectedKebabDips.includes(dip.id))
+    .reduce((sum, dip) => sum + dip.price, 0);
+
+  const unitPrice = baseUnitPrice + toppingTotal + kebabDipTotal;
   const modalTotal = unitPrice * quantity;
 
   const halfPizzaChoices = menuItems.filter(
@@ -130,6 +150,14 @@ export default function MenuPage() {
     });
   };
 
+  const toggleKebabDip = (id: string) => {
+    setSelectedKebabDips((current) =>
+      current.includes(id)
+        ? current.filter((dipId) => dipId !== id)
+        : [...current, id]
+    );
+  };
+
   const addConfiguredProduct = () => {
     if (!selectedItem) return;
 
@@ -154,11 +182,21 @@ export default function MenuPage() {
         ]
       : [];
 
+    const kebabOptions = isKebab
+      ? [
+          ...(hasKebabSalad && kebabSalad === "none" ? ["No salad"] : []),
+          ...kebabDips
+            .filter((dip) => selectedKebabDips.includes(dip.id))
+            .map((dip) => `Dip: ${dip.label} (+£${dip.price.toFixed(2)})`)
+        ]
+      : [];
+
     const options = [
       ...(chosenVariant ? [chosenVariant.label] : []),
       ...halfOptions,
       ...includedBuildOptions,
       ...extraToppingOptions,
+      ...kebabOptions,
       ...(notes.trim() ? [`Note: ${notes.trim()}`] : [])
     ];
 
@@ -279,7 +317,7 @@ export default function MenuPage() {
                         <span>
                           {item.variants
                             ? "Choose size"
-                            : item.category === "Calzones"
+                            : item.category === "Calzones" || item.category === "Kebabs"
                               ? "Customise"
                               : "Add to order"}
                         </span>
@@ -584,6 +622,87 @@ export default function MenuPage() {
                     })}
                   </div>
                 </div>
+              )}
+
+              {isKebab && (
+                <>
+                  {hasKebabSalad && (
+                    <div className="product-option-group">
+                      <div className="product-option-heading">
+                        <div>
+                          <strong>Salad</strong>
+                          <span>Included</span>
+                        </div>
+                        <small>Choose 1</small>
+                      </div>
+
+                      <div className="kebab-choice-grid">
+                        <button
+                          type="button"
+                          className={kebabSalad === "standard" ? "selected" : ""}
+                          onClick={() => setKebabSalad("standard")}
+                        >
+                          <span className="topping-check">
+                            {kebabSalad === "standard" ? "✓" : ""}
+                          </span>
+                          <span>
+                            <strong>As served</strong>
+                            <small>Keep the salad listed with this kebab.</small>
+                          </span>
+                        </button>
+
+                        <button
+                          type="button"
+                          className={kebabSalad === "none" ? "selected" : ""}
+                          onClick={() => setKebabSalad("none")}
+                        >
+                          <span className="topping-check">
+                            {kebabSalad === "none" ? "✓" : ""}
+                          </span>
+                          <span>
+                            <strong>No salad</strong>
+                            <small>Leave the salad off.</small>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="product-option-group">
+                    <div className="product-option-heading">
+                      <div>
+                        <strong>Add a dip</strong>
+                        <span>Optional</span>
+                      </div>
+                      <small>{selectedKebabDips.length} selected</small>
+                    </div>
+
+                    <p className="product-option-helper">
+                      Add any published Star Pizza dip for £1.20 each.
+                    </p>
+
+                    <div className="pizza-topping-grid">
+                      {kebabDips.map((dip) => {
+                        const selected = selectedKebabDips.includes(dip.id);
+
+                        return (
+                          <button
+                            type="button"
+                            key={dip.id}
+                            className={selected ? "selected" : ""}
+                            onClick={() => toggleKebabDip(dip.id)}
+                          >
+                            <span>
+                              <span className="topping-check">{selected ? "✓" : "+"}</span>
+                              <strong>{dip.label}</strong>
+                            </span>
+                            <span>+£{dip.price.toFixed(2)}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
               )}
 
               <div className="product-option-group">
