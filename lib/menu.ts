@@ -1741,6 +1741,66 @@ export const starterItems: MenuItem[] = [
   }
 ];
 
+const milkshakeImage1 =
+  "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=1200&q=85";
+const milkshakeImage2 =
+  "https://images.unsplash.com/photo-1568901839119-631418a3910d?auto=format&fit=crop&w=1200&q=85";
+const milkshakeImage3 =
+  "https://images.unsplash.com/photo-1627998691167-4dab0dfcae31?auto=format&fit=crop&w=1200&q=85";
+
+export const milkshakeItems: MenuItem[] = [
+  { id: 580, name: "Brownie Milkshake", description: "Brownie milkshake.", price: 7.45, category: "Milkshakes", image: milkshakeImage1 },
+  { id: 581, name: "Lindor Milkshake", description: "Lindor milkshake.", price: 7.45, category: "Milkshakes", image: milkshakeImage2 },
+  { id: 582, name: "Flake Milkshake", description: "Flake milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage3 },
+  { id: 583, name: "Strawberry Milkshake", description: "Strawberry milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage1 },
+  { id: 584, name: "Vanilla Milkshake", description: "Vanilla milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage2 },
+  {
+    id: 585,
+    name: "Star’s Favourite Milkshake",
+    description: "Jammie Dodgers, Milkybar & strawberries.",
+    price: 7.45,
+    category: "Milkshakes",
+    badge: "Star favourite",
+    image: milkshakeImage3
+  },
+  { id: 586, name: "Bischoff Milkshake", description: "Bischoff milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage1 },
+  { id: 587, name: "Snickers Milkshake", description: "Snickers milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage2 },
+  { id: 588, name: "Ferrero Rocher Milkshake", description: "Ferrero Rocher milkshake.", price: 7.45, category: "Milkshakes", image: milkshakeImage3 },
+  { id: 589, name: "Terry’s Orange Milkshake", description: "Terry’s Orange milkshake.", price: 7.45, category: "Milkshakes", image: milkshakeImage1 },
+  { id: 590, name: "Banana Milkshake", description: "Banana milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage2 },
+  {
+    id: 591,
+    name: "Nutty Professor Milkshake",
+    description: "Snickers & banana.",
+    price: 7.45,
+    category: "Milkshakes",
+    image: milkshakeImage3
+  },
+  { id: 592, name: "Strawnana Milkshake", description: "Strawberry & banana milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage1 },
+  {
+    id: 593,
+    name: "Cloud Nine Milkshake",
+    description: "Kinder Bueno, Oreos & strawberries.",
+    price: 7.45,
+    category: "Milkshakes",
+    badge: "Loaded",
+    image: milkshakeImage2
+  },
+  {
+    id: 594,
+    name: "The Baller Milkshake",
+    description: "Ferrero Rocher, strawberries, milk chocolate sauce & Cadbury's Flake.",
+    price: 8.45,
+    category: "Milkshakes",
+    badge: "Loaded",
+    image: milkshakeImage3
+  },
+  { id: 595, name: "Jammie Dodger Milkshake", description: "Jammie Dodger milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage1 },
+  { id: 596, name: "Kinder Milkshake", description: "Kinder milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage2 },
+  { id: 597, name: "Oreo Milkshake", description: "Oreo milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage3 },
+  { id: 598, name: "Milkybar Milkshake", description: "Milkybar milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage1 }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -1841,6 +1901,7 @@ export const allItems = [
   ...wrapItems,
   ...naanBreadItems,
   ...starterItems,
+  ...milkshakeItems,
   ...upsellItems,
   ...offerItems
 ];
@@ -1857,6 +1918,7 @@ export const menuCategories = [
   "Wraps",
   "Naan Breads",
   "Starters",
+  "Milkshakes",
   "Sides",
   "Desserts",
   "Drinks"
