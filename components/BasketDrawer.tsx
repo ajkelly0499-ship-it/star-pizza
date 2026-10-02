@@ -2,10 +2,12 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCart, type CartLine } from "./CartProvider";
 import { upsellItems } from "../lib/menu";
 
 export default function BasketDrawer() {
+  const pathname = usePathname();
   const {
     lines,
     itemCount,
@@ -48,7 +50,7 @@ export default function BasketDrawer() {
 
   return (
     <>
-      {itemCount > 0 && (
+      {itemCount > 0 && pathname !== "/checkout" && (
         <button className="mobile-cart-bar" onClick={openCart}>
           <span>{itemCount} {itemCount === 1 ? "item" : "items"}</span>
           <strong>View basket</strong>
