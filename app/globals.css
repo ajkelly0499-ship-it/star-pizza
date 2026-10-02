@@ -4705,3 +4705,158 @@ footer {
     max-height: 90px;
   }
 }
+
+
+/* MOBILE UPSELL — compact three-item checkout booster
+   Desktop upsell remains unchanged. */
+@media (max-width: 640px) {
+  .upsell-backdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .upsell-modal {
+    width: 100%;
+    max-height: 90dvh;
+    padding: 22px 18px calc(14px + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .upsell-heading {
+    padding-right: 42px;
+    margin-bottom: 14px;
+  }
+
+  .upsell-heading .kicker {
+    font-size: 9px;
+  }
+
+  .upsell-heading h2 {
+    margin: 5px 0 5px;
+    font-size: 31px;
+    line-height: 0.98;
+  }
+
+  .upsell-heading p {
+    margin: 0;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .upsell-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+    overflow: visible;
+    padding: 0;
+  }
+
+  .upsell-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 86px;
+    display: grid;
+    grid-template-columns: 86px minmax(0, 1fr);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--white);
+    scroll-snap-align: none;
+  }
+
+  .upsell-card:nth-child(n + 4) {
+    display: none;
+  }
+
+  .upsell-card-image {
+    width: 86px;
+    height: 86px;
+    aspect-ratio: auto;
+  }
+
+  .upsell-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .upsell-card-image > span {
+    display: none;
+  }
+
+  .upsell-card-copy {
+    min-height: 86px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr;
+    align-items: center;
+    gap: 4px 10px;
+    padding: 11px 12px;
+  }
+
+  .upsell-card-copy h3 {
+    grid-column: 1;
+    margin: 0;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .upsell-card-copy p {
+    display: none;
+  }
+
+  .upsell-card-copy .upsell-card-bottom {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .upsell-card-bottom > strong {
+    font-size: 11px;
+  }
+
+  .upsell-add,
+  .upsell-quantity {
+    min-height: 34px;
+  }
+
+  .upsell-add {
+    padding: 0 12px;
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+
+  .upsell-quantity {
+    width: 104px;
+  }
+
+  .upsell-actions {
+    position: sticky;
+    bottom: calc(-14px - env(safe-area-inset-bottom));
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+    margin: 14px -18px calc(-14px - env(safe-area-inset-bottom));
+    padding: 12px 18px calc(14px + env(safe-area-inset-bottom));
+    background: rgba(255,253,248,0.98);
+    border-top: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+  }
+
+  .upsell-actions > a {
+    min-height: 50px;
+  }
+
+  .upsell-skip {
+    order: 2;
+    justify-self: center;
+    min-height: 30px;
+  }
+}
