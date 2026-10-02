@@ -9,6 +9,7 @@ import {
   burgerItems,
   burgerToppingOptions,
   calzoneItems,
+  chickenItems,
   kebabDips,
   kebabItems,
   menuCategories,
@@ -48,7 +49,7 @@ export default function MenuPage() {
 
   const visibleItems = useMemo(() => {
     const query = search.trim().toLowerCase();
-    const catalogue = [...menuItems, ...calzoneItems, ...kebabItems, ...burgerItems];
+    const catalogue = [...menuItems, ...calzoneItems, ...kebabItems, ...burgerItems, ...chickenItems];
 
     if (query) {
       return catalogue.filter((item) =>
@@ -64,6 +65,7 @@ export default function MenuPage() {
     if (category === "Calzones") return calzoneItems;
     if (category === "Kebabs") return kebabItems;
     if (category === "Burgers") return burgerItems;
+    if (category === "Chicken") return chickenItems;
     return [];
   }, [category, search]);
 
