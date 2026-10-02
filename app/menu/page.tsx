@@ -15,6 +15,7 @@ import {
   menuCategories,
   menuItems,
   pizzaExtraToppings,
+  sideItems,
   type MenuItem
 } from "../../lib/menu";
 
@@ -49,7 +50,7 @@ export default function MenuPage() {
 
   const visibleItems = useMemo(() => {
     const query = search.trim().toLowerCase();
-    const catalogue = [...menuItems, ...calzoneItems, ...kebabItems, ...burgerItems, ...chickenItems];
+    const catalogue = [...menuItems, ...calzoneItems, ...kebabItems, ...burgerItems, ...chickenItems, ...sideItems];
 
     if (query) {
       return catalogue.filter((item) =>
@@ -66,6 +67,7 @@ export default function MenuPage() {
     if (category === "Kebabs") return kebabItems;
     if (category === "Burgers") return burgerItems;
     if (category === "Chicken") return chickenItems;
+    if (category === "Sides") return sideItems;
     return [];
   }, [category, search]);
 
