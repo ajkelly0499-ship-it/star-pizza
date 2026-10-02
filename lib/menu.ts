@@ -1801,6 +1801,184 @@ export const milkshakeItems: MenuItem[] = [
   { id: 598, name: "Milkybar Milkshake", description: "Milkybar milkshake.", price: 6.45, category: "Milkshakes", image: milkshakeImage1 }
 ];
 
+const dessertImage1 =
+  "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=85";
+const dessertImage2 =
+  "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=1200&q=85";
+const drinkImage1 =
+  "https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?auto=format&fit=crop&w=1200&q=85";
+const drinkImage2 =
+  "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=1200&q=85";
+
+export const dessertItems: MenuItem[] = [
+  {
+    id: 600,
+    name: "Tiramisu",
+    description: "Traditional tiramisu made with Savoy biscuits, coffee and mascarpone cream.",
+    price: 7.45,
+    category: "Desserts",
+    image: dessertImage2
+  },
+  {
+    id: 601,
+    name: "Jam & Coconut Sponge Pudding",
+    description: "Served with hot custard.",
+    price: 5.95,
+    category: "Desserts",
+    image: dessertImage1
+  },
+  {
+    id: 602,
+    name: "Italian Chocolate Fudge Cake",
+    description: "Italian chocolate fudge cake.",
+    price: 4.5,
+    category: "Desserts",
+    image: dessertImage1
+  },
+  {
+    id: 603,
+    name: "The Matilda Cake!",
+    description: "7 layers of signature chocolate sponge sandwiched with a soft set milk chocolate ganache.",
+    price: 6.45,
+    category: "Desserts",
+    badge: "7 layers",
+    image: dessertImage1
+  },
+  {
+    id: 604,
+    name: "Sticky Toffee Pudding",
+    description: "Served with hot custard or Italian vanilla gelato.",
+    price: 5.99,
+    category: "Desserts",
+    image: dessertImage2
+  },
+  {
+    id: 605,
+    name: "Apple Crumble",
+    description: "Served with hot custard or Italian vanilla gelato.",
+    price: 5.99,
+    category: "Desserts",
+    image: dessertImage2
+  }
+];
+
+export const drinkItems: MenuItem[] = [
+  {
+    id: 620,
+    name: "Sprite Lemon Lime 330ml Can",
+    description: "Sparkling lemon-lime low calorie soft drink.",
+    price: 2.5,
+    category: "Drinks",
+    image: drinkImage1
+  },
+  {
+    id: 621,
+    name: "Fanta Lemon 330ml Can",
+    description: "Sparkling lemon fruit drink.",
+    price: 2.5,
+    category: "Drinks",
+    image: drinkImage2
+  },
+  {
+    id: 622,
+    name: "Fanta Orange 1.25L Bottle",
+    description: "Sparkling orange fruit drink.",
+    price: 4.5,
+    category: "Drinks",
+    image: drinkImage1
+  },
+  {
+    id: 623,
+    name: "Diet Coke 1.5L Bottle",
+    description: "Low calorie cola soft drink.",
+    price: 4.5,
+    category: "Drinks",
+    image: drinkImage2
+  },
+  {
+    id: 624,
+    name: "Fanta Orange 330ml Can",
+    description: "Sparkling orange fruit drink.",
+    price: 2.5,
+    category: "Drinks",
+    image: drinkImage1
+  },
+  {
+    id: 625,
+    name: "Pepsi Max 330ml",
+    description: "Sugar-free cola soft drink.",
+    price: 2.5,
+    category: "Drinks",
+    image: drinkImage2
+  },
+  {
+    id: 626,
+    name: "Red Bull Energy Drink 4 x 250ml",
+    description: "Four 250ml cans of Red Bull Energy Drink.",
+    price: 8.45,
+    category: "Drinks",
+    badge: "4 pack",
+    image: drinkImage1
+  },
+  {
+    id: 627,
+    name: "Dr Pepper 330ml Can",
+    description: "Sparkling fruit flavour soft drink.",
+    price: 2.5,
+    category: "Drinks",
+    image: drinkImage2
+  },
+  {
+    id: 628,
+    name: "Red Bull Energy Drink 8 x 250ml",
+    description: "Eight 250ml cans of Red Bull Energy Drink.",
+    price: 13.95,
+    category: "Drinks",
+    badge: "8 pack",
+    image: drinkImage1
+  },
+  {
+    id: 629,
+    name: "Coca-Cola Original Taste 330ml",
+    description: "Sparkling cola soft drink.",
+    price: 2.5,
+    category: "Drinks",
+    image: drinkImage2
+  },
+  {
+    id: 630,
+    name: "Mineral Water",
+    description: "Mineral water.",
+    price: 2,
+    category: "Drinks",
+    image: drinkImage1
+  },
+  {
+    id: 631,
+    name: "Pepsi 330ml",
+    description: "Cola flavoured soft drink.",
+    price: 2.5,
+    category: "Drinks",
+    image: drinkImage2
+  },
+  {
+    id: 632,
+    name: "Red Bull Energy Drink Can",
+    description: "Red Bull Energy Drink can.",
+    price: 2.65,
+    category: "Drinks",
+    image: drinkImage1
+  },
+  {
+    id: 633,
+    name: "Large Drink Bottle - Coca-Cola",
+    description: "Large bottle of Coca-Cola.",
+    price: 4.5,
+    category: "Drinks",
+    image: drinkImage2
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -1902,6 +2080,8 @@ export const allItems = [
   ...naanBreadItems,
   ...starterItems,
   ...milkshakeItems,
+  ...dessertItems,
+  ...drinkItems,
   ...upsellItems,
   ...offerItems
 ];
