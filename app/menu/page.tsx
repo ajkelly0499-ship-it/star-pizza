@@ -18,6 +18,7 @@ import {
   menuItems,
   pizzaExtraToppings,
   sideItems,
+  wrapItems,
   type MenuItem
 } from "../../lib/menu";
 
@@ -35,6 +36,8 @@ export default function MenuPage() {
   const [doubledBurgerToppings, setDoubledBurgerToppings] = useState<string[]>([]);
   const [addedBurgerToppings, setAddedBurgerToppings] = useState<string[]>([]);
   const [selectedLoadedFriesToppings, setSelectedLoadedFriesToppings] = useState<string[]>([]);
+  const [removedWrapToppings, setRemovedWrapToppings] = useState<string[]>([]);
+  const [wrapFries, setWrapFries] = useState(false);
   const [halfOne, setHalfOne] = useState("");
   const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -61,6 +64,7 @@ export default function MenuPage() {
       ...chickenItems,
       ...garlicBreadItems,
       ...loadedFriesItems,
+      ...wrapItems,
       ...sideItems
     ];
 
@@ -81,6 +85,7 @@ export default function MenuPage() {
     if (category === "Chicken") return chickenItems;
     if (category === "Garlic Bread") return garlicBreadItems;
     if (category === "Loaded Fries") return loadedFriesItems;
+    if (category === "Wraps") return wrapItems;
     if (category === "Sides") return sideItems;
     return [];
   }, [category, search]);
@@ -101,6 +106,8 @@ export default function MenuPage() {
     setDoubledBurgerToppings([]);
     setAddedBurgerToppings([]);
     setSelectedLoadedFriesToppings([]);
+    setRemovedWrapToppings([]);
+    setWrapFries(false);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -117,6 +124,8 @@ export default function MenuPage() {
     setDoubledBurgerToppings([]);
     setAddedBurgerToppings([]);
     setSelectedLoadedFriesToppings([]);
+    setRemovedWrapToppings([]);
+    setWrapFries(false);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -133,6 +142,8 @@ export default function MenuPage() {
   const isKebab = selectedItem?.category === "Kebabs";
   const isBurger = selectedItem?.category === "Burgers";
   const isLoadedFries = selectedItem?.category === "Loaded Fries";
+  const isWrap = selectedItem?.category === "Wraps";
+  const wrapIncludedToppings = ["Crispy lettuce", "Red onions", "Mayonnaise"];
   const includedBurgerToppings =
     isBurger && selectedItem ? burgerIncludedToppings[selectedItem.id] ?? [] : [];
   const burgerAvailableExtras = burgerToppingOptions.filter(
@@ -171,7 +182,8 @@ export default function MenuPage() {
     kebabDipTotal +
     burgerDoubleTotal +
     burgerExtraTotal +
-    loadedFriesExtraTotal;
+    loadedFriesExtraTotal +
+    (isWrap && wrapFries ? 1.5 : 0);
   const modalTotal = unitPrice * quantity;
 
   const halfPizzaChoices = menuItems.filter(
@@ -263,6 +275,14 @@ export default function MenuPage() {
     );
   };
 
+  const toggleWrapTopping = (label: string) => {
+    setRemovedWrapToppings((current) =>
+      current.includes(label)
+        ? current.filter((item) => item !== label)
+        : [...current, label]
+    );
+  };
+
   const addConfiguredProduct = () => {
     if (!selectedItem) return;
 
@@ -323,6 +343,13 @@ export default function MenuPage() {
         )
       : [];
 
+    const wrapOptions = isWrap
+      ? [
+          ...removedWrapToppings.map((label) => `No ${label}`),
+          ...(wrapFries ? ["Add French fries (+£1.50)"] : [])
+        ]
+      : [];
+
     const options = [
       ...(chosenVariant ? [chosenVariant.label] : []),
       ...halfOptions,
@@ -331,6 +358,7 @@ export default function MenuPage() {
       ...kebabOptions,
       ...burgerOptions,
       ...loadedFriesOptions,
+      ...wrapOptions,
       ...(notes.trim() ? [`Note: ${notes.trim()}`] : [])
     ];
 
@@ -433,6 +461,11 @@ export default function MenuPage() {
                     One topping is included. Each additional topping is £2.85.
                   </p>
                 )}
+                {!search && category === "Wraps" && (
+                  <p className="menu-category-note">
+                    All wraps include crispy lettuce, red onions, mayonnaise and a sugar-free soft drink can. Add French fries for £1.50.
+                  </p>
+                )}
               </div>
               <span className="menu-result-count">
                 {visibleItems.length} {visibleItems.length === 1 ? "item" : "items"}
@@ -464,7 +497,7 @@ export default function MenuPage() {
                         <span>
                           {item.variants
                             ? "Choose size"
-                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers" || item.category === "Loaded Fries"
+                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers" || item.category === "Loaded Fries" || item.category === "Wraps"
                               ? "Customise"
                               : "Add to order"}
                         </span>
@@ -994,6 +1027,83 @@ export default function MenuPage() {
                     })}
                   </div>
                 </div>
+              )}
+
+              {isWrap && (
+                <>
+                  <div className="product-option-group">
+                    <div className="product-option-heading">
+                      <div>
+                        <strong>Make it yours</strong>
+                        <span>Included fillings</span>
+                      </div>
+                      <small>Remove anything you don’t want</small>
+                    </div>
+
+                    <div className="burger-topping-list">
+                      {wrapIncludedToppings.map((label) => {
+                        const removed = removedWrapToppings.includes(label);
+
+                        return (
+                          <div className="burger-topping-row" key={label}>
+                            <div>
+                              <strong>{label}</strong>
+                              <small>Included</small>
+                            </div>
+
+                            <div className="burger-topping-actions burger-topping-actions--two">
+                              <button
+                                type="button"
+                                className={!removed ? "active" : ""}
+                                onClick={() => {
+                                  if (removed) toggleWrapTopping(label);
+                                }}
+                              >
+                                Keep
+                              </button>
+                              <button
+                                type="button"
+                                className={removed ? "active" : ""}
+                                onClick={() => {
+                                  if (!removed) toggleWrapTopping(label);
+                                }}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="product-option-group">
+                    <div className="product-option-heading">
+                      <div>
+                        <strong>Add French fries</strong>
+                        <span>Optional</span>
+                      </div>
+                      <small>+£1.50</small>
+                    </div>
+
+                    <button
+                      type="button"
+                      className={wrapFries ? "wrap-fries-option selected" : "wrap-fries-option"}
+                      onClick={() => setWrapFries((current) => !current)}
+                    >
+                      <span className="topping-check">{wrapFries ? "✓" : "+"}</span>
+                      <span>
+                        <strong>Add French fries</strong>
+                        <small>Make it a fuller meal.</small>
+                      </span>
+                      <strong>+£1.50</strong>
+                    </button>
+
+                    <p className="product-option-helper wrap-drink-note">
+                      A sugar-free soft drink can is already included with every wrap.
+                    </p>
+                  </div>
+                </>
               )}
 
               <div className="product-option-group">
