@@ -5,6 +5,7 @@ import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
 import {
   buildYourOwnToppings,
+  burgerItems,
   calzoneItems,
   kebabDips,
   kebabItems,
@@ -42,7 +43,7 @@ export default function MenuPage() {
 
   const visibleItems = useMemo(() => {
     const query = search.trim().toLowerCase();
-    const catalogue = [...menuItems, ...calzoneItems, ...kebabItems];
+    const catalogue = [...menuItems, ...calzoneItems, ...kebabItems, ...burgerItems];
 
     if (query) {
       return catalogue.filter((item) =>
@@ -57,6 +58,7 @@ export default function MenuPage() {
     if (category === "Pizzas") return menuItems;
     if (category === "Calzones") return calzoneItems;
     if (category === "Kebabs") return kebabItems;
+    if (category === "Burgers") return burgerItems;
     return [];
   }, [category, search]);
 
@@ -291,6 +293,11 @@ export default function MenuPage() {
                   {search ? "SEARCH RESULTS" : category === "Popular" ? "CUSTOMER FAVOURITES" : "MENU"}
                 </span>
                 <h2>{search ? `Results for “${search}”` : category}</h2>
+                {!search && category === "Burgers" && (
+                  <p className="menu-category-note">
+                    All burgers are served in a toasted seeded brioche bun with crispy lettuce, red onions & fries.
+                  </p>
+                )}
               </div>
               <span className="menu-result-count">
                 {visibleItems.length} {visibleItems.length === 1 ? "item" : "items"}
@@ -322,7 +329,7 @@ export default function MenuPage() {
                         <span>
                           {item.variants
                             ? "Choose size"
-                            : item.category === "Calzones" || item.category === "Kebabs"
+                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers"
                               ? "Customise"
                               : "Add to order"}
                         </span>
