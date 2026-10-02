@@ -1232,6 +1232,110 @@ export const burgerItems: MenuItem[] = [
   }
 ];
 
+const chickenImage1 =
+  "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=1200&q=85";
+const chickenImage2 =
+  "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=1200&q=85";
+const chickenImage3 =
+  "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=1200&q=85";
+
+export const chickenItems: MenuItem[] = [
+  {
+    id: 300,
+    name: "2 Pc Chicken & Chips",
+    description: "2 pieces of southern fried chicken served with chips.",
+    price: 6.45,
+    category: "Chicken",
+    image: chickenImage1
+  },
+  {
+    id: 301,
+    name: "3 Pc Chicken, 3 Spicy Wings & Chips",
+    description: "3 pieces of chicken, 3 spicy wings & chips.",
+    price: 8.45,
+    category: "Chicken",
+    badge: "Combo",
+    image: chickenImage2
+  },
+  {
+    id: 302,
+    name: "3 Pc Chicken & Chips",
+    description: "3 pieces of southern fried chicken served with chips.",
+    price: 7.8,
+    category: "Chicken",
+    image: chickenImage1
+  },
+  {
+    id: 303,
+    name: "Superstar Box",
+    description: "10pc popcorn chicken, 4pc chicken tikka, 3pc chicken strips, chips, garlic mayo & Pepsi can.",
+    price: 10,
+    category: "Chicken",
+    badge: "Box meal",
+    image: chickenImage3
+  },
+  {
+    id: 304,
+    name: "5 Pc Strips & Chips",
+    description: "5 chicken strips served with chips.",
+    price: 7.45,
+    category: "Chicken",
+    image: chickenImage2
+  },
+  {
+    id: 305,
+    name: "6 Pc Spicy Wings & Chips",
+    description: "6 spicy wings served with chips.",
+    price: 8,
+    category: "Chicken",
+    image: chickenImage1
+  },
+  {
+    id: 306,
+    name: "2 Pc Chicken, 3 Spicy Wings & Chips",
+    description: "2 pieces of chicken, 3 spicy wings & chips.",
+    price: 7.45,
+    category: "Chicken",
+    badge: "Combo",
+    image: chickenImage2
+  },
+  {
+    id: 307,
+    name: "Full Moon Box",
+    description: "Zinger fillet burger, 5pc chicken nuggets, 5pc popcorn chicken, chips, garlic mayo & Pepsi can.",
+    price: 10,
+    category: "Chicken",
+    badge: "Box meal",
+    image: chickenImage3
+  },
+  {
+    id: 308,
+    name: "Family Bucket",
+    description: "10 pieces chicken, 5 wings, 2 chips, coleslaw, beans & bottle of soft drink.",
+    price: 22.45,
+    category: "Chicken",
+    badge: "Sharing",
+    image: chickenImage1
+  },
+  {
+    id: 309,
+    name: "Mini Bucket",
+    description: "6 pieces chicken, 4 strips, coleslaw or beans & 2 cans of Pepsi.",
+    price: 17.5,
+    category: "Chicken",
+    badge: "Sharing",
+    image: chickenImage2
+  },
+  {
+    id: 310,
+    name: "8 Pc Nuggets & Chips",
+    description: "8 chicken nuggets served with chips.",
+    price: 7.45,
+    category: "Chicken",
+    image: chickenImage3
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -1325,6 +1429,7 @@ export const allItems = [
   ...calzoneItems,
   ...kebabItems,
   ...burgerItems,
+  ...chickenItems,
   ...upsellItems,
   ...offerItems
 ];
