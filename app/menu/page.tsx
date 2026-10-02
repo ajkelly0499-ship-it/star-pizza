@@ -15,9 +15,11 @@ import {
   kebabItems,
   loadedFriesItems,
   menuCategories,
+  naanBreadItems,
   menuItems,
   pizzaExtraToppings,
   sideItems,
+  starterItems,
   wrapItems,
   type MenuItem
 } from "../../lib/menu";
@@ -65,6 +67,8 @@ export default function MenuPage() {
       ...garlicBreadItems,
       ...loadedFriesItems,
       ...wrapItems,
+      ...naanBreadItems,
+      ...starterItems,
       ...sideItems
     ];
 
@@ -86,6 +90,8 @@ export default function MenuPage() {
     if (category === "Garlic Bread") return garlicBreadItems;
     if (category === "Loaded Fries") return loadedFriesItems;
     if (category === "Wraps") return wrapItems;
+    if (category === "Naan Breads") return naanBreadItems;
+    if (category === "Starters") return starterItems;
     if (category === "Sides") return sideItems;
     return [];
   }, [category, search]);
@@ -464,6 +470,11 @@ export default function MenuPage() {
                 {!search && category === "Wraps" && (
                   <p className="menu-category-note">
                     All wraps include crispy lettuce, red onions, mayonnaise and a sugar-free soft drink can. Add French fries for £1.50.
+                  </p>
+                )}
+                {!search && category === "Starters" && (
+                  <p className="menu-category-note">
+                    All starters are served with a mint sauce dip.
                   </p>
                 )}
               </div>
