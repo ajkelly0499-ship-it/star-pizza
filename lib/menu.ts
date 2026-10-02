@@ -68,6 +68,73 @@ export type MenuItem = {
   variants?: MenuVariant[];
 };
 
+export type BurgerToppingOption = {
+  id: string;
+  label: string;
+  price: number;
+  standard?: boolean;
+};
+
+export const burgerToppingOptions: BurgerToppingOption[] = [
+  { id: "lettuce", label: "Crispy lettuce", price: 0 },
+  { id: "red-onion", label: "Red onions", price: 0 },
+  { id: "tomato", label: "Tomato", price: 0.5 },
+  { id: "pickles", label: "Pickles", price: 0.5 },
+  { id: "jalapenos", label: "Jalapeños", price: 0.7 },
+  { id: "cheese-slice", label: "Cheese slice", price: 1 },
+  { id: "mozzarella", label: "Mozzarella cheese", price: 1.2 },
+  { id: "cheddar", label: "Cheddar cheese", price: 1.2 },
+  { id: "pepperoni", label: "Pepperoni", price: 1.2 },
+  { id: "bacon", label: "Bacon", price: 1.5 },
+  { id: "hash-brown", label: "Hash brown", price: 1.2 },
+  { id: "onion-rings", label: "Onion rings", price: 1.2 },
+  { id: "fried-onions", label: "Fried onions", price: 0.8 },
+  { id: "mushrooms", label: "Mushrooms", price: 0.8 },
+  { id: "pineapple", label: "Pineapple", price: 0.8 },
+  { id: "mayo", label: "Mayo", price: 0 },
+  { id: "ketchup", label: "Ketchup", price: 0 },
+  { id: "burger-sauce", label: "Burger sauce", price: 0 },
+  { id: "garlic-mayo", label: "Garlic mayo", price: 0 },
+  { id: "bbq-sauce", label: "BBQ sauce", price: 0 },
+  { id: "hot-chilli", label: "Hot chilli sauce", price: 0 },
+  { id: "sweet-chilli", label: "Sweet chilli sauce", price: 0 },
+  { id: "mozzarella-sticks", label: "Mozzarella sticks", price: 1.5, standard: false },
+  { id: "nachos", label: "Nachos", price: 0.8, standard: false },
+  { id: "salsa", label: "Salsa", price: 0.5, standard: false },
+  { id: "chilli-con-carne", label: "Chilli con carne", price: 1.5, standard: false },
+  { id: "garlic-butter", label: "Garlic butter", price: 0.5, standard: false },
+  { id: "caramelised-onions", label: "Caramelised onions", price: 0.8, standard: false },
+  { id: "fried-egg", label: "Fried egg", price: 1.2, standard: false },
+  { id: "thousand-island", label: "1000 Island sauce", price: 0, standard: false },
+  { id: "star-special-sauce", label: "Star special sauce", price: 0, standard: false }
+];
+
+export const burgerIncludedToppings: Record<number, string[]> = {
+  70: ["Crispy lettuce", "Red onions", "Hot chilli sauce", "Mozzarella cheese", "Garlic mayo"],
+  71: ["Crispy lettuce", "Red onions", "Mozzarella cheese", "Pepperoni"],
+  72: ["Crispy lettuce", "Red onions", "Mozzarella sticks", "Mozzarella cheese"],
+  73: ["Crispy lettuce", "Red onions", "Onion rings", "Mozzarella cheese"],
+  74: ["Crispy lettuce", "Red onions", "Cheese slice"],
+  75: ["Crispy lettuce", "Red onions", "Mayo", "Cheese slice"],
+  76: ["Crispy lettuce", "Red onions", "Mozzarella cheese", "Hash brown", "Burger sauce"],
+  77: ["Crispy lettuce", "Red onions"],
+  78: ["Crispy lettuce", "Red onions", "Chilli con carne"],
+  79: ["Crispy lettuce", "Red onions", "Pineapple", "Cheddar cheese"],
+  80: ["Crispy lettuce", "Red onions", "Mozzarella cheese", "Nachos", "Salsa", "Jalapeños"],
+  81: ["Crispy lettuce", "Red onions", "Fried onions", "Mushrooms"],
+  82: ["Crispy lettuce", "Red onions", "Garlic butter"],
+  83: ["Crispy lettuce", "Red onions", "Mushrooms", "Mozzarella cheese", "Sweet chilli sauce"],
+  84: ["Crispy lettuce", "Red onions"],
+  85: ["Crispy lettuce", "Red onions", "Cheddar cheese", "Caramelised onions", "Bacon", "Fried egg", "Burger sauce"],
+  86: ["Crispy lettuce", "Red onions"],
+  87: ["Crispy lettuce", "Red onions", "Cheese slice"],
+  88: ["Crispy lettuce", "Red onions", "Fried onions", "Mushrooms"],
+  89: ["Crispy lettuce", "Red onions", "Mozzarella cheese", "1000 Island sauce"],
+  90: ["Crispy lettuce", "Red onions", "Pepperoni", "Jalapeños", "Mozzarella cheese", "Star special sauce"],
+  91: ["Crispy lettuce", "Red onions", "Cheese slice"]
+};
+
+
 const pizzaImage1 =
   "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1200&q=85";
 const pizzaImage2 =
