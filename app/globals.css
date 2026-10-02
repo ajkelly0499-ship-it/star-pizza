@@ -4608,28 +4608,36 @@ footer {
 
 /* MOBILE PIZZA / PRODUCT CUSTOMISER
    Desktop remains unchanged.
-   On phones the backdrop is the only vertical scroll container so iOS cannot
-   scroll the page behind the modal instead of the topping options. */
+   On phones the product customiser becomes a normal document page.
+   No fixed/nested scroll containers: Safari scrolls the toppings with the page. */
 @media (max-width: 760px) {
-  .product-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 120;
+  .product-open > :not(.product-modal-backdrop) {
+    display: none !important;
+  }
+
+  .product-open {
+    min-height: 100dvh;
+    background: var(--white);
+  }
+
+  .product-open .product-modal-backdrop {
+    position: static;
+    inset: auto;
+    z-index: auto;
     display: block;
+    width: 100%;
+    min-height: 100dvh;
     padding: 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-    -webkit-overflow-scrolling: touch;
+    overflow: visible;
     background: var(--white);
     backdrop-filter: none;
   }
 
-  .product-modal {
+  .product-open .product-modal {
     position: relative;
     inset: auto;
     width: 100%;
-    min-height: 100%;
+    min-height: 100dvh;
     height: auto;
     max-height: none;
     display: block;
@@ -4640,7 +4648,7 @@ footer {
     animation: none;
   }
 
-  .product-modal-image {
+  .product-open .product-modal-image {
     width: 100%;
     height: 110px;
     min-height: 110px;
@@ -4648,13 +4656,13 @@ footer {
     overflow: hidden;
   }
 
-  .product-modal-image img {
+  .product-open .product-modal-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .product-modal-content {
+  .product-open .product-modal-content {
     min-width: 0;
     min-height: 0;
     height: auto;
@@ -4662,11 +4670,11 @@ footer {
     overflow: visible;
   }
 
-  .product-modal-content h2 {
+  .product-open .product-modal-content h2 {
     font-size: 32px;
   }
 
-  .product-modal-footer {
+  .product-open .product-modal-footer {
     position: static;
     margin: 8px -22px calc(-30px - env(safe-area-inset-bottom));
     padding: 14px 22px calc(18px + env(safe-area-inset-bottom));
@@ -4674,7 +4682,7 @@ footer {
     background: var(--white);
   }
 
-  .product-modal-close {
+  .product-open .product-modal-close {
     position: fixed;
     top: calc(10px + env(safe-area-inset-top));
     right: 10px;
@@ -4682,16 +4690,16 @@ footer {
     background: rgba(255,253,248,0.96);
   }
 
-  .product-variant-list label,
-  .pizza-topping-grid > button,
-  .kebab-choice-grid > button,
-  .product-option-group textarea {
+  .product-open .product-variant-list label,
+  .product-open .pizza-topping-grid > button,
+  .product-open .kebab-choice-grid > button,
+  .product-open .product-option-group textarea {
     touch-action: manipulation;
   }
 }
 
 @media (max-width: 430px) {
-  .product-modal-image {
+  .product-open .product-modal-image {
     height: 90px;
     min-height: 90px;
     max-height: 90px;
