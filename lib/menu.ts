@@ -31,6 +31,16 @@ export const buildYourOwnToppings = [
   "Tuna"
 ];
 
+export const kebabDips = [
+  { id: "bbq", label: "BBQ", price: 1.2 },
+  { id: "chilli", label: "Chilli", price: 1.2 },
+  { id: "garlic-mayo", label: "Garlic mayo", price: 1.2 },
+  { id: "ketchup", label: "Ketchup", price: 1.2 },
+  { id: "mayo", label: "Mayo", price: 1.2 },
+  { id: "mint", label: "Mint sauce", price: 1.2 },
+  { id: "sweet-chilli", label: "Sweet chilli", price: 1.2 }
+];
+
 export const pizzaExtraToppings: PizzaExtraTopping[] = [
   { id: "extra-cheese", label: "Extra cheese", price: 1.5 },
   { id: "pepperoni", label: "Pepperoni", price: 1.5 },
@@ -746,6 +756,153 @@ export const calzoneItems: MenuItem[] = [
   }
 ];
 
+
+const kebabImage1 =
+  "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=1200&q=85";
+const kebabImage2 =
+  "https://images.unsplash.com/photo-1756362847925-71c792d6729c?auto=format&fit=crop&w=1200&q=85";
+
+export const kebabItems: MenuItem[] = [
+  {
+    id: 54,
+    name: "Regular Doner Kebab",
+    description: "In a pitta bread with salad.",
+    price: 7,
+    category: "Kebabs",
+    badge: "Pitta",
+    image: kebabImage1
+  },
+  {
+    id: 55,
+    name: "Large Doner Kebab",
+    description: "In a pitta bread with salad.",
+    price: 8.2,
+    category: "Kebabs",
+    badge: "Pitta",
+    image: kebabImage1
+  },
+  {
+    id: 56,
+    name: "Chicken Kebab",
+    description: "In a pitta bread with salad.",
+    price: 8.2,
+    category: "Kebabs",
+    badge: "Pitta",
+    image: kebabImage2
+  },
+  {
+    id: 57,
+    name: "Mixed Kebab",
+    description: "In a pitta bread with salad.",
+    price: 9.2,
+    category: "Kebabs",
+    badge: "Pitta",
+    image: kebabImage1
+  },
+  {
+    id: 58,
+    name: "Doner Meat & Chips",
+    description: "Doner meat with chips.",
+    price: 8.2,
+    category: "Kebabs",
+    image: kebabImage2
+  },
+  {
+    id: 59,
+    name: "Mixed Meat & Chips",
+    description: "Mixed meat with chips.",
+    price: 10,
+    category: "Kebabs",
+    image: kebabImage1
+  },
+  {
+    id: 60,
+    name: "Chicken Tikka & Chips",
+    description: "Chicken tikka with chips.",
+    price: 9.2,
+    category: "Kebabs",
+    image: kebabImage2
+  },
+  {
+    id: 61,
+    name: "Doner Meat Tray Small",
+    description: "Small doner meat tray.",
+    price: 6,
+    category: "Kebabs",
+    image: kebabImage1
+  },
+  {
+    id: 62,
+    name: "Doner Meat Tray Medium",
+    description: "Medium doner meat tray.",
+    price: 7,
+    category: "Kebabs",
+    image: kebabImage1
+  },
+  {
+    id: 63,
+    name: "Doner Kebab on Naan - Beef",
+    description: "Served on a naan bread with crispy lettuce & red onions.",
+    price: 8.5,
+    category: "Kebabs",
+    badge: "Naan",
+    image: kebabImage1
+  },
+  {
+    id: 64,
+    name: "Chicken Tikka Naan Kebab",
+    description: "Served on a naan bread with crispy lettuce & red onions.",
+    price: 9.5,
+    category: "Kebabs",
+    badge: "Naan",
+    image: kebabImage2
+  },
+  {
+    id: 65,
+    name: "Mixed Kebab Naan",
+    description: "Chicken tikka & doner meat. Served on a naan bread with crispy lettuce & red onions.",
+    price: 10.5,
+    category: "Kebabs",
+    badge: "Naan",
+    image: kebabImage1
+  },
+  {
+    id: 66,
+    name: "Star Special Naan Kebab",
+    description: "Chicken tikka, doner meat & chicken seekh kebab. Served on a naan bread with crispy lettuce & red onions.",
+    price: 11.5,
+    category: "Kebabs",
+    badge: "Naan",
+    image: kebabImage2
+  },
+  {
+    id: 67,
+    name: "Seekh Kebab Naan (3 Pcs)",
+    description: "Served on a naan bread with crispy lettuce & red onions.",
+    price: 9.5,
+    category: "Kebabs",
+    badge: "Naan",
+    image: kebabImage1
+  },
+  {
+    id: 68,
+    name: "Maradona Naan Kebab",
+    description: "Doner meat, chicken seekh kebab, shami kebab & chicken tikka. Served on a naan bread with crispy lettuce & red onions.",
+    price: 12.5,
+    category: "Kebabs",
+    badge: "Naan",
+    image: kebabImage2
+  },
+  {
+    id: 69,
+    name: "Notorious Naan Kebab",
+    description: "Doner meat, chicken tikka, 3 seekh kebabs, 3 shami kebabs, side salad & a selection of 3 naans: plain, cheesy and garlic.",
+    price: 30,
+    category: "Kebabs",
+    badge: "Sharing",
+    image: kebabImage1
+  }
+];
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -834,7 +991,13 @@ export const offerItems: MenuItem[] = [
   }
 ];
 
-export const allItems = [...menuItems, ...calzoneItems, ...upsellItems, ...offerItems];
+export const allItems = [
+  ...menuItems,
+  ...calzoneItems,
+  ...kebabItems,
+  ...upsellItems,
+  ...offerItems
+];
 
 export const menuCategories = [
   "Popular",
