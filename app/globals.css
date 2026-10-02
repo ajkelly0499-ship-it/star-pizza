@@ -4308,3 +4308,57 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* KEBAB CUSTOMISATION */
+.kebab-choice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.kebab-choice-grid > button {
+  min-height: 66px;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid #d8d2c8;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  text-align: left;
+}
+
+.kebab-choice-grid > button.selected {
+  border-color: var(--ink);
+  background: #fffaf0;
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+
+.kebab-choice-grid > button > span:last-child {
+  display: grid;
+  gap: 3px;
+}
+
+.kebab-choice-grid strong {
+  font-size: 10px;
+}
+
+.kebab-choice-grid small {
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.kebab-choice-grid > button.selected .topping-check {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+@media (max-width: 520px) {
+  .kebab-choice-grid {
+    grid-template-columns: 1fr;
+  }
+}
