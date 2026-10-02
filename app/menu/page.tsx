@@ -9,9 +9,11 @@ import {
   burgerItems,
   burgerToppingOptions,
   calzoneItems,
+  garlicBreadItems,
   chickenItems,
   kebabDips,
   kebabItems,
+  loadedFriesItems,
   menuCategories,
   menuItems,
   pizzaExtraToppings,
@@ -32,6 +34,7 @@ export default function MenuPage() {
   const [removedBurgerToppings, setRemovedBurgerToppings] = useState<string[]>([]);
   const [doubledBurgerToppings, setDoubledBurgerToppings] = useState<string[]>([]);
   const [addedBurgerToppings, setAddedBurgerToppings] = useState<string[]>([]);
+  const [selectedLoadedFriesToppings, setSelectedLoadedFriesToppings] = useState<string[]>([]);
   const [halfOne, setHalfOne] = useState("");
   const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -50,7 +53,16 @@ export default function MenuPage() {
 
   const visibleItems = useMemo(() => {
     const query = search.trim().toLowerCase();
-    const catalogue = [...menuItems, ...calzoneItems, ...kebabItems, ...burgerItems, ...chickenItems, ...sideItems];
+    const catalogue = [
+      ...menuItems,
+      ...calzoneItems,
+      ...kebabItems,
+      ...burgerItems,
+      ...chickenItems,
+      ...garlicBreadItems,
+      ...loadedFriesItems,
+      ...sideItems
+    ];
 
     if (query) {
       return catalogue.filter((item) =>
@@ -67,6 +79,8 @@ export default function MenuPage() {
     if (category === "Kebabs") return kebabItems;
     if (category === "Burgers") return burgerItems;
     if (category === "Chicken") return chickenItems;
+    if (category === "Garlic Bread") return garlicBreadItems;
+    if (category === "Loaded Fries") return loadedFriesItems;
     if (category === "Sides") return sideItems;
     return [];
   }, [category, search]);
@@ -86,6 +100,7 @@ export default function MenuPage() {
     setRemovedBurgerToppings([]);
     setDoubledBurgerToppings([]);
     setAddedBurgerToppings([]);
+    setSelectedLoadedFriesToppings([]);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -101,6 +116,7 @@ export default function MenuPage() {
     setRemovedBurgerToppings([]);
     setDoubledBurgerToppings([]);
     setAddedBurgerToppings([]);
+    setSelectedLoadedFriesToppings([]);
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -116,6 +132,7 @@ export default function MenuPage() {
   const isSpecialPizza = isDiyPizza || isHalfAndHalf;
   const isKebab = selectedItem?.category === "Kebabs";
   const isBurger = selectedItem?.category === "Burgers";
+  const isLoadedFries = selectedItem?.category === "Loaded Fries";
   const includedBurgerToppings =
     isBurger && selectedItem ? burgerIncludedToppings[selectedItem.id] ?? [] : [];
   const burgerAvailableExtras = burgerToppingOptions.filter(
@@ -145,8 +162,16 @@ export default function MenuPage() {
     .filter((topping) => addedBurgerToppings.includes(topping.id))
     .reduce((sum, topping) => sum + topping.price, 0);
 
+  const loadedFriesExtraTotal =
+    Math.max(0, selectedLoadedFriesToppings.length - 1) * 2.85;
+
   const unitPrice =
-    baseUnitPrice + toppingTotal + kebabDipTotal + burgerDoubleTotal + burgerExtraTotal;
+    baseUnitPrice +
+    toppingTotal +
+    kebabDipTotal +
+    burgerDoubleTotal +
+    burgerExtraTotal +
+    loadedFriesExtraTotal;
   const modalTotal = unitPrice * quantity;
 
   const halfPizzaChoices = menuItems.filter(
@@ -164,7 +189,9 @@ export default function MenuPage() {
       ? selectedBuildToppings.length === buildToppingLimit
       : isHalfAndHalf
         ? Boolean(halfOne && halfTwo && halfOne !== halfTwo)
-        : true);
+        : isLoadedFries
+          ? selectedLoadedFriesToppings.length >= 1
+          : true);
 
   const toggleTopping = (id: string) => {
     setSelectedToppings((current) => {
@@ -228,6 +255,14 @@ export default function MenuPage() {
     );
   };
 
+  const toggleLoadedFriesTopping = (label: string) => {
+    setSelectedLoadedFriesToppings((current) =>
+      current.includes(label)
+        ? current.filter((item) => item !== label)
+        : [...current, label]
+    );
+  };
+
   const addConfiguredProduct = () => {
     if (!selectedItem) return;
 
@@ -280,6 +315,14 @@ export default function MenuPage() {
         ]
       : [];
 
+    const loadedFriesOptions = isLoadedFries
+      ? selectedLoadedFriesToppings.map((label, index) =>
+          index === 0
+            ? `Included topping: ${label}`
+            : `Extra topping: ${label} (+£2.85)`
+        )
+      : [];
+
     const options = [
       ...(chosenVariant ? [chosenVariant.label] : []),
       ...halfOptions,
@@ -287,6 +330,7 @@ export default function MenuPage() {
       ...extraToppingOptions,
       ...kebabOptions,
       ...burgerOptions,
+      ...loadedFriesOptions,
       ...(notes.trim() ? [`Note: ${notes.trim()}`] : [])
     ];
 
@@ -381,6 +425,14 @@ export default function MenuPage() {
                     All burgers are served in a toasted seeded brioche bun with crispy lettuce, red onions & fries.
                   </p>
                 )}
+                {!search && category === "Garlic Bread" && (
+                  <p className="menu-category-note">All garlic breads are 11&quot; thin.</p>
+                )}
+                {!search && category === "Loaded Fries" && (
+                  <p className="menu-category-note">
+                    One topping is included. Each additional topping is £2.85.
+                  </p>
+                )}
               </div>
               <span className="menu-result-count">
                 {visibleItems.length} {visibleItems.length === 1 ? "item" : "items"}
@@ -412,7 +464,7 @@ export default function MenuPage() {
                         <span>
                           {item.variants
                             ? "Choose size"
-                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers"
+                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers" || item.category === "Loaded Fries"
                               ? "Customise"
                               : "Add to order"}
                         </span>
@@ -898,6 +950,52 @@ export default function MenuPage() {
                 </>
               )}
 
+              {isLoadedFries && (
+                <div className="product-option-group product-option-group--required">
+                  <div className="product-option-heading">
+                    <div>
+                      <strong>Choose your loaded fries topping</strong>
+                      <span>1 included</span>
+                    </div>
+                    <small>
+                      {selectedLoadedFriesToppings.length === 0
+                        ? "Choose at least 1"
+                        : `${selectedLoadedFriesToppings.length} selected`}
+                    </small>
+                  </div>
+
+                  <p className="product-option-helper">
+                    The published menu includes one topping, then charges £2.85 for each extra topping.
+                    This prototype uses Star Pizza’s existing published topping range; the exact loaded-fries
+                    topping list should be confirmed with the restaurant.
+                  </p>
+
+                  <div className="pizza-topping-grid">
+                    {buildYourOwnToppings.map((topping) => {
+                      const selected = selectedLoadedFriesToppings.includes(topping);
+                      const selectedIndex = selectedLoadedFriesToppings.indexOf(topping);
+
+                      return (
+                        <button
+                          type="button"
+                          key={topping}
+                          className={selected ? "selected" : ""}
+                          onClick={() => toggleLoadedFriesTopping(topping)}
+                        >
+                          <span>
+                            <span className="topping-check">{selected ? "✓" : "+"}</span>
+                            <strong>{topping}</strong>
+                          </span>
+                          <span>
+                            {selected && selectedIndex === 0 ? "Included" : "+£2.85"}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               <div className="product-option-group">
                 <div className="product-option-heading">
                   <div>
@@ -941,7 +1039,9 @@ export default function MenuPage() {
                       ? isBuildYourOwn
                         ? `Choose ${buildToppingLimit - selectedBuildToppings.length} more topping${buildToppingLimit - selectedBuildToppings.length === 1 ? "" : "s"}`
                         : `Choose ${2 - halfSelectionCount} more half${2 - halfSelectionCount === 1 ? "" : "s"}`
-                      : "Add to basket"}
+                      : isLoadedFries && selectedLoadedFriesToppings.length === 0
+                        ? "Choose a topping"
+                        : "Add to basket"}
                   </span>
                   <strong>£{modalTotal.toFixed(2)}</strong>
                 </button>
