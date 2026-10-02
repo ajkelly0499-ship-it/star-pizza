@@ -4860,3 +4860,19 @@ footer {
     min-height: 30px;
   }
 }
+
+
+.menu-category-note {
+  max-width: 640px;
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .menu-category-note {
+    max-width: none;
+    font-size: 9.5px;
+  }
+}
