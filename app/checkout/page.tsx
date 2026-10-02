@@ -14,6 +14,7 @@ export default function CheckoutPage() {
   const [authChoice, setAuthChoice] = useState<AuthChoice>(null);
   const [paymentChoice, setPaymentChoice] = useState<PaymentChoice>("online");
   const [collectionTime, setCollectionTime] = useState<CollectionTime>("asap");
+  const [showAccountOptions, setShowAccountOptions] = useState(false);
 
   useEffect(() => {
     if (orderType === "delivery") {
@@ -96,43 +97,63 @@ export default function CheckoutPage() {
                 <span className="checkout-optional">Optional</span>
               </div>
 
-              <div className="checkout-social-grid">
-                <button
-                  className="auth-button auth-button--apple"
-                  onClick={() => showAuthPreview("apple")}
-                >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M17.1 12.5c0-2.5 2-3.7 2.1-3.8-1.2-1.8-3.1-2-3.8-2-1.6-.2-3.2 1-4 .9-.9 0-2.1-.9-3.5-.9-1.8 0-3.5 1.1-4.5 2.7-1.9 3.3-.5 8.2 1.4 10.9.9 1.3 2 2.8 3.5 2.7 1.4-.1 1.9-.9 3.6-.9 1.7 0 2.1.9 3.6.9 1.5 0 2.5-1.3 3.4-2.7 1.1-1.5 1.5-3 1.5-3.1-.1 0-3.3-1.3-3.3-4.7ZM14.4 5c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.6.8-3.5 1.8-.8.9-1.5 2.3-1.3 3.7 1.3.1 2.7-.7 3.6-1.7Z" />
-                  </svg>
-                  Continue with Apple
-                </button>
-
-                <button
-                  className="auth-button"
-                  onClick={() => showAuthPreview("google")}
-                >
-                  <span className="google-mark" aria-hidden="true">G</span>
-                  Continue with Google
-                </button>
+              <div className="checkout-account-mobile-row">
+                <div>
+                  <strong>Guest checkout is ready</strong>
+                  <span>You only need an account if you want faster checkout next time.</span>
+                </div>
+                <span className="guest-check" aria-hidden="true">✓</span>
               </div>
 
               <button
-                className="auth-button auth-button--email"
-                onClick={() => showAuthPreview("email")}
+                type="button"
+                className="checkout-account-mobile-toggle"
+                aria-expanded={showAccountOptions}
+                onClick={() => setShowAccountOptions((current) => !current)}
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M3 5h18v14H3V5Zm1.5 1.5 7.5 6 7.5-6M4.5 17.5l5.2-5m9.8 5-5.2-5" />
-                </svg>
-                Continue with email
+                <span>{showAccountOptions ? "Hide account options" : "Sign in or create an account"}</span>
+                <strong>{showAccountOptions ? "−" : "+"}</strong>
               </button>
 
-              <div className="checkout-account-create">
-                <span>New to Star Pizza?</span>
-                <button onClick={() => showAuthPreview("create")}>Create an account</button>
-              </div>
+              <div className={`checkout-account-options${showAccountOptions ? " open" : ""}`}>
+                <div className="checkout-social-grid">
+                  <button
+                    className="auth-button auth-button--apple"
+                    onClick={() => showAuthPreview("apple")}
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M17.1 12.5c0-2.5 2-3.7 2.1-3.8-1.2-1.8-3.1-2-3.8-2-1.6-.2-3.2 1-4 .9-.9 0-2.1-.9-3.5-.9-1.8 0-3.5 1.1-4.5 2.7-1.9 3.3-.5 8.2 1.4 10.9.9 1.3 2 2.8 3.5 2.7 1.4-.1 1.9-.9 3.6-.9 1.7 0 2.1.9 3.6.9 1.5 0 2.5-1.3 3.4-2.7 1.1-1.5 1.5-3 1.5-3.1-.1 0-3.3-1.3-3.3-4.7ZM14.4 5c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.6.8-3.5 1.8-.8.9-1.5 2.3-1.3 3.7 1.3.1 2.7-.7 3.6-1.7Z" />
+                    </svg>
+                    Continue with Apple
+                  </button>
 
-              <div className="checkout-guest-divider">
-                <span>or</span>
+                  <button
+                    className="auth-button"
+                    onClick={() => showAuthPreview("google")}
+                  >
+                    <span className="google-mark" aria-hidden="true">G</span>
+                    Continue with Google
+                  </button>
+                </div>
+
+                <button
+                  className="auth-button auth-button--email"
+                  onClick={() => showAuthPreview("email")}
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 5h18v14H3V5Zm1.5 1.5 7.5 6 7.5-6M4.5 17.5l5.2-5m9.8 5-5.2-5" />
+                  </svg>
+                  Continue with email
+                </button>
+
+                <div className="checkout-account-create">
+                  <span>New to Star Pizza?</span>
+                  <button onClick={() => showAuthPreview("create")}>Create an account</button>
+                </div>
+
+                <div className="checkout-guest-divider">
+                  <span>or</span>
+                </div>
               </div>
 
               <div className="checkout-guest-row">
@@ -153,7 +174,7 @@ export default function CheckoutPage() {
                 </label>
                 <label>
                   Mobile
-                  <input name="tel" autoComplete="tel" placeholder="07..." />
+                  <input name="tel" autoComplete="tel" inputMode="tel" placeholder="07..." />
                 </label>
               </div>
               <label>
@@ -226,7 +247,7 @@ export default function CheckoutPage() {
                 <div className="field-grid">
                   <label>
                     Postcode
-                    <input name="postal-code" autoComplete="postal-code" placeholder="WF17 9EW" />
+                    <input name="postal-code" autoComplete="postal-code" autoCapitalize="characters" placeholder="WF17 9EW" />
                   </label>
                   <label>
                     House number
