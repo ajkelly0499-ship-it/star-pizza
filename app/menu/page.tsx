@@ -61,6 +61,10 @@ export default function MenuPage() {
   }, [category, search]);
 
   const openProduct = (item: MenuItem) => {
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 760px)").matches) {
+      window.scrollTo(0, 0);
+    }
+
     setSelectedItem(item);
     setSelectedVariant(0);
     setNotes("");
