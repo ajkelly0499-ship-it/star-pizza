@@ -49,6 +49,8 @@ export default function MenuPage() {
   const [removedWrapToppings, setRemovedWrapToppings] = useState<string[]>([]);
   const [wrapFries, setWrapFries] = useState(false);
   const [selectedDessertExtras, setSelectedDessertExtras] = useState<string[]>([]);
+  const [selectedSideDip, setSelectedSideDip] = useState("");
+  const [selectedDessertServing, setSelectedDessertServing] = useState("");
   const [halfOne, setHalfOne] = useState("");
   const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -138,6 +140,8 @@ export default function MenuPage() {
     setRemovedWrapToppings([]);
     setWrapFries(false);
     setSelectedDessertExtras([]);
+    setSelectedSideDip("");
+    setSelectedDessertServing("");
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -157,6 +161,8 @@ export default function MenuPage() {
     setRemovedWrapToppings([]);
     setWrapFries(false);
     setSelectedDessertExtras([]);
+    setSelectedSideDip("");
+    setSelectedDessertServing("");
     setHalfOne("");
     setHalfTwo("");
     setQuantity(1);
@@ -169,7 +175,6 @@ export default function MenuPage() {
   const isBuildYourOwn = isDiyPizza || isDiyCalzone;
   const buildToppingLimit = isDiyPizza ? 4 : isDiyCalzone ? 3 : 0;
   const isHalfAndHalf = selectedItem?.name === "Half and Half";
-  const isSpecialPizza = isDiyPizza || isHalfAndHalf;
   const isKebab = selectedItem?.category === "Kebabs";
   const isBurger = selectedItem?.category === "Burgers";
   const isLoadedFries = selectedItem?.category === "Loaded Fries";
@@ -177,6 +182,8 @@ export default function MenuPage() {
   const isSweetDessert = Boolean(
     selectedItem && ["Cookie Dough", "Brownies", "Fondue"].includes(selectedItem.category)
   );
+  const isChickenStripDippers = selectedItem?.id === 406;
+  const isDessertServingChoice = selectedItem?.id === 604 || selectedItem?.id === 605;
   const wrapIncludedToppings = ["Crispy lettuce", "Red onions", "Mayonnaise"];
   const includedBurgerToppings =
     isBurger && selectedItem ? burgerIncludedToppings[selectedItem.id] ?? [] : [];
@@ -242,7 +249,11 @@ export default function MenuPage() {
         ? Boolean(halfOne && halfTwo && halfOne !== halfTwo)
         : isLoadedFries
           ? selectedLoadedFriesToppings.length >= 1
-          : true);
+          : isChickenStripDippers
+            ? Boolean(selectedSideDip)
+            : isDessertServingChoice
+              ? Boolean(selectedDessertServing)
+              : true);
 
   const toggleTopping = (id: string) => {
     setSelectedToppings((current) => {
@@ -403,6 +414,14 @@ export default function MenuPage() {
           .map((extra) => `Extra: ${extra.label} (+£${extra.price.toFixed(2)})`)
       : [];
 
+    const sideDipOptions = isChickenStripDippers && selectedSideDip
+      ? [`Included dip: ${selectedSideDip}`]
+      : [];
+
+    const dessertServingOptions = isDessertServingChoice && selectedDessertServing
+      ? [`Serve with: ${selectedDessertServing}`]
+      : [];
+
     const options = [
       ...(chosenVariant ? [chosenVariant.label] : []),
       ...halfOptions,
@@ -413,6 +432,8 @@ export default function MenuPage() {
       ...loadedFriesOptions,
       ...wrapOptions,
       ...dessertExtraSelections,
+      ...sideDipOptions,
+      ...dessertServingOptions,
       ...(notes.trim() ? [`Note: ${notes.trim()}`] : [])
     ];
 
@@ -566,7 +587,7 @@ export default function MenuPage() {
                         <span>
                           {item.variants
                             ? "Choose size"
-                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers" || item.category === "Loaded Fries" || item.category === "Wraps" || item.category === "Cookie Dough" || item.category === "Brownies" || item.category === "Fondue"
+                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers" || item.category === "Loaded Fries" || item.category === "Wraps" || item.category === "Cookie Dough" || item.category === "Brownies" || item.category === "Fondue" || item.id === 406 || item.id === 604 || item.id === 605
                               ? "Customise"
                               : "Add to order"}
                         </span>
@@ -1212,6 +1233,64 @@ export default function MenuPage() {
                 </div>
               )}
 
+              {isChickenStripDippers && (
+                <div className="product-option-group product-option-group--required">
+                  <div className="product-option-heading">
+                    <div>
+                      <strong>Choose your included dip</strong>
+                      <span>Required · included in the price</span>
+                    </div>
+                    <small>Choose 1</small>
+                  </div>
+
+                  <div className="product-variant-list">
+                    {kebabDips.map((dip) => (
+                      <label className={selectedSideDip === dip.label ? "selected" : ""} key={dip.id}>
+                        <span>
+                          <input
+                            type="radio"
+                            name="side-dip"
+                            checked={selectedSideDip === dip.label}
+                            onChange={() => setSelectedSideDip(dip.label)}
+                          />
+                          <strong>{dip.label}</strong>
+                        </span>
+                        <span>Included</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {isDessertServingChoice && (
+                <div className="product-option-group product-option-group--required">
+                  <div className="product-option-heading">
+                    <div>
+                      <strong>Choose how it’s served</strong>
+                      <span>Required · included in the price</span>
+                    </div>
+                    <small>Choose 1</small>
+                  </div>
+
+                  <div className="product-variant-list">
+                    {["Hot custard", "Italian vanilla gelato"].map((choice) => (
+                      <label className={selectedDessertServing === choice ? "selected" : ""} key={choice}>
+                        <span>
+                          <input
+                            type="radio"
+                            name="dessert-serving"
+                            checked={selectedDessertServing === choice}
+                            onChange={() => setSelectedDessertServing(choice)}
+                          />
+                          <strong>{choice}</strong>
+                        </span>
+                        <span>Included</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="product-option-group">
                 <div className="product-option-heading">
                   <div>
@@ -1254,10 +1333,16 @@ export default function MenuPage() {
                     {!configurationComplete
                       ? isBuildYourOwn
                         ? `Choose ${buildToppingLimit - selectedBuildToppings.length} more topping${buildToppingLimit - selectedBuildToppings.length === 1 ? "" : "s"}`
-                        : `Choose ${2 - halfSelectionCount} more half${2 - halfSelectionCount === 1 ? "" : "s"}`
-                      : isLoadedFries && selectedLoadedFriesToppings.length === 0
-                        ? "Choose a topping"
-                        : "Add to basket"}
+                        : isHalfAndHalf
+                          ? `Choose ${2 - halfSelectionCount} more half${2 - halfSelectionCount === 1 ? "" : "s"}`
+                          : isLoadedFries
+                            ? "Choose a topping"
+                            : isChickenStripDippers
+                              ? "Choose a dip"
+                              : isDessertServingChoice
+                                ? "Choose custard or gelato"
+                                : "Complete your choices"
+                      : "Add to basket"}
                   </span>
                   <strong>£{modalTotal.toFixed(2)}</strong>
                 </button>
