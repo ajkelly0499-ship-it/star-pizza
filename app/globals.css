@@ -4605,3 +4605,50 @@ footer {
     padding: 0 10px;
   }
 }
+
+
+/* MOBILE PRODUCT SHEET — scroll the whole sheet, desktop unchanged */
+@media (max-width: 760px) {
+  .product-modal {
+    display: block;
+    width: 100%;
+    height: 92dvh;
+    max-height: 92dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  .product-modal-image {
+    width: 100%;
+    height: 120px;
+    min-height: 120px;
+    max-height: 120px;
+  }
+
+  .product-modal-content {
+    height: auto;
+    min-height: auto;
+    padding: 20px 22px 0;
+    overflow: visible;
+    touch-action: auto;
+  }
+
+  .product-modal-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin: 4px -22px 0;
+    padding: 14px 22px calc(16px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 430px) {
+  .product-modal-image {
+    height: 105px;
+    min-height: 105px;
+    max-height: 105px;
+  }
+}
