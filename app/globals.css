@@ -4607,8 +4607,9 @@ footer {
 }
 
 /* MOBILE PIZZA / PRODUCT CUSTOMISER
-   Desktop styles above stay unchanged.
-   On phones the ENTIRE product sheet is the single scroll container. */
+   Desktop remains unchanged.
+   On phones the backdrop is the only vertical scroll container so iOS cannot
+   scroll the page behind the modal instead of the topping options. */
 @media (max-width: 760px) {
   .product-modal-backdrop {
     position: fixed;
@@ -4616,33 +4617,34 @@ footer {
     z-index: 120;
     display: block;
     padding: 0;
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.72);
-    backdrop-filter: none;
-  }
-
-  .product-modal {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100dvh;
-    max-height: none;
-    display: block;
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    background: var(--white);
+    backdrop-filter: none;
+  }
+
+  .product-modal {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    max-height: none;
+    display: block;
+    overflow: visible;
     border-radius: 0;
     background: var(--white);
     box-shadow: none;
+    animation: none;
   }
 
   .product-modal-image {
     width: 100%;
-    height: 120px;
-    min-height: 120px;
-    max-height: 120px;
+    height: 110px;
+    min-height: 110px;
+    max-height: 110px;
     overflow: hidden;
   }
 
@@ -4656,7 +4658,7 @@ footer {
     min-width: 0;
     min-height: 0;
     height: auto;
-    padding: 20px 22px calc(28px + env(safe-area-inset-bottom));
+    padding: 20px 22px calc(30px + env(safe-area-inset-bottom));
     overflow: visible;
   }
 
@@ -4666,7 +4668,7 @@ footer {
 
   .product-modal-footer {
     position: static;
-    margin: 8px -22px calc(-28px - env(safe-area-inset-bottom));
+    margin: 8px -22px calc(-30px - env(safe-area-inset-bottom));
     padding: 14px 22px calc(18px + env(safe-area-inset-bottom));
     border-top: 1px solid var(--line);
     background: var(--white);
@@ -4679,12 +4681,19 @@ footer {
     z-index: 140;
     background: rgba(255,253,248,0.96);
   }
+
+  .product-variant-list label,
+  .pizza-topping-grid > button,
+  .kebab-choice-grid > button,
+  .product-option-group textarea {
+    touch-action: manipulation;
+  }
 }
 
 @media (max-width: 430px) {
   .product-modal-image {
-    height: 96px;
-    min-height: 96px;
-    max-height: 96px;
+    height: 90px;
+    min-height: 90px;
+    max-height: 90px;
   }
 }
