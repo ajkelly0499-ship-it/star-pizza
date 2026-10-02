@@ -25,7 +25,10 @@ export default function BasketDrawer() {
   const [upsellOpen, setUpsellOpen] = useState(false);
   const [lastRemoved, setLastRemoved] = useState<CartLine | null>(null);
 
-  const suggestions = useMemo(() => upsellItems.slice(0, 6), []);
+  const suggestions = useMemo(
+    () => upsellItems.filter((item) => item.id !== 206).slice(0, 6),
+    []
+  );
 
   const deleteLine = (line: CartLine) => {
     setLastRemoved(line);
