@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
 import {
@@ -54,6 +54,7 @@ export default function MenuPage() {
   const [halfOne, setHalfOne] = useState("");
   const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const categoryScrollRef = useRef<HTMLDivElement | null>(null);
 
   const {
     addConfiguredItem,
@@ -66,6 +67,13 @@ export default function MenuPage() {
     setOrderType
   } = useCart();
 
+
+  const scrollCategories = (direction: "left" | "right") => {
+    categoryScrollRef.current?.scrollBy({
+      left: direction === "right" ? 420 : -420,
+      behavior: "smooth"
+    });
+  };
 
   const visibleItems = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -480,19 +488,44 @@ export default function MenuPage() {
 
       <section className="menu-category-bar menu-category-bar--with-search">
         <div className="shell menu-nav-row">
-          <div className="menu-category-scroll">
-            {menuCategories.map((item) => (
-              <button
-                key={item}
-                className={!search && category === item ? "active" : ""}
-                onClick={() => {
-                  setCategory(item);
-                  setSearch("");
-                }}
-              >
-                {item}
-              </button>
-            ))}
+          <div className="menu-category-nav-wrap">
+            <button
+              type="button"
+              className="menu-category-arrow menu-category-arrow--left"
+              onClick={() => scrollCategories("left")}
+              aria-label="Scroll menu categories left"
+            >
+              ‹
+            </button>
+
+            <div className="menu-category-scroll" ref={categoryScrollRef}>
+              {menuCategories.map((item) => (
+                <button
+                  key={item}
+                  className={!search && category === item ? "active" : ""}
+                  onClick={(event) => {
+                    setCategory(item);
+                    setSearch("");
+                    event.currentTarget.scrollIntoView({
+                      behavior: "smooth",
+                      block: "nearest",
+                      inline: "center"
+                    });
+                  }}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              className="menu-category-arrow menu-category-arrow--right"
+              onClick={() => scrollCategories("right")}
+              aria-label="Scroll menu categories right"
+            >
+              ›
+            </button>
           </div>
 
           <label className="menu-search">
