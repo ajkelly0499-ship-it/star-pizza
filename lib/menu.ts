@@ -1547,6 +1547,71 @@ export const sideItems: MenuItem[] = [
   }
 ];
 
+export const garlicBreadItems: MenuItem[] = [
+  {
+    id: 500,
+    name: "Garlic Bread Tomato",
+    description: '11" thin garlic bread with tomato.',
+    price: 7.3,
+    category: "Garlic Bread",
+    image: pizzaImage1
+  },
+  {
+    id: 501,
+    name: "Garlic Doner",
+    description: "Plain garlic bread topped with freshly cut tender beef doner strips, crispy lettuce, red onions & cherry tomatoes.",
+    price: 9.65,
+    category: "Garlic Bread",
+    badge: "Loaded",
+    image: pizzaImage2
+  },
+  {
+    id: 502,
+    name: "Garlic Funghi",
+    description: '11" thin garlic bread with cheese & mushrooms.',
+    price: 8.9,
+    category: "Garlic Bread",
+    image: pizzaImage3
+  },
+  {
+    id: 503,
+    name: "Garlic Bread Special",
+    description: '11" thin garlic bread with mushrooms, doner, jalapeños & cheese.',
+    price: 9.35,
+    category: "Garlic Bread",
+    badge: "Special",
+    image: pizzaImage4
+  },
+  {
+    id: 504,
+    name: "Garlic Bread Supreme",
+    description: '11" thin garlic bread with cheese.',
+    price: 8.35,
+    category: "Garlic Bread",
+    image: pizzaImage1
+  },
+  {
+    id: 505,
+    name: "Garlic Bread",
+    description: 'Classic 11" thin garlic bread.',
+    price: 6.9,
+    category: "Garlic Bread",
+    image: pizzaImage2
+  }
+];
+
+export const loadedFriesItems: MenuItem[] = [
+  {
+    id: 520,
+    name: "Chipizza Fries with Cheese",
+    description: '11" family loaded fries with cheese and one topping of your choice. Extra toppings are £2.85 each.',
+    price: 8.45,
+    category: "Loaded Fries",
+    badge: "Build your own",
+    image: pizzaImage3
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -1642,6 +1707,8 @@ export const allItems = [
   ...burgerItems,
   ...chickenItems,
   ...sideItems,
+  ...garlicBreadItems,
+  ...loadedFriesItems,
   ...upsellItems,
   ...offerItems
 ];
@@ -1653,6 +1720,8 @@ export const menuCategories = [
   "Kebabs",
   "Burgers",
   "Chicken",
+  "Garlic Bread",
+  "Loaded Fries",
   "Sides",
   "Desserts",
   "Drinks"
