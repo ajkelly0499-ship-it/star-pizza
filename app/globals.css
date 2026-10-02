@@ -4378,3 +4378,230 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* MOBILE-FIRST UX AUDIT */
+.mobile-menu-toggle,
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 920px) {
+  .site-header {
+    position: relative;
+  }
+
+  .site-header--overlay {
+    position: absolute;
+  }
+
+  .mobile-menu-toggle {
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+    display: grid;
+    place-content: center;
+    gap: 4px;
+    padding: 0;
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 50%;
+    background: rgba(17,17,17,0.48);
+    backdrop-filter: blur(12px);
+  }
+
+  .mobile-menu-toggle span {
+    width: 15px;
+    height: 1.5px;
+    display: block;
+    border-radius: 999px;
+    background: #fff;
+  }
+
+  .basket-button {
+    margin-left: 0;
+  }
+
+  .mobile-nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    z-index: 50;
+    display: grid;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: rgba(13,13,13,0.98);
+    box-shadow: 0 18px 30px rgba(0,0,0,0.22);
+    transition: max-height 180ms ease, opacity 150ms ease;
+  }
+
+  .mobile-nav--open {
+    max-height: 240px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-nav-inner {
+    display: grid;
+    padding-top: 8px;
+    padding-bottom: 12px;
+  }
+
+  .mobile-nav-inner a {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.82);
+    font-size: 13px;
+    font-weight: 850;
+  }
+
+  .mobile-nav-inner a.active {
+    color: var(--accent);
+  }
+}
+
+@media (max-width: 760px) {
+  .menu-category-bar--with-search {
+    position: sticky;
+    top: 0;
+    z-index: 35;
+    background: var(--white);
+    box-shadow: 0 8px 20px rgba(17,17,17,0.06);
+  }
+
+  .menu-category-scroll {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .menu-category-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .compact-menu-copy > p {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .product-option-helper {
+    font-size: 10.5px;
+  }
+
+  .product-option-heading span,
+  .product-option-heading small {
+    font-size: 10px;
+  }
+
+  .pizza-topping-grid strong,
+  .kebab-choice-grid strong {
+    font-size: 11px;
+  }
+
+  .pizza-topping-grid > button > span:last-child,
+  .kebab-choice-grid small {
+    font-size: 10px;
+  }
+
+  .basket-drawer {
+    height: 100dvh;
+    padding-bottom: calc(22px + env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-cart-bar {
+    bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .upsell-modal {
+    max-height: 88dvh;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .upsell-actions {
+    position: sticky;
+    bottom: calc(-20px - env(safe-area-inset-bottom));
+    z-index: 2;
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+    background: rgba(255,253,248,0.98);
+  }
+
+  .menu-search input,
+  .product-option-group textarea,
+  .half-pizza-selectors select,
+  .checkout-section input,
+  .checkout-section textarea,
+  .checkout-time-select select {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav {
+    gap: 10px;
+  }
+
+  .brand {
+    margin-right: auto;
+  }
+
+  .utility-inner {
+    gap: 8px;
+  }
+
+  .checkout-page {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom));
+  }
+
+  .checkout-intro,
+  .checkout-choice-helper,
+  .checkout-payment-choice-heading p,
+  .checkout-payment-note {
+    font-size: 11px;
+  }
+
+  .checkout-account-card,
+  .checkout-fulfilment-card,
+  .checkout-summary {
+    border-radius: 9px;
+  }
+
+  .checkout-summary {
+    padding: 20px;
+  }
+
+  .checkout-lines > div {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 380px) {
+  .utility-inner > span:nth-child(2),
+  .utility-inner > span:nth-child(3) {
+    display: none;
+  }
+
+  .brand strong {
+    font-size: 16px;
+  }
+
+  .brand span {
+    letter-spacing: 0.18em;
+  }
+
+  .basket-button {
+    padding: 0 10px;
+  }
+}
