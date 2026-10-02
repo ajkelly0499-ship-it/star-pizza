@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
 import {
@@ -39,20 +39,6 @@ export default function MenuPage() {
     setOrderType
   } = useCart();
 
-  useEffect(() => {
-    if (!selectedItem) return;
-
-    const previousBodyOverflow = document.body.style.overflow;
-    const previousHtmlOverflow = document.documentElement.style.overflow;
-
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = previousBodyOverflow;
-      document.documentElement.style.overflow = previousHtmlOverflow;
-    };
-  }, [selectedItem]);
 
   const visibleItems = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -220,7 +206,7 @@ export default function MenuPage() {
   };
 
   return (
-    <main className="inner-page">
+    <main className={selectedItem ? "inner-page product-open" : "inner-page"}>
       <SiteHeader />
 
       <section className="menu-compact-hero">
