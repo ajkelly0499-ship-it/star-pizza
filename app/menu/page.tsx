@@ -19,6 +19,7 @@ import {
   fondueItems,
   kebabDips,
   kebabItems,
+  kidsItems,
   loadedFriesItems,
   menuCategories,
   milkshakeItems,
@@ -82,6 +83,7 @@ export default function MenuPage() {
       ...cookieDoughItems,
       ...brownieItems,
       ...fondueItems,
+      ...kidsItems,
       ...drinkItems,
       ...sideItems
     ];
@@ -111,6 +113,7 @@ export default function MenuPage() {
     if (category === "Cookie Dough") return cookieDoughItems;
     if (category === "Brownies") return brownieItems;
     if (category === "Fondue") return fondueItems;
+    if (category === "Kids Menu") return kidsItems;
     if (category === "Drinks") return drinkItems;
     if (category === "Sides") return sideItems;
     return [];
@@ -525,6 +528,11 @@ export default function MenuPage() {
                 {!search && category === "Cookie Dough" && (
                   <p className="menu-category-note">
                     All cookie doughs are freshly baked and served with Italian vanilla gelato.
+                  </p>
+                )}
+                {!search && category === "Kids Menu" && (
+                  <p className="menu-category-note">
+                    Every kids meal is served with fries and a sugar-free 330ml soft drink can.
                   </p>
                 )}
               </div>
