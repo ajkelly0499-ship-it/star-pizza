@@ -903,6 +903,268 @@ export const kebabItems: MenuItem[] = [
     image: kebabImage1
   }
 ];
+const burgerImage1 =
+  "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=85";
+const burgerImage2 =
+  "https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&w=1200&q=85";
+const burgerImage3 =
+  "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=85";
+
+export const burgerItems: MenuItem[] = [
+  {
+    id: 70,
+    name: "Hot Chick Burger",
+    description: "Zinger fillet burger dipped in Star Pizza’s special hot chilli sauce, mozzarella cheese & garlic mayo.",
+    price: 9.4,
+    category: "Burgers",
+    image: burgerImage1,
+    variants: [
+      { label: "Quarter Pound", price: 9.4 },
+      { label: "Half Pound", price: 10.6 }
+    ]
+  },
+  {
+    id: 71,
+    name: "Ceasefire Burger",
+    description: "Zinger fillet, mozzarella cheese & pepperoni.",
+    price: 9.4,
+    category: "Burgers",
+    image: burgerImage2,
+    variants: [
+      { label: "Quarter Pound", price: 9.4 },
+      { label: "Half Pound", price: 10.6 }
+    ]
+  },
+  {
+    id: 72,
+    name: "Star Smasher Burger",
+    description: "One beef patty, two zinger fillets, mozzarella sticks, mozzarella cheese & your choice of sauce.",
+    price: 12.5,
+    category: "Burgers",
+    badge: "Loaded",
+    image: burgerImage3
+  },
+  {
+    id: 73,
+    name: "Ring-o-Burger",
+    description: "Beef burger topped with onion rings and mozzarella cheese.",
+    price: 8.4,
+    category: "Burgers",
+    image: burgerImage1,
+    variants: [
+      { label: "Quarter Pound", price: 8.4 },
+      { label: "Half Pound", price: 9.7 }
+    ]
+  },
+  {
+    id: 74,
+    name: "Cheese Burger",
+    description: "Cheese burger.",
+    price: 7.9,
+    category: "Burgers",
+    image: burgerImage2,
+    variants: [
+      { label: "Quarter Pound", price: 7.9 },
+      { label: "Half Pound", price: 9.2 }
+    ]
+  },
+  {
+    id: 75,
+    name: "Zinger Fillet Burger",
+    description: "Mayo & cheese slice.",
+    price: 8.4,
+    category: "Burgers",
+    image: burgerImage3,
+    variants: [
+      { label: "Quarter Pound", price: 8.4 },
+      { label: "Half Pound", price: 9.7 }
+    ]
+  },
+  {
+    id: 76,
+    name: "Bugsey Siegel Burger",
+    description: "Zinger fillet topped with mozzarella cheese, hash brown & burger sauce.",
+    price: 9.4,
+    category: "Burgers",
+    image: burgerImage1,
+    variants: [
+      { label: "Quarter Pound", price: 9.4 },
+      { label: "Half Pound", price: 10.6 }
+    ]
+  },
+  {
+    id: 77,
+    name: "Veggie Burger",
+    description: "Veggie burger.",
+    price: 7.7,
+    category: "Burgers",
+    image: burgerImage2,
+    variants: [
+      { label: "Quarter Pound", price: 7.7 },
+      { label: "Half Pound", price: 9 }
+    ]
+  },
+  {
+    id: 78,
+    name: "Chilli Burger",
+    description: "Chilli con carne.",
+    price: 7.7,
+    category: "Burgers",
+    image: burgerImage3,
+    variants: [
+      { label: "Quarter Pound", price: 7.7 },
+      { label: "Half Pound", price: 9 }
+    ]
+  },
+  {
+    id: 79,
+    name: "Five 'O' Burger",
+    description: "Pineapple & cheddar cheese toppings.",
+    price: 8.2,
+    category: "Burgers",
+    image: burgerImage1,
+    variants: [
+      { label: "Quarter Pound", price: 8.2 },
+      { label: "Half Pound", price: 9.5 }
+    ]
+  },
+  {
+    id: 80,
+    name: "Amigo Star Burger",
+    description: "Beef patty, mozzarella cheese, nachos, salsa & jalapeños.",
+    price: 9.4,
+    category: "Burgers",
+    image: burgerImage2,
+    variants: [
+      { label: "Quarter Pound", price: 9.4 },
+      { label: "Half Pound", price: 10.6 }
+    ]
+  },
+  {
+    id: 81,
+    name: "Beef Swiss Burger",
+    description: "Beef burger served with your choice of sauce, fried onions and mushrooms.",
+    price: 9,
+    category: "Burgers",
+    image: burgerImage3,
+    variants: [
+      { label: "Quarter Pound", price: 9 },
+      { label: "Half Pound", price: 10.3 }
+    ]
+  },
+  {
+    id: 82,
+    name: "Garlic Burger",
+    description: "Garlic butter.",
+    price: 7.45,
+    category: "Burgers",
+    image: burgerImage1,
+    variants: [
+      { label: "Quarter Pound", price: 7.45 },
+      { label: "Half Pound", price: 8.7 }
+    ]
+  },
+  {
+    id: 83,
+    name: "Veggie Stack Burger",
+    description: "Oven baked veg patty, sautéed mushrooms, mozzarella cheese & sweet chilli sauce.",
+    price: 9.4,
+    category: "Burgers",
+    image: burgerImage2,
+    variants: [
+      { label: "Quarter Pound", price: 9.4 },
+      { label: "Half Pound", price: 10.6 }
+    ]
+  },
+  {
+    id: 84,
+    name: "Classic Chicken Burger",
+    description: "Classic chicken burger.",
+    price: 8.1,
+    category: "Burgers",
+    image: burgerImage3,
+    variants: [
+      { label: "Quarter Pound", price: 8.1 },
+      { label: "Half Pound", price: 9.4 }
+    ]
+  },
+  {
+    id: 85,
+    name: "Al Capone Burger",
+    description: "Double beef patty topped with cheddar cheese, caramelised onions, bacon, fried egg & burger sauce.",
+    price: 12.5,
+    category: "Burgers",
+    badge: "Loaded",
+    image: burgerImage1
+  },
+  {
+    id: 86,
+    name: "Plain Jane Burger",
+    description: "Plain.",
+    price: 7.45,
+    category: "Burgers",
+    image: burgerImage2,
+    variants: [
+      { label: "Quarter Pound", price: 7.45 },
+      { label: "Half Pound", price: 8.7 }
+    ]
+  },
+  {
+    id: 87,
+    name: "Butcher's Favourite Burger",
+    description: "Beef burger, cheese, chicken burger & doner on the side.",
+    price: 11.45,
+    category: "Burgers",
+    badge: "Half Pound",
+    image: burgerImage3
+  },
+  {
+    id: 88,
+    name: "Chicken Swiss Burger",
+    description: "Chicken burger served with your choice of sauce, fried onions and mushrooms.",
+    price: 9,
+    category: "Burgers",
+    image: burgerImage1,
+    variants: [
+      { label: "Quarter Pound", price: 9 },
+      { label: "Half Pound", price: 10.3 }
+    ]
+  },
+  {
+    id: 89,
+    name: "Star Special Burger",
+    description: "Mozzarella cheese & 1000 Island sauce.",
+    price: 8.2,
+    category: "Burgers",
+    image: burgerImage2,
+    variants: [
+      { label: "Quarter Pound", price: 8.2 },
+      { label: "Half Pound", price: 9.5 }
+    ]
+  },
+  {
+    id: 90,
+    name: "Sammy's Special Gourmet Burger",
+    description: "Pepperoni, jalapeño, mozzarella cheese & Star special sauce.",
+    price: 9,
+    category: "Burgers",
+    image: burgerImage3,
+    variants: [
+      { label: "Quarter Pound", price: 9 },
+      { label: "Half Pound", price: 10.3 }
+    ]
+  },
+  {
+    id: 91,
+    name: "Big Momma's Burger",
+    description: "4 succulent beef patties in a toasted bun topped with cheese.",
+    price: 11,
+    category: "Burgers",
+    badge: "Big",
+    image: burgerImage1
+  }
+];
+
 export const upsellItems: MenuItem[] = [
   {
     id: 201,
@@ -995,6 +1257,7 @@ export const allItems = [
   ...menuItems,
   ...calzoneItems,
   ...kebabItems,
+  ...burgerItems,
   ...upsellItems,
   ...offerItems
 ];
