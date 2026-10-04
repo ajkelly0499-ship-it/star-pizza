@@ -19,10 +19,16 @@
 }
 
 html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   margin: 0;
   color: var(--ink);
   background: var(--paper);
@@ -5404,5 +5410,44 @@ footer {
 
   .menu-category-nav-wrap .menu-category-scroll::-webkit-scrollbar-thumb:hover {
     background: #6f685f;
+  }
+}
+
+
+/* MOBILE CATEGORY RAIL CONTAINMENT */
+@media (max-width: 760px) {
+  .inner-page,
+  .menu-category-bar,
+  .menu-category-bar--with-search,
+  .menu-nav-row,
+  .menu-category-nav-wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .menu-category-nav-wrap {
+    display: block !important;
+  }
+
+  .menu-category-arrow {
+    display: none !important;
+  }
+
+  .menu-category-nav-wrap::before,
+  .menu-category-nav-wrap::after {
+    display: none !important;
+  }
+
+  .menu-category-nav-wrap .menu-category-scroll {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-inline: 0;
   }
 }
