@@ -75,6 +75,19 @@ export default function MenuPage() {
     });
   };
 
+  const centerCategoryInRail = (button: HTMLButtonElement) => {
+    const rail = categoryScrollRef.current;
+    if (!rail) return;
+
+    const nextLeft =
+      button.offsetLeft - (rail.clientWidth - button.offsetWidth) / 2;
+
+    rail.scrollTo({
+      left: Math.max(0, nextLeft),
+      behavior: "smooth"
+    });
+  };
+
   const visibleItems = useMemo(() => {
     const query = search.trim().toLowerCase();
     const catalogue = [
@@ -506,11 +519,7 @@ export default function MenuPage() {
                   onClick={(event) => {
                     setCategory(item);
                     setSearch("");
-                    event.currentTarget.scrollIntoView({
-                      behavior: "smooth",
-                      block: "nearest",
-                      inline: "center"
-                    });
+                    centerCategoryInRail(event.currentTarget);
                   }}
                 >
                   {item}
