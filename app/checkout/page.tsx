@@ -10,7 +10,15 @@ type PaymentChoice = "online" | "collection";
 type CollectionTime = "asap" | "later";
 
 export default function CheckoutPage() {
-  const { lines, total, openCart, orderType, setOrderType } = useCart();
+  const {
+    lines,
+    total,
+    openCart,
+    orderType,
+    setOrderType,
+    validationStatus,
+    validationIssues
+  } = useCart();
   const [authChoice, setAuthChoice] = useState<AuthChoice>(null);
   const [paymentChoice, setPaymentChoice] = useState<PaymentChoice>("online");
   const [collectionTime, setCollectionTime] = useState<CollectionTime>("asap");
@@ -300,6 +308,18 @@ export default function CheckoutPage() {
                     </span>
                   </button>
                 </div>
+              </div>
+            )}
+
+            {lines.length > 0 && (
+              <div className="checkout-choice-helper" role="status">
+                {validationStatus === "validating" && "Checking your basket against current menu pricing…"}
+                {validationStatus === "valid" && "Basket checked — current menu pricing confirmed."}
+                {validationStatus === "invalid" &&
+                  (validationIssues[0]?.message ||
+                    "One or more basket items need to be reviewed before checkout.")}
+                {validationStatus === "error" &&
+                  "We could not verify the basket right now. Checkout will stay unavailable until it is verified."}
               </div>
             )}
 
