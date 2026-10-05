@@ -7,6 +7,7 @@ import {
   jsonb,
   pgEnum,
   pgTable,
+  serial,
   text,
   timestamp,
   uniqueIndex,
@@ -195,5 +196,138 @@ export const productModifierGroups = pgTable(
     ),
     index("product_modifier_groups_product_idx").on(table.productId),
     index("product_modifier_groups_group_idx").on(table.modifierGroupId)
+  ]
+);
+
+
+export const orderType = pgEnum("order_type", ["delivery", "collection"]);
+
+export const orderStatus = pgEnum("order_status", [
+  "PENDING_PAYMENT",
+  "NEW",
+  "ACCEPTED",
+  "PREPARING",
+  "READY",
+  "OUT_FOR_DELIVERY",
+  "COMPLETED",
+  "CANCELLED"
+]);
+
+export const paymentMethod = pgEnum("payment_method", [
+  "ONLINE",
+  "COLLECTION"
+]);
+
+export const paymentStatus = pgEnum("payment_status", [
+  "UNPAID",
+  "PENDING",
+  "PAID",
+  "FAILED",
+  "REFUNDED"
+]);
+
+export const orders = pgTable(
+  "orders",
+  {
+    id: uuid("id").primaryKey(),
+    publicToken: uuid("public_token").notNull(),
+    restaurantId: uuid("restaurant_id")
+      .notNull()
+      .references(() => restaurants.id, { onDelete: "restrict" }),
+    orderNumber: serial("order_number").notNull(),
+    idempotencyKey: text("idempotency_key").notNull(),
+    customerName: text("customer_name").notNull(),
+    customerPhone: text("customer_phone").notNull(),
+    customerEmail: text("customer_email"),
+    orderType: orderType("order_type").notNull(),
+    requestedTimeLabel: text("requested_time_label").notNull().default("ASAP"),
+    deliveryPostcode: text("delivery_postcode"),
+    deliveryAddressLine1: text("delivery_address_line1"),
+    deliveryInstructions: text("delivery_instructions"),
+    customerNotes: text("customer_notes"),
+    subtotalPence: integer("subtotal_pence").notNull(),
+    deliveryFeePence: integer("delivery_fee_pence").notNull().default(0),
+    discountPence: integer("discount_pence").notNull().default(0),
+    totalPence: integer("total_pence").notNull(),
+    paymentMethod: paymentMethod("payment_method").notNull(),
+    paymentStatus: paymentStatus("payment_status").notNull(),
+    orderStatus: orderStatus("order_status").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+    acceptedAt: timestamp("accepted_at", { withTimezone: true }),
+    completedAt: timestamp("completed_at", { withTimezone: true })
+  },
+  (table) => [
+    uniqueIndex("orders_public_token_uq").on(table.publicToken),
+    uniqueIndex("orders_order_number_uq").on(table.orderNumber),
+    uniqueIndex("orders_restaurant_idempotency_uq").on(
+      table.restaurantId,
+      table.idempotencyKey
+    ),
+    index("orders_restaurant_created_idx").on(table.restaurantId, table.createdAt),
+    index("orders_restaurant_status_idx").on(table.restaurantId, table.orderStatus),
+    check("orders_subtotal_non_negative", sql`${table.subtotalPence} >= 0`),
+    check("orders_delivery_fee_non_negative", sql`${table.deliveryFeePence} >= 0`),
+    check("orders_discount_non_negative", sql`${table.discountPence} >= 0`),
+    check("orders_total_non_negative", sql`${table.totalPence} >= 0`)
+  ]
+);
+
+export const orderItems = pgTable(
+  "order_items",
+  {
+    id: uuid("id").primaryKey(),
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    productId: uuid("product_id").references(() => products.id, {
+      onDelete: "set null"
+    }),
+    requestedItemId: integer("requested_item_id").notNull(),
+    canonicalItemId: integer("canonical_item_id").notNull(),
+    productNameSnapshot: text("product_name_snapshot").notNull(),
+    quantity: integer("quantity").notNull(),
+    unitPricePence: integer("unit_price_pence").notNull(),
+    lineTotalPence: integer("line_total_pence").notNull(),
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    index("order_items_order_idx").on(table.orderId),
+    check("order_items_quantity_positive", sql`${table.quantity} > 0`),
+    check("order_items_unit_price_non_negative", sql`${table.unitPricePence} >= 0`),
+    check("order_items_line_total_non_negative", sql`${table.lineTotalPence} >= 0`)
+  ]
+);
+
+export const orderItemModifiers = pgTable(
+  "order_item_modifiers",
+  {
+    id: uuid("id").primaryKey(),
+    orderItemId: uuid("order_item_id")
+      .notNull()
+      .references(() => orderItems.id, { onDelete: "cascade" }),
+    labelSnapshot: text("label_snapshot").notNull(),
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    index("order_item_modifiers_item_idx").on(table.orderItemId)
+  ]
+);
+
+export const orderStatusEvents = pgTable(
+  "order_status_events",
+  {
+    id: uuid("id").primaryKey(),
+    orderId: uuid("order_id")
+      .notNull()
+      .references(() => orders.id, { onDelete: "cascade" }),
+    status: orderStatus("status").notNull(),
+    note: text("note"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+  },
+  (table) => [
+    index("order_status_events_order_idx").on(table.orderId, table.createdAt)
   ]
 );
