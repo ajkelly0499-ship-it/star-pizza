@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { validateBasket } from "../../../../../server/cart/validation";
+import { validateBasket } from "../../../../server/cart/validation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
