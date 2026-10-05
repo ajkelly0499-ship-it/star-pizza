@@ -63,6 +63,7 @@ type CartContextValue = {
   increaseLine: (key: string) => void;
   decreaseLine: (key: string) => void;
   removeLine: (key: string) => void;
+  clearCart: () => void;
   openCart: () => void;
   closeCart: () => void;
 };
@@ -352,6 +353,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         increaseLine,
         decreaseLine,
         removeLine,
+        clearCart: () => setCart([]),
         openCart: () => setIsOpen(true),
         closeCart: () => setIsOpen(false)
       }}
