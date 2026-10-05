@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { and, asc, eq } from "drizzle-orm";
+import { and, asc, eq, inArray } from "drizzle-orm";
 import SiteHeader from "../../../components/SiteHeader";
 import { getDb } from "../../../db/client";
 import {
@@ -112,37 +112,16 @@ export default async function OrderConfirmationPage({
           sortOrder: orderItemModifiers.sortOrder
         })
         .from(orderItemModifiers)
-        .where(
-          // Drizzle accepts an OR of equality predicates, but for the first
-          // production version item counts are small enough to fetch per order
-          // through the order-item relation below.
-          eq(orderItemModifiers.orderItemId, itemIds[0])
-        )
+        .where(inArray(orderItemModifiers.orderItemId, itemIds))
         .orderBy(asc(orderItemModifiers.sortOrder))
     : [];
 
   const modifierMap = new Map<string, string[]>();
 
-  if (items.length === 1) {
-    modifierMap.set(
-      items[0].id,
-      modifiers.map((modifier) => modifier.label)
-    );
-  } else {
-    for (const item of items) {
-      const rows = await db
-        .select({
-          label: orderItemModifiers.labelSnapshot
-        })
-        .from(orderItemModifiers)
-        .where(eq(orderItemModifiers.orderItemId, item.id))
-        .orderBy(asc(orderItemModifiers.sortOrder));
-
-      modifierMap.set(
-        item.id,
-        rows.map((row) => row.label)
-      );
-    }
+  for (const modifier of modifiers) {
+    const current = modifierMap.get(modifier.orderItemId) ?? [];
+    current.push(modifier.label);
+    modifierMap.set(modifier.orderItemId, current);
   }
 
   return (
