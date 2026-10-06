@@ -5607,3 +5607,285 @@ footer {
     flex-basis: 250px;
   }
 }
+
+
+/* DESKTOP ORDERING FLOW POLISH — CUSTOMISER / BASKET / UPSELL / CHECKOUT */
+@media (min-width: 1021px) {
+  .product-modal-backdrop {
+    padding: 32px;
+  }
+
+  .product-modal {
+    width: min(980px, calc(100vw - 64px));
+    max-height: min(820px, calc(100vh - 64px));
+    grid-template-columns: minmax(330px, 0.9fr) minmax(0, 1.1fr);
+    border-radius: 14px;
+  }
+
+  .product-modal-image {
+    position: sticky;
+    top: 0;
+    height: min(820px, calc(100vh - 64px));
+    min-height: 620px;
+  }
+
+  .product-modal-content {
+    padding: 34px 36px 0;
+    scrollbar-gutter: stable;
+  }
+
+  .product-modal-content h2 {
+    padding-right: 36px;
+    font-size: 42px;
+  }
+
+  .product-modal-description {
+    max-width: 520px;
+    margin-bottom: 26px;
+    font-size: 12px;
+  }
+
+  .product-option-group {
+    padding: 22px 0;
+  }
+
+  .product-option-heading strong {
+    font-size: 12.5px;
+  }
+
+  .product-variant-list {
+    gap: 9px;
+  }
+
+  .product-variant-list label {
+    min-height: 52px;
+    padding: 0 15px;
+    border-radius: 7px;
+  }
+
+  .pizza-topping-grid,
+  .kebab-choice-grid {
+    gap: 9px;
+  }
+
+  .product-modal-footer {
+    bottom: 0;
+    margin: 8px -36px 0;
+    padding: 17px 36px 20px;
+  }
+
+  .modal-quantity,
+  .modal-add-button {
+    min-height: 52px;
+    height: 52px;
+  }
+
+  .modal-add-button {
+    padding-inline: 18px;
+    font-size: 12.5px;
+  }
+
+  .basket-drawer {
+    width: min(480px, 100%);
+    padding: 32px;
+  }
+
+  .drawer-head {
+    padding-bottom: 23px;
+  }
+
+  .drawer-head h2 {
+    font-size: 42px;
+  }
+
+  .drawer-item {
+    gap: 22px;
+    padding: 20px 0;
+  }
+
+  .drawer-item-copy > strong {
+    font-size: 15px;
+  }
+
+  .drawer-item-copy > span {
+    max-width: 270px;
+    line-height: 1.45;
+  }
+
+  .quantity-control {
+    grid-template-columns: 30px 30px 30px;
+  }
+
+  .quantity-control button {
+    height: 30px;
+  }
+
+  .drawer-total {
+    padding: 24px 0 18px;
+  }
+
+  .checkout-button--action {
+    min-height: 58px;
+    border-radius: 7px;
+  }
+
+  .upsell-modal {
+    width: min(940px, calc(100vw - 64px));
+    padding: 38px 40px 34px;
+    border-radius: 14px;
+  }
+
+  .upsell-heading {
+    max-width: 620px;
+  }
+
+  .upsell-heading h2 {
+    font-size: 44px;
+  }
+
+  .upsell-grid {
+    gap: 14px;
+    margin-top: 26px;
+  }
+
+  .upsell-card {
+    min-height: 228px;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .upsell-card-image {
+    height: 108px;
+  }
+
+  .upsell-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .upsell-card-copy {
+    min-height: 118px;
+    padding: 14px 15px 15px;
+  }
+
+  .upsell-card h3 {
+    margin-top: 0;
+    font-size: 22px;
+  }
+
+  .upsell-card p {
+    min-height: 28px;
+  }
+
+  .upsell-card-bottom {
+    margin-top: 14px;
+  }
+
+  .upsell-actions {
+    margin-top: 26px;
+    padding-top: 22px;
+  }
+
+  .upsell-actions > a {
+    min-height: 52px;
+    border-radius: 7px;
+    font-size: 11.5px;
+  }
+
+  .checkout-page {
+    padding: 58px 0 104px;
+  }
+
+  .checkout-page > .shell {
+    width: min(1180px, calc(100% - 56px));
+  }
+
+  .checkout-grid {
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 64px;
+  }
+
+  .checkout-form-panel {
+    max-width: 690px;
+    margin-top: -12px;
+  }
+
+  .checkout-form-panel h1 {
+    font-size: 60px;
+  }
+
+  .checkout-intro {
+    margin-bottom: 28px;
+  }
+
+  .checkout-fulfilment-card,
+  .checkout-account-card {
+    padding: 24px;
+    border-radius: 11px;
+  }
+
+  .checkout-account-card {
+    margin-bottom: 24px;
+  }
+
+  .checkout-section {
+    padding: 24px 0;
+  }
+
+  .checkout-section input {
+    min-height: 50px;
+    border-radius: 6px;
+  }
+
+  .checkout-section textarea {
+    border-radius: 6px;
+  }
+
+  .checkout-summary {
+    top: 28px;
+    padding: 28px;
+    border-radius: 12px;
+    box-shadow: 0 14px 36px rgba(36,27,16,0.06);
+  }
+
+  .checkout-summary h2 {
+    font-size: 36px;
+  }
+
+  .checkout-lines > div {
+    padding: 15px 0;
+  }
+
+  .payment-placeholder {
+    min-height: 58px;
+    border-radius: 7px;
+  }
+
+  .product-modal-close,
+  .upsell-close,
+  .close-button {
+    transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+  }
+
+  .product-modal-close:hover,
+  .upsell-close:hover,
+  .close-button:hover {
+    transform: scale(1.04);
+    border-color: rgba(17,17,17,0.24);
+    background: #f5f0e8;
+  }
+
+  .product-modal button:focus-visible,
+  .basket-drawer button:focus-visible,
+  .upsell-modal button:focus-visible,
+  .upsell-modal a:focus-visible,
+  .checkout-page button:focus-visible,
+  .checkout-page input:focus-visible,
+  .checkout-page textarea:focus-visible,
+  .checkout-page select:focus-visible {
+    outline: 2px solid var(--accent-deep);
+    outline-offset: 2px;
+  }
+}
