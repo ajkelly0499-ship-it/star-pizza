@@ -35,3 +35,17 @@ Never expose `DATABASE_URL` to client-side code and never prefix it with `NEXT_P
 3. Apply `db/migrations/0002_orders.sql`.
 4. Verify `/api/menu` and `/api/cart/validate`.
 5. Test collection + pay-on-collection checkout end to end before enabling restaurant order management.
+
+## Restaurant order desk
+
+The next backend layer adds a protected restaurant order desk:
+
+- `/admin` password sign-in
+- `/admin/orders` live order board
+- NEW → ACCEPTED → PREPARING → READY → COMPLETED workflow
+- delivery orders can move READY → OUT_FOR_DELIVERY → COMPLETED
+- cancellation controls with server-side transition validation
+- 15-second dashboard refresh
+- status-event audit records
+
+Configure `ADMIN_PASSWORD` and `ADMIN_SESSION_SECRET` in Vercel before using the admin area. Customer/order data is not exposed without the admin session cookie.
