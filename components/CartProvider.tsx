@@ -20,6 +20,29 @@ export type CartLine = {
 };
 
 export type OrderType = "delivery" | "collection";
+export type CartValidationStatus =
+  | "idle"
+  | "validating"
+  | "valid"
+  | "invalid"
+  | "error";
+
+export type CartValidationIssue = {
+  clientLineKey: string;
+  code: string;
+  message: string;
+};
+
+type CartValidationResponse = {
+  valid: boolean;
+  subtotalPence: number;
+  lines: Array<{
+    clientLineKey: string;
+    unitPricePence: number;
+    lineTotalPence: number;
+  }>;
+  issues: CartValidationIssue[];
+};
 
 type CartContextValue = {
   lines: CartLine[];
@@ -27,12 +50,20 @@ type CartContextValue = {
   total: number;
   isOpen: boolean;
   orderType: OrderType;
+  validationStatus: CartValidationStatus;
+  validationIssues: CartValidationIssue[];
   setOrderType: (type: OrderType) => void;
   addItem: (id: number) => void;
-  addConfiguredItem: (id: number, unitPrice: number, options: string[], quantity?: number) => void;
+  addConfiguredItem: (
+    id: number,
+    unitPrice: number,
+    options: string[],
+    quantity?: number
+  ) => void;
   increaseLine: (key: string) => void;
   decreaseLine: (key: string) => void;
   removeLine: (key: string) => void;
+  clearCart: () => void;
   openCart: () => void;
   closeCart: () => void;
 };
@@ -43,11 +74,33 @@ function makeLineKey(itemId: number, unitPrice: number, options: string[]) {
   return [itemId, unitPrice.toFixed(2), ...options].join("::");
 }
 
+function isStoredCartLine(value: unknown): value is StoredCartLine {
+  if (!value || typeof value !== "object") return false;
+
+  const line = value as Partial<StoredCartLine>;
+
+  return (
+    typeof line.key === "string" &&
+    typeof line.itemId === "number" &&
+    typeof line.quantity === "number" &&
+    line.quantity > 0 &&
+    typeof line.unitPrice === "number" &&
+    Array.isArray(line.options) &&
+    line.options.every((option) => typeof option === "string")
+  );
+}
+
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<StoredCartLine[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [orderType, setOrderTypeState] = useState<OrderType>("delivery");
   const [hydrated, setHydrated] = useState(false);
+  const [validationStatus, setValidationStatus] =
+    useState<CartValidationStatus>("idle");
+  const [validationIssues, setValidationIssues] = useState<CartValidationIssue[]>([]);
+  const [validatedTotalPence, setValidatedTotalPence] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     try {
@@ -62,7 +115,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const parsed = JSON.parse(saved);
 
       if (Array.isArray(parsed)) {
-        setCart(parsed);
+        setCart(parsed.filter(isStoredCartLine));
         return;
       }
 
@@ -101,6 +154,107 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     window.localStorage.setItem("star-pizza-order-type", orderType);
   }, [orderType, hydrated]);
 
+  useEffect(() => {
+    if (!hydrated) return;
+
+    if (cart.length === 0) {
+      setValidationStatus("valid");
+      setValidationIssues([]);
+      setValidatedTotalPence(0);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    setValidationStatus("validating");
+    setValidationIssues([]);
+    setValidatedTotalPence(null);
+
+    const timeout = window.setTimeout(async () => {
+      try {
+        const response = await fetch("/api/cart/validate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            lines: cart.map((line) => ({
+              clientLineKey: line.key,
+              itemId: line.itemId,
+              quantity: line.quantity,
+              options: line.options
+            }))
+          }),
+          signal: controller.signal
+        });
+
+        const result = (await response.json()) as CartValidationResponse;
+
+        if (!response.ok && response.status !== 422) {
+          throw new Error("Basket validation request failed.");
+        }
+
+        if (!result.valid) {
+          setValidationStatus("invalid");
+          setValidationIssues(result.issues ?? []);
+          setValidatedTotalPence(null);
+          return;
+        }
+
+        setValidationStatus("valid");
+        setValidationIssues([]);
+        setValidatedTotalPence(result.subtotalPence);
+
+        const authoritativePrices = new Map(
+          result.lines.map((line) => [
+            line.clientLineKey,
+            line.unitPricePence / 100
+          ])
+        );
+
+        setCart((current) => {
+          let changed = false;
+
+          const next = current.map((line) => {
+            const authoritativePrice = authoritativePrices.get(line.key);
+            if (
+              authoritativePrice === undefined ||
+              Math.abs(authoritativePrice - line.unitPrice) < 0.0001
+            ) {
+              return line;
+            }
+
+            changed = true;
+            return {
+              ...line,
+              unitPrice: authoritativePrice
+            };
+          });
+
+          return changed ? next : current;
+        });
+      } catch (error) {
+        if (controller.signal.aborted) return;
+
+        console.error("Unable to validate basket", error);
+        setValidationStatus("error");
+        setValidationIssues([
+          {
+            clientLineKey: "",
+            code: "VALIDATION_UNAVAILABLE",
+            message: "We could not verify your basket. Please try again."
+          }
+        ]);
+        setValidatedTotalPence(null);
+      }
+    }, 250);
+
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [cart, hydrated]);
+
   const setOrderType = (type: OrderType) => {
     setOrderTypeState(type);
   };
@@ -117,7 +271,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   );
 
   const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
-  const total = lines.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0);
+  const localTotal = lines.reduce(
+    (sum, line) => sum + line.unitPrice * line.quantity,
+    0
+  );
+  const total =
+    validationStatus === "valid" && validatedTotalPence !== null
+      ? validatedTotalPence / 100
+      : localTotal;
 
   const addConfiguredItem = (
     id: number,
@@ -132,7 +293,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       if (existing) {
         return current.map((line) =>
-          line.key === key ? { ...line, quantity: line.quantity + quantity } : line
+          line.key === key
+            ? { ...line, quantity: line.quantity + quantity }
+            : line
         );
       }
 
@@ -182,12 +345,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         total,
         isOpen,
         orderType,
+        validationStatus,
+        validationIssues,
         setOrderType,
         addItem,
         addConfiguredItem,
         increaseLine,
         decreaseLine,
         removeLine,
+        clearCart: () => setCart([]),
         openCart: () => setIsOpen(true),
         closeCart: () => setIsOpen(false)
       }}

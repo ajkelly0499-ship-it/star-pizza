@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
 
@@ -10,11 +11,29 @@ type PaymentChoice = "online" | "collection";
 type CollectionTime = "asap" | "later";
 
 export default function CheckoutPage() {
-  const { lines, total, openCart, orderType, setOrderType } = useCart();
+  const {
+    lines,
+    total,
+    openCart,
+    orderType,
+    setOrderType,
+    validationStatus,
+    validationIssues,
+    clearCart
+  } = useCart();
+  const router = useRouter();
   const [authChoice, setAuthChoice] = useState<AuthChoice>(null);
   const [paymentChoice, setPaymentChoice] = useState<PaymentChoice>("online");
   const [collectionTime, setCollectionTime] = useState<CollectionTime>("asap");
   const [showAccountOptions, setShowAccountOptions] = useState(false);
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [collectionNotes, setCollectionNotes] = useState("");
+  const [preferredCollectionTime, setPreferredCollectionTime] = useState("");
+  const [checkoutStatus, setCheckoutStatus] = useState<"idle" | "submitting">("idle");
+  const [checkoutError, setCheckoutError] = useState("");
+  const [idempotencyKey, setIdempotencyKey] = useState("");
 
   useEffect(() => {
     if (orderType === "delivery") {
@@ -29,6 +48,89 @@ export default function CheckoutPage() {
 
   const isCollection = orderType === "collection";
   const payOnCollection = isCollection && paymentChoice === "collection";
+  const canPlaceCollectionOrder =
+    payOnCollection &&
+    lines.length > 0 &&
+    validationStatus === "valid" &&
+    checkoutStatus !== "submitting";
+
+  const placeCollectionOrder = async () => {
+    setCheckoutError("");
+
+    if (!customerName.trim() || !customerPhone.trim()) {
+      setCheckoutError("Please enter your name and mobile number.");
+      return;
+    }
+
+    if (customerEmail.trim() && !customerEmail.includes("@")) {
+      setCheckoutError("Please enter a valid email address or leave it blank.");
+      return;
+    }
+
+    if (collectionTime === "later" && !preferredCollectionTime) {
+      setCheckoutError("Please choose a collection time.");
+      return;
+    }
+
+    if (validationStatus !== "valid" || lines.length === 0) {
+      setCheckoutError("Your basket must be verified before we can create the order.");
+      return;
+    }
+
+    const requestKey = idempotencyKey || window.crypto.randomUUID();
+    if (!idempotencyKey) setIdempotencyKey(requestKey);
+
+    setCheckoutStatus("submitting");
+
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          idempotencyKey: requestKey,
+          customerName: customerName.trim(),
+          customerPhone: customerPhone.trim(),
+          customerEmail: customerEmail.trim(),
+          orderType: "collection",
+          requestedTimeLabel:
+            collectionTime === "later" ? preferredCollectionTime : "ASAP",
+          paymentMethod: "COLLECTION",
+          customerNotes: collectionNotes.trim(),
+          lines: lines.map((line) => ({
+            clientLineKey: line.key,
+            itemId: line.item.id,
+            quantity: line.quantity,
+            options: line.options
+          }))
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          typeof result?.message === "string"
+            ? result.message
+            : "We could not create your order."
+        );
+      }
+
+      clearCart();
+      setIdempotencyKey("");
+      router.push(
+        `/order/${result.id}?token=${encodeURIComponent(result.publicToken)}`
+      );
+    } catch (error) {
+      setCheckoutError(
+        error instanceof Error
+          ? error.message
+          : "We could not create your order. Please try again."
+      );
+      setCheckoutStatus("idle");
+    }
+  };
 
   return (
     <main className="inner-page">
@@ -170,16 +272,36 @@ export default function CheckoutPage() {
               <div className="field-grid">
                 <label>
                   Name
-                  <input name="name" autoComplete="name" placeholder="Your name" />
+                  <input
+                    name="name"
+                    autoComplete="name"
+                    placeholder="Your name"
+                    value={customerName}
+                    onChange={(event) => setCustomerName(event.target.value)}
+                  />
                 </label>
                 <label>
                   Mobile
-                  <input name="tel" autoComplete="tel" inputMode="tel" placeholder="07..." />
+                  <input
+                    name="tel"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    placeholder="07..."
+                    value={customerPhone}
+                    onChange={(event) => setCustomerPhone(event.target.value)}
+                  />
                 </label>
               </div>
               <label>
                 Email
-                <input name="email" autoComplete="email" placeholder="you@example.com" type="email" />
+                <input
+                  name="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  type="email"
+                  value={customerEmail}
+                  onChange={(event) => setCustomerEmail(event.target.value)}
+                />
               </label>
             </div>
 
@@ -222,7 +344,10 @@ export default function CheckoutPage() {
                   {collectionTime === "later" && (
                     <label className="checkout-time-select">
                       Preferred collection time
-                      <select defaultValue="">
+                      <select
+                        value={preferredCollectionTime}
+                        onChange={(event) => setPreferredCollectionTime(event.target.value)}
+                      >
                         <option value="" disabled>Select a time</option>
                         <option>18:00</option>
                         <option>18:15</option>
@@ -238,7 +363,12 @@ export default function CheckoutPage() {
 
                 <label>
                   Collection notes
-                  <textarea placeholder="Anything the team should know?" />
+                  <textarea
+                  placeholder="Anything the team should know?"
+                  value={collectionNotes}
+                  onChange={(event) => setCollectionNotes(event.target.value)}
+                  maxLength={500}
+                />
                 </label>
               </div>
             ) : (
@@ -303,13 +433,40 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            <button className="payment-placeholder" disabled>
-              {payOnCollection ? "Place collection order" : "Continue to secure payment"}
+            {lines.length > 0 && (
+              <div className="checkout-choice-helper" role="status">
+                {validationStatus === "validating" && "Checking your basket against current menu pricing…"}
+                {validationStatus === "valid" && "Basket checked — current menu pricing confirmed."}
+                {validationStatus === "invalid" &&
+                  (validationIssues[0]?.message ||
+                    "One or more basket items need to be reviewed before checkout.")}
+                {validationStatus === "error" &&
+                  "We could not verify the basket right now. Checkout will stay unavailable until it is verified."}
+              </div>
+            )}
+
+            {checkoutError && (
+              <div className="checkout-choice-helper" role="alert">
+                {checkoutError}
+              </div>
+            )}
+
+            <button
+              type="button"
+              className="payment-placeholder"
+              disabled={!canPlaceCollectionOrder}
+              onClick={placeCollectionOrder}
+            >
+              {payOnCollection
+                ? checkoutStatus === "submitting"
+                  ? "Creating your order…"
+                  : "Place collection order"
+                : "Continue to secure payment"}
             </button>
             <small className="checkout-payment-note">
               {payOnCollection
-                ? "Pay when you collect. Order processing will be connected before launch."
-                : "Secure online payment will be connected before launch."}
+                ? "This now creates a real collection order in the Star Pizza database. Payment is due on collection."
+                : "Online payment is still disabled until the secure payment phase is connected."}
             </small>
           </div>
 
