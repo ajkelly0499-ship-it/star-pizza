@@ -5,7 +5,7 @@ import {
   ADMIN_COOKIE,
   verifyAdminSessionToken
 } from "../../../server/admin/auth";
-import { getAdminOrders } from "../../../server/admin/orders";
+import { getAdminOrders, type AdminOrder } from "../../../server/admin/orders";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,7 +16,7 @@ export default async function AdminOrdersPage() {
     redirect("/admin");
   }
 
-  let orders = [];
+  let orders: AdminOrder[] = [];
   let loadError = "";
 
   try {
