@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 type Status =
@@ -30,6 +31,7 @@ type AdminOrder = {
   paymentStatus: "UNPAID" | "PENDING" | "PAID" | "FAILED" | "REFUNDED";
   orderStatus: Status;
   createdAt: string;
+  completedAt: string | null;
   items: Array<{
     id: string;
     name: string;
@@ -87,11 +89,13 @@ function nextAction(order: AdminOrder): { label: string; status: Status } | null
 function OrderCard({
   order,
   busy,
-  onUpdate
+  onUpdate,
+  onPaymentUpdate
 }: {
   order: AdminOrder;
   busy: boolean;
   onUpdate: (id: string, status: Status) => void;
+  onPaymentUpdate: (id: string, status: "UNPAID" | "PAID") => void;
 }) {
   const primary = nextAction(order);
   const canCancel = !["COMPLETED", "CANCELLED"].includes(order.orderStatus);
@@ -153,13 +157,33 @@ function OrderCard({
       )}
 
       <div className="admin-order-total">
-        <span>
+        <span className={`admin-payment-status admin-payment-status--${order.paymentStatus.toLowerCase()}`}>
           {order.paymentMethod === "COLLECTION"
-            ? "Pay on collection"
+            ? order.paymentStatus === "PAID"
+              ? "Paid"
+              : "Payment due"
             : order.paymentStatus}
         </span>
         <strong>{money(order.totalPence)}</strong>
       </div>
+
+      {order.paymentMethod === "COLLECTION" &&
+        !["CANCELLED"].includes(order.orderStatus) &&
+        order.paymentStatus !== "REFUNDED" && (
+          <button
+            type="button"
+            className="admin-payment-action"
+            onClick={() =>
+              onPaymentUpdate(
+                order.id,
+                order.paymentStatus === "PAID" ? "UNPAID" : "PAID"
+              )
+            }
+            disabled={busy}
+          >
+            {order.paymentStatus === "PAID" ? "Mark payment due" : "Mark as paid"}
+          </button>
+        )}
 
       {(primary || canCancel) && (
         <div className="admin-order-actions">
@@ -232,7 +256,10 @@ export default function AdminOrdersBoard({
     ).length
   };
 
-  const updateStatus = async (id: string, status: Status) => {
+  const patchOrder = async (
+    id: string,
+    payload: { status: Status } | { paymentStatus: "UNPAID" | "PAID" }
+  ) => {
     setUpdatingId(id);
     setActionError("");
 
@@ -240,7 +267,7 @@ export default function AdminOrdersBoard({
       const response = await fetch(`/api/admin/orders/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status })
+        body: JSON.stringify(payload)
       });
       const result = await response.json();
 
@@ -258,6 +285,14 @@ export default function AdminOrdersBoard({
     }
   };
 
+  const updateStatus = async (id: string, status: Status) => {
+    await patchOrder(id, { status });
+  };
+
+  const updatePayment = async (id: string, paymentStatus: "UNPAID" | "PAID") => {
+    await patchOrder(id, { paymentStatus });
+  };
+
   return (
     <>
       <header className="admin-topbar">
@@ -270,6 +305,10 @@ export default function AdminOrdersBoard({
         </div>
 
         <div className="admin-topbar-actions">
+          <nav className="admin-topbar-nav" aria-label="Admin">
+            <Link className="active" href="/admin/orders">Order desk</Link>
+            <Link href="/admin/history">History & sales</Link>
+          </nav>
           <span className="admin-live-dot">
             <i />
             Auto-refresh · 15 sec
@@ -339,6 +378,7 @@ export default function AdminOrdersBoard({
                           order={order}
                           busy={updatingId === order.id}
                           onUpdate={updateStatus}
+                          onPaymentUpdate={updatePayment}
                         />
                       ))
                     ) : (
@@ -368,6 +408,7 @@ export default function AdminOrdersBoard({
                     order={order}
                     busy={updatingId === order.id}
                     onUpdate={updateStatus}
+                    onPaymentUpdate={updatePayment}
                   />
                 ))}
             </div>

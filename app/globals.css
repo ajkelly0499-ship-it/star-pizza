@@ -6764,3 +6764,419 @@ footer {
     margin-bottom: 0;
   }
 }
+
+/* ADMIN HISTORY + SALES REPORTING */
+.admin-topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 8px;
+}
+
+.admin-topbar-nav a {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 11px;
+  border-radius: 6px;
+  color: rgba(255,255,255,.56);
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.admin-topbar-nav a:hover,
+.admin-topbar-nav a.active {
+  background: rgba(255,255,255,.08);
+  color: #fff;
+}
+
+.admin-payment-status {
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-payment-status--paid {
+  background: #e4f7e8;
+  color: #237338 !important;
+}
+
+.admin-payment-status--unpaid {
+  background: #fff1d0;
+  color: #8b5c00 !important;
+}
+
+.admin-payment-action {
+  width: calc(100% - 28px);
+  min-height: 34px;
+  margin: -4px 14px 12px;
+  border: 1px solid #d9d1c5;
+  border-radius: 6px;
+  background: #fffdf8;
+  color: #111;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.admin-payment-action:hover {
+  border-color: #111;
+}
+
+.admin-reporting {
+  width: min(1400px, calc(100% - 48px));
+}
+
+.admin-reporting-heading {
+  align-items: flex-start;
+}
+
+.admin-period-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid rgba(17,17,17,.09);
+  border-radius: 9px;
+  background: #fffdf8;
+}
+
+.admin-period-tabs button {
+  min-height: 35px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #746d64;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.admin-period-tabs button.active {
+  background: #111;
+  color: #fff;
+}
+
+.admin-report-cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.admin-report-cards article {
+  min-height: 128px;
+  padding: 18px;
+  border: 1px solid rgba(17,17,17,.09);
+  border-radius: 10px;
+  background: #fffdf8;
+}
+
+.admin-report-cards article.attention {
+  border-color: rgba(244,180,26,.7);
+  background: #fff8e4;
+}
+
+.admin-report-cards span {
+  display: block;
+  color: #7b746b;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.admin-report-cards strong {
+  display: block;
+  margin-top: 10px;
+  font-family: "Oswald", Impact, sans-serif;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.admin-report-cards small {
+  display: block;
+  margin-top: 9px;
+  color: #918a80;
+  font-size: 7.5px;
+  line-height: 1.4;
+}
+
+.admin-report-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(300px, .6fr);
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.admin-report-panel {
+  padding: 20px;
+  border: 1px solid rgba(17,17,17,.09);
+  border-radius: 10px;
+  background: #fffdf8;
+}
+
+.admin-report-panel-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.admin-report-panel h2,
+.admin-history-controls h2 {
+  margin: 5px 0 0;
+  font-family: "Oswald", Impact, sans-serif;
+  font-size: 28px;
+  text-transform: uppercase;
+}
+
+.admin-report-panel-head > small {
+  color: #8c857c;
+  font-size: 8px;
+}
+
+.admin-top-products {
+  display: grid;
+}
+
+.admin-top-products > div:not(.admin-column-empty) {
+  min-height: 46px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 80px 75px;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid rgba(17,17,17,.08);
+}
+
+.admin-top-products b {
+  color: #b4aca1;
+  font-size: 8px;
+}
+
+.admin-top-products span {
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.admin-top-products strong,
+.admin-top-products em {
+  font-size: 8px;
+  font-style: normal;
+  text-align: right;
+}
+
+.admin-top-products em {
+  color: #817a71;
+}
+
+.admin-report-explainer {
+  background: #111;
+  color: #fff;
+}
+
+.admin-report-explainer .admin-eyebrow {
+  color: var(--accent);
+}
+
+.admin-report-explainer h2 {
+  font-size: 32px;
+}
+
+.admin-report-explainer p {
+  color: rgba(255,255,255,.58);
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.admin-history-table-section {
+  overflow: hidden;
+  border: 1px solid rgba(17,17,17,.09);
+  border-radius: 10px;
+  background: #fffdf8;
+}
+
+.admin-history-controls {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px;
+  border-bottom: 1px solid rgba(17,17,17,.08);
+}
+
+.admin-history-filters {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-history-filters input,
+.admin-history-filters select {
+  min-height: 38px;
+  border: 1px solid #d6cec3;
+  border-radius: 6px;
+  background: #fff;
+  color: #111;
+  font-size: 9px;
+}
+
+.admin-history-filters input {
+  width: 280px;
+  padding: 0 11px;
+}
+
+.admin-history-filters select {
+  padding: 0 10px;
+}
+
+.admin-history-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-history-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+}
+
+.admin-history-table th {
+  padding: 11px 14px;
+  background: #f1ece3;
+  color: #817a71;
+  font-size: 7px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.admin-history-table td {
+  padding: 13px 14px;
+  border-top: 1px solid rgba(17,17,17,.07);
+  vertical-align: middle;
+  font-size: 9px;
+}
+
+.admin-history-table td > strong,
+.admin-history-table td > small {
+  display: block;
+}
+
+.admin-history-table td > small {
+  margin-top: 3px;
+  color: #898279;
+  font-size: 7.5px;
+}
+
+.admin-table-status,
+.admin-table-payment {
+  display: inline-flex;
+  padding: 5px 7px;
+  border-radius: 999px;
+  font-size: 7px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-table-status {
+  background: #eee9e0;
+}
+
+.admin-table-status--completed,
+.admin-table-payment--paid {
+  background: #e4f7e8;
+  color: #237338;
+}
+
+.admin-table-status--cancelled,
+.admin-table-payment--refunded {
+  background: #f8e7e4;
+  color: #8a3025;
+}
+
+.admin-table-payment--unpaid {
+  background: #fff1d0;
+  color: #8b5c00;
+}
+
+.admin-history-payment-button {
+  min-height: 32px;
+  padding: 0 9px;
+  border: 1px solid #111;
+  border-radius: 5px;
+  background: transparent;
+  color: #111;
+  font-size: 7.5px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.admin-history-payment-button:hover {
+  background: #111;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .admin-report-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-report-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-history-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-history-filters {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .admin-history-filters input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-topbar {
+    flex-wrap: wrap;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .admin-topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .admin-topbar-nav {
+    margin-right: auto;
+  }
+
+  .admin-reporting {
+    width: min(100% - 28px, 1400px);
+  }
+
+  .admin-period-tabs {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .admin-period-tabs button {
+    flex: 0 0 auto;
+  }
+
+  .admin-report-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-report-cards article {
+    min-height: 112px;
+  }
+
+  .admin-report-cards strong {
+    font-size: 28px;
+  }
+}
+

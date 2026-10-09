@@ -37,6 +37,7 @@ export type AdminOrder = {
   paymentStatus: "UNPAID" | "PENDING" | "PAID" | "FAILED" | "REFUNDED";
   orderStatus: AdminOrderStatus;
   createdAt: string;
+  completedAt: string | null;
   items: Array<{
     id: string;
     name: string;
@@ -99,7 +100,8 @@ export async function getAdminOrders(limit = 80): Promise<AdminOrder[]> {
       paymentMethod: orders.paymentMethod,
       paymentStatus: orders.paymentStatus,
       orderStatus: orders.orderStatus,
-      createdAt: orders.createdAt
+      createdAt: orders.createdAt,
+      completedAt: orders.completedAt
     })
     .from(orders)
     .where(eq(orders.restaurantId, restaurantId))
@@ -158,6 +160,7 @@ export async function getAdminOrders(limit = 80): Promise<AdminOrder[]> {
   return rows.map((row) => ({
     ...row,
     createdAt: row.createdAt.toISOString(),
+    completedAt: row.completedAt?.toISOString() ?? null,
     items: itemsByOrder.get(row.id) ?? []
   }));
 }
@@ -249,6 +252,74 @@ export async function updateAdminOrderStatus(
 
   if (!updated) {
     throw new AdminOrderError("Order status was not updated.", 500);
+  }
+
+  return updated;
+}
+
+
+export type AdminPaymentStatus = "UNPAID" | "PENDING" | "PAID" | "FAILED" | "REFUNDED";
+
+export async function updateAdminPaymentStatus(
+  orderId: string,
+  nextPaymentStatus: "UNPAID" | "PAID" | "REFUNDED"
+) {
+  const db = getDb();
+  const restaurantId = await getRestaurantId();
+
+  if (!restaurantId) {
+    throw new AdminOrderError("Restaurant is unavailable.", 503);
+  }
+
+  const [current] = await db
+    .select({
+      id: orders.id,
+      paymentMethod: orders.paymentMethod,
+      paymentStatus: orders.paymentStatus
+    })
+    .from(orders)
+    .where(and(eq(orders.id, orderId), eq(orders.restaurantId, restaurantId)))
+    .limit(1);
+
+  if (!current) {
+    throw new AdminOrderError("Order not found.", 404);
+  }
+
+  if (current.paymentMethod !== "COLLECTION") {
+    throw new AdminOrderError(
+      "Online payment status is managed by the payment provider.",
+      409
+    );
+  }
+
+  if (current.paymentStatus === nextPaymentStatus) {
+    return { id: current.id, paymentStatus: nextPaymentStatus };
+  }
+
+  if (
+    current.paymentStatus === "REFUNDED" &&
+    nextPaymentStatus !== "PAID"
+  ) {
+    throw new AdminOrderError(
+      "A refunded order can only be restored to paid.",
+      409
+    );
+  }
+
+  const [updated] = await db
+    .update(orders)
+    .set({
+      paymentStatus: nextPaymentStatus,
+      updatedAt: new Date()
+    })
+    .where(and(eq(orders.id, orderId), eq(orders.restaurantId, restaurantId)))
+    .returning({
+      id: orders.id,
+      paymentStatus: orders.paymentStatus
+    });
+
+  if (!updated) {
+    throw new AdminOrderError("Payment status was not updated.", 500);
   }
 
   return updated;
