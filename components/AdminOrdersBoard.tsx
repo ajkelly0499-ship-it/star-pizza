@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import AdminSectionNav from "./AdminSectionNav";
 
 type Status =
   | "PENDING_PAYMENT"
@@ -221,7 +221,6 @@ export default function AdminOrdersBoard({
   const router = useRouter();
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [actionError, setActionError] = useState("");
-  const [historyOpen, setHistoryOpen] = useState(false);
 
   useEffect(() => {
     const timer = window.setInterval(() => router.refresh(), 15000);
@@ -238,13 +237,6 @@ export default function AdminOrdersBoard({
     [orders]
   );
 
-  const historyOrders = useMemo(
-    () =>
-      orders.filter((order) =>
-        ["COMPLETED", "CANCELLED"].includes(order.orderStatus)
-      ),
-    [orders]
-  );
 
   const counts = {
     new: orders.filter((order) => order.orderStatus === "NEW").length,
@@ -305,10 +297,6 @@ export default function AdminOrdersBoard({
         </div>
 
         <div className="admin-topbar-actions">
-          <nav className="admin-topbar-nav" aria-label="Admin">
-            <Link className="active" href="/admin/orders">Order desk</Link>
-            <Link href="/admin/history">History & sales</Link>
-          </nav>
           <span className="admin-live-dot">
             <i />
             Auto-refresh · 15 sec
@@ -322,6 +310,8 @@ export default function AdminOrdersBoard({
           </form>
         </div>
       </header>
+
+      <AdminSectionNav active="orders" />
 
       <section className="admin-dashboard">
         <div className="admin-dashboard-heading">
@@ -415,40 +405,6 @@ export default function AdminOrdersBoard({
           </section>
         )}
 
-        <section className="admin-history">
-          <button
-            type="button"
-            className="admin-history-toggle"
-            onClick={() => setHistoryOpen((open) => !open)}
-          >
-            <span>
-              Recent completed / cancelled orders
-              <small>{historyOrders.length} shown</small>
-            </span>
-            <strong>{historyOpen ? "−" : "+"}</strong>
-          </button>
-
-          {historyOpen && (
-            <div className="admin-history-grid">
-              {historyOrders.length ? (
-                historyOrders.slice(0, 20).map((order) => (
-                  <article className="admin-history-card" key={order.id}>
-                    <div>
-                      <strong>{displayNumber(order.orderNumber)}</strong>
-                      <span>{order.customerName}</span>
-                    </div>
-                    <div>
-                      <b>{order.orderStatus}</b>
-                      <strong>{money(order.totalPence)}</strong>
-                    </div>
-                  </article>
-                ))
-              ) : (
-                <div className="admin-column-empty">No recent history yet.</div>
-              )}
-            </div>
-          )}
-        </section>
       </section>
     </>
   );

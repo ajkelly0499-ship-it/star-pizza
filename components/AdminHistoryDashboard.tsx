@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import AdminSectionNav from "./AdminSectionNav";
 
 type Status =
   | "PENDING_PAYMENT"
@@ -196,10 +196,6 @@ export default function AdminHistoryDashboard({
         </div>
 
         <div className="admin-topbar-actions">
-          <nav className="admin-topbar-nav" aria-label="Admin">
-            <Link href="/admin/orders">Order desk</Link>
-            <Link className="active" href="/admin/history">History & sales</Link>
-          </nav>
           <button type="button" onClick={() => router.refresh()}>Refresh</button>
           <form action="/api/admin/session" method="post">
             <input type="hidden" name="action" value="logout" />
@@ -207,6 +203,8 @@ export default function AdminHistoryDashboard({
           </form>
         </div>
       </header>
+
+      <AdminSectionNav active="history" />
 
       <section className="admin-dashboard admin-reporting">
         <div className="admin-dashboard-heading admin-reporting-heading">
