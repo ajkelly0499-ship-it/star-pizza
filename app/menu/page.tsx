@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import SiteHeader from "../../components/SiteHeader";
 import { useCart } from "../../components/CartProvider";
 import {
@@ -54,6 +54,7 @@ export default function MenuPage() {
   const [halfOne, setHalfOne] = useState("");
   const [halfTwo, setHalfTwo] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [soldOutIds, setSoldOutIds] = useState<Set<number>>(() => new Set());
   const categoryScrollRef = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -66,6 +67,38 @@ export default function MenuPage() {
     orderType,
     setOrderType
   } = useCart();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadAvailability = async () => {
+      try {
+        const response = await fetch("/api/menu", { cache: "no-store" });
+        if (!response.ok) return;
+
+        const data = await response.json();
+        const next = new Set<number>();
+
+        for (const category of data?.categories ?? []) {
+          for (const product of category?.products ?? []) {
+            if (product?.soldOut && Number.isInteger(product?.legacyId)) {
+              next.add(product.legacyId);
+            }
+          }
+        }
+
+        if (!cancelled) setSoldOutIds(next);
+      } catch {
+        // The server-side basket validation remains authoritative if this lookup fails.
+      }
+    };
+
+    loadAvailability();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
 
   const scrollCategories = (direction: "left" | "right") => {
@@ -143,6 +176,8 @@ export default function MenuPage() {
   }, [category, search]);
 
   const openProduct = (item: MenuItem) => {
+    if (soldOutIds.has(item.id)) return;
+
     if (typeof window !== "undefined" && window.matchMedia("(max-width: 760px)").matches) {
       window.scrollTo(0, 0);
     }
@@ -606,38 +641,53 @@ export default function MenuPage() {
 
             {visibleItems.length > 0 ? (
               <div className="compact-menu-grid">
-                {visibleItems.map((item) => (
-                  <article className="compact-menu-card" key={item.id}>
-                    <button
-                      className="compact-menu-image"
-                      onClick={() => openProduct(item)}
-                      aria-label={`Choose ${item.name}`}
+                {visibleItems.map((item) => {
+                  const soldOut = soldOutIds.has(item.id);
+
+                  return (
+                    <article
+                      className={`compact-menu-card${soldOut ? " compact-menu-card--sold-out" : ""}`}
+                      key={item.id}
                     >
-                      <img src={item.image} alt="" />
-                      {item.badge && <span>{item.badge}</span>}
-                    </button>
-
-                    <div className="compact-menu-copy">
-                      <div className="compact-menu-title-row">
-                        <h3>{item.name}</h3>
-                        <strong>{item.variants ? "from " : ""}£{item.price.toFixed(2)}</strong>
-                      </div>
-
-                      <p>{item.description}</p>
-
-                      <button className="choose-options-button" onClick={() => openProduct(item)}>
-                        <span>
-                          {item.variants
-                            ? "Choose size"
-                            : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers" || item.category === "Loaded Fries" || item.category === "Wraps" || item.category === "Cookie Dough" || item.category === "Brownies" || item.category === "Fondue" || item.id === 406 || item.id === 604 || item.id === 605
-                              ? "Customise"
-                              : "Add to order"}
-                        </span>
-                        <span className="choose-options-plus">+</span>
+                      <button
+                        className="compact-menu-image"
+                        onClick={() => openProduct(item)}
+                        aria-label={soldOut ? `${item.name} is sold out` : `Choose ${item.name}`}
+                        disabled={soldOut}
+                      >
+                        <img src={item.image} alt="" />
+                        {item.badge && !soldOut && <span>{item.badge}</span>}
+                        {soldOut && <span className="compact-menu-sold-out-badge">Sold out</span>}
                       </button>
-                    </div>
-                  </article>
-                ))}
+
+                      <div className="compact-menu-copy">
+                        <div className="compact-menu-title-row">
+                          <h3>{item.name}</h3>
+                          <strong>{item.variants ? "from " : ""}£{item.price.toFixed(2)}</strong>
+                        </div>
+
+                        <p>{item.description}</p>
+
+                        <button
+                          className="choose-options-button"
+                          onClick={() => openProduct(item)}
+                          disabled={soldOut}
+                        >
+                          <span>
+                            {soldOut
+                              ? "Currently unavailable"
+                              : item.variants
+                                ? "Choose size"
+                                : item.category === "Calzones" || item.category === "Kebabs" || item.category === "Burgers" || item.category === "Loaded Fries" || item.category === "Wraps" || item.category === "Cookie Dough" || item.category === "Brownies" || item.category === "Fondue" || item.id === 406 || item.id === 604 || item.id === 605
+                                  ? "Customise"
+                                  : "Add to order"}
+                          </span>
+                          <span className="choose-options-plus">{soldOut ? "×" : "+"}</span>
+                        </button>
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             ) : (
               <div className="menu-empty-state menu-empty-state--compact">
