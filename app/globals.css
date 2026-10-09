@@ -6712,3 +6712,42 @@ footer {
   }
 }
 
+
+
+/* DESKTOP PRODUCT CUSTOMISER SCROLL FIX */
+@media (min-width: 1021px) {
+  .product-modal-backdrop {
+    overflow: hidden;
+  }
+
+  .product-modal {
+    height: min(820px, calc(100dvh - 64px));
+    max-height: none;
+    min-height: 0;
+    align-items: stretch;
+  }
+
+  .product-modal-image {
+    position: relative;
+    top: auto;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .product-modal-content {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0;
+  }
+
+  .product-modal-footer {
+    bottom: 0;
+    z-index: 4;
+    margin-bottom: 0;
+  }
+}
