@@ -187,9 +187,8 @@ export default async function OrderConfirmationPage({
             </div>
 
             <p className="order-confirmation-note">
-              This is the Phase 3 collection-order flow. Online card payment and
-              delivery checkout remain disabled until those backend phases are
-              connected.
+              Your order has been sent to Star Pizza. Keep your order number handy
+              when you collect and pay at the takeaway.
             </p>
 
             <Link className="menu-basket-button" href="/menu">
