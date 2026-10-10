@@ -10,6 +10,18 @@ type AuthChoice = "apple" | "google" | "email" | "create" | null;
 type PaymentChoice = "online" | "collection";
 type CollectionTime = "asap" | "later";
 
+type StoreStatus = {
+  orderingPaused: boolean;
+  collectionEnabled: boolean;
+  deliveryEnabled: boolean;
+  prepTimeMinutes: number | null;
+  openingHoursEnabled: boolean;
+  collectionAccepting: boolean;
+  deliveryAccepting: boolean;
+  collectionMessage: string | null;
+  deliveryMessage: string | null;
+};
+
 export default function CheckoutPage() {
   const {
     lines,
@@ -34,12 +46,45 @@ export default function CheckoutPage() {
   const [checkoutStatus, setCheckoutStatus] = useState<"idle" | "submitting">("idle");
   const [checkoutError, setCheckoutError] = useState("");
   const [idempotencyKey, setIdempotencyKey] = useState("");
+  const [storeStatus, setStoreStatus] = useState<StoreStatus | null>(null);
 
   useEffect(() => {
     if (orderType === "delivery") {
       setPaymentChoice("online");
     }
   }, [orderType]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadStoreStatus = async () => {
+      try {
+        const response = await fetch("/api/store/status", { cache: "no-store" });
+        if (!response.ok) return;
+
+        const result = (await response.json()) as StoreStatus;
+        if (cancelled) return;
+
+        setStoreStatus(result);
+
+        if (
+          orderType === "delivery" &&
+          !result.deliveryEnabled &&
+          result.collectionEnabled
+        ) {
+          setOrderType("collection");
+        }
+      } catch {
+        // Server-side order creation remains authoritative.
+      }
+    };
+
+    loadStoreStatus();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [orderType, setOrderType]);
 
   const showAuthPreview = (choice: Exclude<AuthChoice, null>) => {
     setAuthChoice(choice);
@@ -48,8 +93,10 @@ export default function CheckoutPage() {
 
   const isCollection = orderType === "collection";
   const payOnCollection = isCollection && paymentChoice === "collection";
+  const collectionAvailable = storeStatus?.collectionAccepting ?? true;
   const canPlaceCollectionOrder =
     payOnCollection &&
+    collectionAvailable &&
     lines.length > 0 &&
     validationStatus === "valid" &&
     checkoutStatus !== "submitting";
@@ -169,14 +216,20 @@ export default function CheckoutPage() {
                   type="button"
                   className={orderType === "delivery" ? "active" : ""}
                   onClick={() => setOrderType("delivery")}
+                  disabled={storeStatus ? !storeStatus.deliveryEnabled : false}
                 >
                   <span>Delivery</span>
-                  <small>Delivered to your address</small>
+                  <small>
+                    {storeStatus && !storeStatus.deliveryEnabled
+                      ? "Not available yet"
+                      : "Delivered to your address"}
+                  </small>
                 </button>
                 <button
                   type="button"
                   className={orderType === "collection" ? "active" : ""}
                   onClick={() => setOrderType("collection")}
+                  disabled={storeStatus ? !storeStatus.collectionEnabled : false}
                 >
                   <span>Collection</span>
                   <small>Pick up from Star Pizza</small>
@@ -184,9 +237,15 @@ export default function CheckoutPage() {
               </div>
 
               <p className="checkout-choice-helper">
-                {isCollection
-                  ? "You selected collection on the menu. You can change it here before ordering."
-                  : "You selected delivery on the menu. You can change it here before ordering."}
+                {isCollection && storeStatus && !storeStatus.collectionAccepting
+                  ? storeStatus.collectionMessage ?? "Collection ordering is currently unavailable."
+                  : !isCollection && storeStatus && !storeStatus.deliveryAccepting
+                    ? storeStatus.deliveryMessage ?? "Delivery ordering is currently unavailable."
+                    : isCollection
+                      ? storeStatus?.prepTimeMinutes
+                        ? `ASAP collection is currently around ${storeStatus.prepTimeMinutes} minutes.`
+                        : "You selected collection on the menu. You can change it here before ordering."
+                      : "You selected delivery on the menu. You can change it here before ordering."}
               </p>
             </section>
 
