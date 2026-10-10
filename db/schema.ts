@@ -28,6 +28,15 @@ export const restaurants = pgTable(
     currency: text("currency").notNull().default("GBP"),
     timezone: text("timezone").notNull().default("Europe/London"),
     active: boolean("active").notNull().default(true),
+    orderingPaused: boolean("ordering_paused").notNull().default(false),
+    collectionEnabled: boolean("collection_enabled").notNull().default(true),
+    deliveryEnabled: boolean("delivery_enabled").notNull().default(false),
+    prepTimeMinutes: integer("prep_time_minutes"),
+    openingHoursEnabled: boolean("opening_hours_enabled").notNull().default(false),
+    openingHours: jsonb("opening_hours")
+      .$type<Record<string, { enabled: boolean; open: string; close: string }>>()
+      .notNull()
+      .default(sql`'{"mon":{"enabled":true,"open":"00:00","close":"23:59"},"tue":{"enabled":true,"open":"00:00","close":"23:59"},"wed":{"enabled":true,"open":"00:00","close":"23:59"},"thu":{"enabled":true,"open":"00:00","close":"23:59"},"fri":{"enabled":true,"open":"00:00","close":"23:59"},"sat":{"enabled":true,"open":"00:00","close":"23:59"},"sun":{"enabled":true,"open":"00:00","close":"23:59"}}'::jsonb`),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
   },
