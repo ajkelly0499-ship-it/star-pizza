@@ -207,7 +207,15 @@ export async function updateStoreSettings(
   patch: Partial<Omit<StoreSettings, "schemaReady">>
 ): Promise<StoreSettings> {
   const db = getDb();
-  const updateValues: Record<string, unknown> = { updatedAt: new Date() };
+  const updateValues: {
+    updatedAt: Date;
+    orderingPaused?: boolean;
+    collectionEnabled?: boolean;
+    deliveryEnabled?: boolean;
+    prepTimeMinutes?: number | null;
+    openingHoursEnabled?: boolean;
+    openingHours?: WeeklyOpeningHours;
+  } = { updatedAt: new Date() };
 
   if (patch.orderingPaused !== undefined) updateValues.orderingPaused = patch.orderingPaused;
   if (patch.collectionEnabled !== undefined) updateValues.collectionEnabled = patch.collectionEnabled;
