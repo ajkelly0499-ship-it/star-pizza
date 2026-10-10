@@ -129,7 +129,9 @@ export async function createOrder(
         ? "ORDERING_PAUSED"
         : input.orderType === "collection" && !storeSettings.collectionEnabled
           ? "COLLECTION_DISABLED"
-          : "OUTSIDE_OPENING_HOURS";
+          : input.orderType === "delivery" && !storeSettings.deliveryEnabled
+            ? "DELIVERY_NOT_READY"
+            : "OUTSIDE_OPENING_HOURS";
 
     throw new OrderCreationError(
       code,
