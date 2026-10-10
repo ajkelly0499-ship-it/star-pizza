@@ -18,10 +18,10 @@ export default function AdminSectionNav({ active }: { active: AdminSection }) {
           <span>Menu &amp; Stock</span>
           <small>Availability controls</small>
         </Link>
-        <span className="admin-section-nav-disabled" aria-disabled="true">
+        <Link className={active === "settings" ? "active" : ""} href="/admin/settings">
           <span>Store Settings</span>
-          <small>Coming next</small>
-        </span>
+          <small>Ordering controls</small>
+        </Link>
       </div>
     </nav>
   );
