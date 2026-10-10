@@ -11,6 +11,10 @@ import {
   validateBasket,
   type BasketValidationInputLine
 } from "../cart/validation";
+import {
+  getOrderingAvailability,
+  getStoreSettings
+} from "../store/settings";
 
 const RESTAURANT_SLUG = "star-pizza-birstall";
 
@@ -49,7 +53,10 @@ export class OrderCreationError extends Error {
       | "EMPTY_BASKET"
       | "PAYMENT_NOT_CONNECTED"
       | "DELIVERY_NOT_READY"
-      | "RESTAURANT_UNAVAILABLE",
+      | "RESTAURANT_UNAVAILABLE"
+      | "ORDERING_PAUSED"
+      | "COLLECTION_DISABLED"
+      | "OUTSIDE_OPENING_HOURS",
     message: string,
     public status = 422
   ) {
@@ -102,6 +109,32 @@ export async function createOrder(
       "EMPTY_BASKET",
       "Your basket is empty.",
       400
+    );
+  }
+
+  const storeSettings = await getStoreSettings();
+
+  if (!storeSettings) {
+    throw new OrderCreationError(
+      "RESTAURANT_UNAVAILABLE",
+      "Star Pizza is not available for ordering.",
+      503
+    );
+  }
+
+  const availability = getOrderingAvailability(storeSettings, input.orderType);
+  if (!availability.available) {
+    const code =
+      storeSettings.orderingPaused
+        ? "ORDERING_PAUSED"
+        : input.orderType === "collection" && !storeSettings.collectionEnabled
+          ? "COLLECTION_DISABLED"
+          : "OUTSIDE_OPENING_HOURS";
+
+    throw new OrderCreationError(
+      code,
+      availability.reason ?? "Online ordering is currently unavailable.",
+      409
     );
   }
 
